@@ -1,0 +1,162 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Blank_A4_Landscape" language="java" columnCount="1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc826e5d-91e6-4676-88ee-8315519c282f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="ZebraRowStyle" mode="Opaque" backcolor="#FFFFFF">
+		<conditionalStyle mode="Opaque" backcolor="#D9EDFF">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<dataset name="Dataset1" uuid="6f24935b-77cf-4288-83de-0636981781e2">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<query language="sql"><![CDATA[]]></query>
+	</dataset>
+	<parameter name="CABECALHO" class="java.lang.String"/>
+	<parameter name="SOMATORIO_TOTAL_GERAL" class="java.lang.Double"/>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="valorEspecie" class="java.lang.Double"/>
+	<field name="nomeCidade" class="java.lang.String"/>
+	<field name="veiculo" class="java.lang.String"/>
+	<field name="valorPix" class="java.lang.Double"/>
+	<field name="valorVale" class="java.lang.Double"/>
+	<field name="nomeCobrador" class="java.lang.String"/>
+	<field name="valorTotal" class="java.lang.Double"/>
+	<field name="data" class="java.time.LocalDate"/>
+	<field name="observacoes" class="java.lang.String"/>
+	<background height="762">
+		<element kind="rectangle" uuid="d24d98fb-9ed7-4fad-85e7-55b3a56428fc" mode="Transparent" x="20" y="200" width="510" height="549"/>
+	</background>
+	<title height="183" splitType="Stretch">
+		<element kind="image" uuid="24a07a75-c02e-4d82-a44f-55f72dd5b937" mode="Opaque" x="-20" y="-20" width="595" height="203" backcolor="#132847">
+			<expression><![CDATA[$P{CABECALHO}]]></expression>
+		</element>
+	</title>
+	<detail>
+		<band height="169" splitType="Stretch">
+			<element kind="textField" uuid="6acfa17c-c456-4769-b0d2-1d025327c893" mode="Opaque" x="28" y="40" width="122" height="20" forecolor="#525252" backcolor="#E6F2FF" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{nomeCidade}]]></expression>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="4dcce41d-8109-449e-bc4e-73ae3718f97c" x="28" y="20" width="122" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Cidade]]></text>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="7e1b5225-30c4-4e40-b339-057c51b09355" mode="Opaque" x="28" y="80" width="122" height="20" forecolor="#525252" backcolor="#E6F2FF" vTextAlign="Middle">
+				<expression><![CDATA[$F{nomeCobrador}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="e65968d3-df31-4bd4-8c54-6f5ee8cb381b" x="28" y="60" width="162" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Cobrador]]></text>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="5160072a-d340-4a47-8f60-0b4ba373ce30" mode="Opaque" x="150" y="40" width="99" height="20" forecolor="#525252" backcolor="#E6F2FF" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{data}]]></expression>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="9b4bb006-b90c-4e83-9e21-59c82cbccbc1" x="150" y="20" width="99" height="20" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Data]]></text>
+			</element>
+			<element kind="textField" uuid="04a8d9b8-60cd-4de0-aa45-ddcf8f5d3f26" mode="Opaque" x="150" y="80" width="122" height="20" forecolor="#525252" backcolor="#E6F2FF" vTextAlign="Middle">
+				<expression><![CDATA[$F{veiculo}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="d131c5ec-26e0-4588-be9b-27a7ba18246d" x="150" y="60" width="122" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Veículo]]></text>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="5ccc52b5-16fb-4cb5-ae9a-94097423c392" mode="Opaque" x="272" y="80" width="82" height="20" forecolor="#525252" backcolor="#E6F2FF" pattern="¤#,##0.##;¤-#,##0.##" vTextAlign="Middle">
+				<expression><![CDATA[$F{valorPix}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="9fbd1e83-4252-4735-89d5-d4a177f080ba" x="272" y="60" width="82" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Total Pix]]></text>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="aff6a1c8-fbb8-4267-b8fd-354492e9bb3a" mode="Opaque" x="354" y="80" width="82" height="20" forecolor="#525252" backcolor="#E6F2FF" pattern="¤#,##0.##;¤-#,##0.##" vTextAlign="Middle">
+				<expression><![CDATA[$F{valorVale}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="7c8bed11-78fb-4c08-8929-8df3451c51bf" x="354" y="60" width="82" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Total Vale]]></text>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="910ef62e-cc60-48e4-997a-00a1fb97bed4" mode="Opaque" x="436" y="80" width="88" height="20" forecolor="#525252" backcolor="#E6F2FF" pattern="¤#,##0.##;¤-#,##0.##" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{valorEspecie}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="00741b01-861d-4db6-bf84-88e83f63915e" x="436" y="60" width="89" height="20" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Total Espécie]]></text>
+				<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="88eaeaf7-3fef-4742-b05e-ef5366aab884" mode="Opaque" x="436" y="121" width="88" height="30" forecolor="#2B8A4E" backcolor="#E6F2FF" fontSize="11.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" hTextAlign="Left" vTextAlign="Top">
+				<expression><![CDATA[$F{valorTotal}]]></expression>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="153f7360-62f7-46ab-a4f9-c34fea467847" x="436" y="101" width="72" height="20" forecolor="#030303" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[TOTAL]]></text>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="line" uuid="16fd9552-67c2-4844-b3d9-66a6a7da8bf2" x="27" y="80" width="498" height="1">
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<pen lineWidth="0.4" lineColor="#787878"/>
+			</element>
+			<element kind="textField" uuid="81e3baa5-3a58-43e3-818a-b0b134464684" mode="Opaque" x="28" y="120" width="391" height="31" forecolor="#525252" backcolor="#E6F2FF">
+				<expression><![CDATA[$F{observacoes}]]></expression>
+				<box leftPadding="4"/>
+			</element>
+			<element kind="staticText" uuid="2e420459-b03e-4c77-a8bd-2cdf62becffb" x="28" y="101" width="100" height="20" fontSize="11.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Observacoes]]></text>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="rectangle" uuid="d11e1b89-ddfa-4ae8-b895-2800f5eedb67" x="20" y="10" width="510" height="9" backcolor="#132847"/>
+		</band>
+	</detail>
+	<columnFooter height="73">
+		<element kind="rectangle" uuid="b56c89d6-3b77-47db-b727-34a7af971248" mode="Opaque" x="22" y="0" width="507" height="51" backcolor="#E6F2FF">
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<pen lineWidth="0.4" lineColor="#969696"/>
+		</element>
+		<element kind="staticText" uuid="71258270-4315-4674-8664-6568c3da4898" x="32" y="0" width="198" height="50" fontSize="12.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[SOMATÓRIO TOTAL DIÁRIO]]></text>
+		</element>
+		<element kind="textField" uuid="38745b86-f2b9-443a-b572-22b9e5c7bc62" x="320" y="0" width="204" height="50" forecolor="#2B8A4E" fontSize="12.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$P{SOMATORIO_TOTAL_GERAL}]]></expression>
+		</element>
+	</columnFooter>
+	<pageFooter height="32" splitType="Stretch">
+		<element kind="rectangle" uuid="95cb485a-d1b5-49f5-a3ca-7374ee9968e1" mode="Opaque" x="-21" y="0" width="596" height="31" backcolor="#132847">
+			<pen lineWidth="0.0"/>
+		</element>
+		<element kind="textField" uuid="458a519d-e4b3-470e-9ef6-16f701348cb2" x="510" y="5" width="40" height="20" forecolor="#FFFFFF" fontSize="10.0" evaluationTime="Report" bold="false" vTextAlign="Middle">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="c0393cf8-fec6-4a84-a5d5-7cd8f879eac9" x="430" y="5" width="80" height="20" forecolor="#FFFFFF" fontSize="10.0" bold="false" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

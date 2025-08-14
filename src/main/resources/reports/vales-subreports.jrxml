@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="vales-subreport" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+
+    <field name="data" class="java.time.LocalDate"/>
+    <field name="funcionario" class="java.lang.String"/>
+    <field name="valor" class="java.lang.Double"/>
+    <field name="observacoes" class="java.lang.String"/>
+
+    <columnHeader>
+        <band height="20">
+            <staticText><reportElement x="0" y="0" width="80" height="20"/><textElement><font isBold="true"/></textElement><text><![CDATA[Data]]></text></staticText>
+            <staticText><reportElement x="80" y="0" width="150" height="20"/><textElement><font isBold="true"/></textElement><text><![CDATA[Funcionário]]></text></staticText>
+            <staticText><reportElement x="230" y="0" width="225" height="20"/><textElement><font isBold="true"/></textElement><text><![CDATA[Observações]]></text></staticText>
+            <staticText><reportElement x="455" y="0" width="100" height="20" textAlignment="Right"/><textElement><font isBold="true"/></textElement><text><![CDATA[Valor]]></text></staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField pattern="dd/MM/yyyy"><reportElement x="0" y="0" width="80" height="20"/><textFieldExpression><![CDATA[$F{data}]]></textFieldExpression></textField>
+            <textField><reportElement x="80" y="0" width="150" height="20"/><textFieldExpression><![CDATA[$F{funcionario}]]></textFieldExpression></textField>
+            <textField><reportElement x="230" y="0" width="225" height="20"/><textFieldExpression><![CDATA[$F{observacoes}]]></textFieldExpression></textField>
+            <textField pattern="¤ #,##0.00"><reportElement x="455" y="0" width="100" height="20" textAlignment="Right"/><textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+</jasperReport>
