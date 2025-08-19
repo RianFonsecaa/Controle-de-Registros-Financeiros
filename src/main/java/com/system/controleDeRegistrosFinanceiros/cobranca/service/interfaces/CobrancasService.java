@@ -7,10 +7,14 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 
 public interface CobrancasService {
 
-    List<CobrancaDTO> getTodos();
+    List<CobrancaDTO> buscaTodos();
 
     CobrancaDTO buscarPorId(Long id);
 
-    CobrancaDTO salvar(CobrancaDTO cobranca);
+    CobrancaDTO salvar(CobrancaDTO cobrancaDto);
+
+    void excluir(Long id);
+
+    CobrancaDTO editar(CobrancaDTO cobrancaDTO);
 
 }

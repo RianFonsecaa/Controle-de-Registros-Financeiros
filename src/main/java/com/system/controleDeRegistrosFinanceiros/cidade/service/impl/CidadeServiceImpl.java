@@ -23,6 +23,9 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public CidadeDTO criar(CidadeDTO cidadeDTO) {
+        if (cidadeRepository.existsByNome(cidadeDTO.getNome())) {
+            throw new IllegalArgumentException("Cidade já cadastrada.");
+        }
         Cidade cidadeSalva = cidadeRepository.save(cidadeMapper.toEntity(cidadeDTO));
         return cidadeMapper.toDTO(cidadeSalva);
     }

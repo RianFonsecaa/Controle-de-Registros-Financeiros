@@ -25,8 +25,8 @@ public class CobrancaDiaria {
         this.nomeCobrador = cobranca.getCobrador().getNome();
         this.valorEspecie = cobranca.getValorEspecie();
         this.valorPix = cobranca.getValorTotalPix();
-        this.valorVale = cobranca.getValorTotalVales();
-        this.valorTotal = cobranca.calcularValorTotal();
+        this.valorVale = cobranca.getValorTotalVale();
+        this.valorTotal = cobranca.getValorTotal();
         this.veiculo = cobranca.getVeiculo();
         this.observacoes = cobranca.getObservacoes();
         

@@ -21,8 +21,8 @@ public class CobrancasControllerImpl implements CobrancasController {
     }
 
     @Override
-    public ResponseEntity<List<CobrancaDTO>> getTodos() {
-        return ResponseEntity.ok(cobrancasService.getTodos());
+    public ResponseEntity<List<CobrancaDTO>> buscaTodos() {
+        return ResponseEntity.ok(cobrancasService.buscaTodos());
     }
 
     @Override
@@ -33,6 +33,17 @@ public class CobrancasControllerImpl implements CobrancasController {
     @Override
     public ResponseEntity<CobrancaDTO> salvar(CobrancaDTO cobranca) {
         return ResponseEntity.ok(cobrancasService.salvar(cobranca));
+    }
+
+    @Override
+    public ResponseEntity<Void> excluir(Long id){
+        cobrancasService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<CobrancaDTO> editar(CobrancaDTO cobranca) {
+        return ResponseEntity.ok(cobrancasService.editar(cobranca));
     }
 
 }

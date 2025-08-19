@@ -8,4 +8,5 @@ import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 
 @Repository
 public interface CidadeRepository extends JpaRepository<Cidade, Long> {
+    boolean existsByNome(String cidadeNome);
 }

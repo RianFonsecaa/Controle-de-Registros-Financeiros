@@ -1,4 +1,4 @@
-package com.system.controleDeRegistrosFinanceiros.pix.model;
+package com.system.controleDeRegistrosFinanceiros.pix.model.entity;
 
 import java.time.LocalDate;
 

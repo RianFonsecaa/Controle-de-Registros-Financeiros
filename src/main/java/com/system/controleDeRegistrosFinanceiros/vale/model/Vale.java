@@ -32,9 +32,6 @@ public class Vale {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "funcionario", nullable = false, length = 100)
-    private String funcionario;
-
     @Column(name = "observacoes", nullable = false)
     private String observacoes;
 

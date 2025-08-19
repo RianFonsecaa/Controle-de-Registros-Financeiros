@@ -16,7 +16,6 @@ import lombok.Setter;
 public class ValeDTO {
 
     private Long id;
-    private String funcionario;
     private String observacoes;
     private Double valor;
     private LocalDate data;

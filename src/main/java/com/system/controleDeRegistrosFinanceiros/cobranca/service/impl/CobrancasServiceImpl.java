@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cidade.repository.CidadeRepository;
@@ -17,13 +18,13 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.service.interfaces.Cob
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.Funcionario;
 import com.system.controleDeRegistrosFinanceiros.funcionario.repository.FuncionarioRepository;
 import com.system.controleDeRegistrosFinanceiros.pix.mapper.PixMapper;
-import com.system.controleDeRegistrosFinanceiros.pix.model.Pix;
-import com.system.controleDeRegistrosFinanceiros.pix.model.PixDTO;
-import com.system.controleDeRegistrosFinanceiros.relatorio.model.CobrancaDiaria;
-import com.system.controleDeRegistrosFinanceiros.relatorio.service.RelatorioService;
+import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
+import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
 import com.system.controleDeRegistrosFinanceiros.vale.model.Vale;
 import com.system.controleDeRegistrosFinanceiros.vale.model.ValeDTO;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
@@ -33,31 +34,26 @@ public class CobrancasServiceImpl implements CobrancasService {
     private final CobrancasMapper cobrancasMapper;
     private final CidadeRepository cidadeRepository;
     private final FuncionarioRepository funcionarioRepository;
-    private final RelatorioService relatorioService;
-
     private final PixMapper pixMapper;
     private final ValeMapper valeMapper;
 
     public CobrancasServiceImpl(
-        CobrancaRepository cobrancaRepository, 
-        CobrancasMapper cobrancasMapper, 
-        CidadeRepository cidadeRepository,
-        FuncionarioRepository funcionarioRepository, 
-        PixMapper pixMapper, 
-        ValeMapper valeMapper,
-        RelatorioService relatorioService) {
-
+            CobrancaRepository cobrancaRepository, 
+            CobrancasMapper cobrancasMapper, 
+            CidadeRepository cidadeRepository,
+            FuncionarioRepository funcionarioRepository, 
+            PixMapper pixMapper,
+            ValeMapper valeMapper) {
         this.cobrancaRepository = cobrancaRepository;
         this.cobrancasMapper = cobrancasMapper;
         this.cidadeRepository = cidadeRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.pixMapper = pixMapper;
         this.valeMapper = valeMapper;
-        this.relatorioService = relatorioService;
     }
 
     @Override
-    public List<CobrancaDTO> getTodos() {
+    public List<CobrancaDTO> buscaTodos() {
         return cobrancaRepository.findAll()
                 .stream()
                 .map(cobrancasMapper::toDTO)
@@ -67,67 +63,87 @@ public class CobrancasServiceImpl implements CobrancasService {
     @Override
     public CobrancaDTO buscarPorId(Long id) {
         Cobranca cobranca = cobrancaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Cobrança não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Cobrança não encontrada"));
         return cobrancasMapper.toDTO(cobranca);
     }
 
     @Override
+    @Transactional
     public CobrancaDTO salvar(CobrancaDTO cobrancaDTO) {
         Cidade cidade = cidadeRepository.findById(cobrancaDTO.getCidade().getId())
-            .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
 
         Funcionario cobrador = funcionarioRepository.findById(cobrancaDTO.getCobrador().getId())
-            .orElseThrow(() -> new RuntimeException("funcionario não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
-
         cobranca.setCidade(cidade);
         cobranca.setCobrador(cobrador);
-        associarPix(cobrancaDTO, cobranca);
-        associarVales(cobrancaDTO, cobranca);
+        cobranca.setPix(associarPix(cobrancaDTO, cobranca));
+        cobranca.setVales(associarVales(cobrancaDTO, cobranca));
+        cobranca.setValorTotalPix(calcularTotalPix(cobrancaDTO));
+        cobranca.setValorTotalVale(calcularTotalVale(cobrancaDTO));
+        cobranca.setValorTotal(cobranca.getValorEspecie() 
+                                + calcularTotalPix(cobrancaDTO) 
+                                + calcularTotalVale(cobrancaDTO));
 
         Cobranca salvo = cobrancaRepository.save(cobranca);
-
-        try {
-            List<Cobranca> listaCobrancasDiarias = cobrancaRepository.findAllByData(LocalDate.now());
-
-            List<CobrancaDiaria> dadosParaRelatorio = listaCobrancasDiarias.stream()
-                                                                     .map(CobrancaDiaria::new)
-                                                                     .collect(Collectors.toList());
-            
-            if (!dadosParaRelatorio.isEmpty()) {
-                relatorioService.gerarRelatorioCobranca(dadosParaRelatorio);
-            }
-
-        } catch (Exception e) {
-            System.err.println("Falha ao gerar o relatório após salvar a cobrança. Erro: " + e.getMessage());
-            e.printStackTrace();
-        }
+        
         return cobrancasMapper.toDTO(salvo);
     }
+    
+    private double calcularTotalPix(CobrancaDTO dto) {
+        return (dto.getPix() == null) ? 0.0 : dto.getPix().stream()
+                .mapToDouble(PixDTO::getValor)
+                .sum();
+    }
 
-    private void associarPix(CobrancaDTO dto, Cobranca cobranca) {
-        cobranca.setPix(new ArrayList<>());
+    private double calcularTotalVale(CobrancaDTO dto) {
+        return (dto.getVales() == null) ? 0.0 : dto.getVales().stream()
+                .mapToDouble(ValeDTO::getValor)
+                .sum();
+    }
+
+    private List<Pix> associarPix(CobrancaDTO dto, Cobranca cobranca) {
+        List<Pix> novaListaDePix = new ArrayList<>();
         if (dto.getPix() != null && !dto.getPix().isEmpty()) {
             for (PixDTO pixDTO : dto.getPix()) {
                 Pix pix = pixMapper.toEntity(pixDTO);
                 pix.setCobranca(cobranca);
-                pix.setCidade(cobranca.getCidade());
-                cobranca.getPix().add(pix);
+                pix.setCidade(cobranca.getCidade()); 
+                novaListaDePix.add(pix);
             }
         }
+        return novaListaDePix;
     }
 
-    private void associarVales(CobrancaDTO dto, Cobranca cobranca) {
-        cobranca.setVales(new ArrayList<>());
+    private List<Vale> associarVales(CobrancaDTO dto, Cobranca cobranca) {
+        List<Vale> novaListaDeVales = new ArrayList<>();
         if (dto.getVales() != null && !dto.getVales().isEmpty()) {
             for (ValeDTO valeDTO : dto.getVales()) {
                 Vale vale = valeMapper.toEntity(valeDTO);
                 vale.setCobranca(cobranca);
-                cobranca.getVales().add(vale);
+                novaListaDeVales.add(vale);
             }
         }
+        return novaListaDeVales;
     }
 
-    
+    @Override
+    public void excluir(Long id){
+        if (!cobrancaRepository.existsById(id)){
+            throw new EntityNotFoundException("Não foi possível excluir. Cobrança com ID " + id + " não encontrada.");
+        };
+
+        cobrancaRepository.deleteById(id);
+    }
+
+    @Override
+    public CobrancaDTO editar(CobrancaDTO cobrancaDTO){
+        if (cobrancaDTO.getId() == null){
+            throw new EntityNotFoundException("Não foi possível editar. Cobrança com ID " + cobrancaDTO.getId() + " não encontrada.");
+        }
+        return this.salvar(cobrancaDTO);
+    }
 }
+    
