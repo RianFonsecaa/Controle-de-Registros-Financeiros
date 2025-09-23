@@ -6,11 +6,11 @@ import java.util.List;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
-import com.system.controleDeRegistrosFinanceiros.funcionario.model.Funcionario;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
 import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
-import com.system.controleDeRegistrosFinanceiros.vale.model.Vale;
-import com.system.controleDeRegistrosFinanceiros.vale.model.ValeDTO;
+import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
+import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

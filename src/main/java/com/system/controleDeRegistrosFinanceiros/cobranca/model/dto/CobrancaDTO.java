@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
-import com.system.controleDeRegistrosFinanceiros.funcionario.model.Funcionario;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
-import com.system.controleDeRegistrosFinanceiros.vale.model.ValeDTO;
+import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

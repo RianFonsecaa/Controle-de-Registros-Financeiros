@@ -2,8 +2,8 @@ package com.system.controleDeRegistrosFinanceiros.funcionario.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.system.controleDeRegistrosFinanceiros.funcionario.model.Funcionario;
-import com.system.controleDeRegistrosFinanceiros.funcionario.model.FuncionarioDTO;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.dto.FuncionarioDTO;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
 
 
 @Mapper(componentModel = "spring")
