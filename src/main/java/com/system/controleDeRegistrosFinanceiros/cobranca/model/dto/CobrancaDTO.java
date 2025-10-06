@@ -23,6 +23,7 @@ public class CobrancaDTO {
     private Long id;
     private Cidade cidade;
     private Funcionario cobrador;
+    private String registroPor;
     private Double valorEspecie;
     private Double valorTotal;
     private Double valorTotalPix;

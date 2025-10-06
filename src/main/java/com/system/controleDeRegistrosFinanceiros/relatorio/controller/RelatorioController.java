@@ -24,7 +24,7 @@ public class RelatorioController {
     @GetMapping("/cobranca-diaria")
     public ResponseEntity<byte[]> gerarRelatorioDiarioDeCobrancas() throws Exception{
 
-        byte[] relatorioPdf = relatorioService.gerarRelatorioCobranca();
+        byte[] relatorioPdf = relatorioService.gerarRelatorioDiarioDeCobranca();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

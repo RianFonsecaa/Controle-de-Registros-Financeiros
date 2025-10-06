@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.system.controleDeRegistrosFinanceiros.auth.model.User;
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cidade.repository.CidadeRepository;
 import com.system.controleDeRegistrosFinanceiros.cobranca.mapper.CobrancasMapper;
@@ -70,10 +72,16 @@ public class CobrancasService {
 
         Funcionario cobrador = funcionarioRepository.findById(cobrancaDTO.getCobrador().getId())
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+                
+        User user = (User) SecurityContextHolder
+        .getContext()
+        .getAuthentication()
+        .getPrincipal();
 
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
         cobranca.setCidade(cidade);
         cobranca.setCobrador(cobrador);
+        cobranca.setRegistroPor(user.getName());
         cobranca.setPix(associarPix(cobrancaDTO, cobranca));
         cobranca.setVales(associarVales(cobrancaDTO, cobranca));
         cobranca.setValorTotalPix(calcularTotalPix(cobrancaDTO));

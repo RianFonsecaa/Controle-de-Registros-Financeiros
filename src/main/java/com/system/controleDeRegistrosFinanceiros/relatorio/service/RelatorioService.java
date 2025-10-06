@@ -30,7 +30,7 @@ public class RelatorioService{
         this.resourceLoader = resourceLoader;
     };
 
-    public byte[] gerarRelatorioCobranca() throws Exception {        
+    public byte[] gerarRelatorioDiarioDeCobranca() throws Exception {        
 
         
         List<CobrancaDiaria> dadosRelatorio = geraDadosDoRelatorio();
@@ -57,7 +57,6 @@ public class RelatorioService{
 
     public List<CobrancaDiaria> geraDadosDoRelatorio(){
             List<Cobranca> cobrancasDoDia = cobrancaRepository.findAllByData(LocalDate.now());
-            System.out.println("Cobranças do dia: " + cobrancasDoDia.size());
             List<CobrancaDiaria> dadosRelatorio = cobrancasDoDia.stream()
                                                                      .map(CobrancaDiaria::new)
                                                                      .collect(Collectors.toList());

@@ -25,12 +25,13 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity
+        return httpSecurity                                                                                
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authority -> authority
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
             .requestMatchers("/cidades/**").hasRole("ADMIN")
             .requestMatchers("/funcionarios/**").hasRole("ADMIN")
             .anyRequest().authenticated()
