@@ -1,6 +1,4 @@
 package com.system.controleDeRegistrosFinanceiros.relatorio.service;
-
-
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.core.io.Resource;

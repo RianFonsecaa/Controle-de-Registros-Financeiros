@@ -1,10 +1,11 @@
-package com.system.controleDeRegistrosFinanceiros.security;
+package com.system.controleDeRegistrosFinanceiros.authentication.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.system.controleDeRegistrosFinanceiros.auth.model.User;
+import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 
 
 @Service
@@ -33,6 +34,8 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getLogin())
+                    .withClaim("role", user.getRole().name())
+                    .withClaim("type", "acess")
                     .withExpiresAt(genAccessTokenExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
@@ -46,6 +49,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getLogin())
+                    .withClaim("type", "refresh")
                     .withExpiresAt(genRefreshTokenExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -54,16 +58,22 @@ public class TokenService {
     }
 
     public String validateToken(String token){
-        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-            .withIssuer("auth-api")
-            .build()
-            .verify(token)
-            .getSubject();
-        } catch (JWTVerificationException exception){
-            return "";
-        }
+                    .withIssuer("auth-api")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+    }
+
+    public String validateRefreshToken(String token) {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        return JWT.require(algorithm)
+                .withIssuer("auth-api")
+                .withClaim("type", "refresh")
+                .build()
+                .verify(token)
+                .getSubject();
     }
 
     private Instant genAccessTokenExpirationDate(){

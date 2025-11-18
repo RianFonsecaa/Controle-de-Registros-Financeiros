@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,20 +33,20 @@ public class Pix {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cliente", nullable = false, length = 150)
+    @Column(nullable = false, length = 150)
     private String cliente;
 
-    @Column(name = "valor", nullable = false)
+    @Column(nullable = false)
     private Double valor;
 
-    @Column(name = "data", nullable = false)
+    @Column(nullable = false)
     private LocalDate data;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "cobranca_id", nullable = true)
+    @JoinColumn(nullable = true)
     private Cobranca cobranca;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "cidade_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Cidade cidade;
 }

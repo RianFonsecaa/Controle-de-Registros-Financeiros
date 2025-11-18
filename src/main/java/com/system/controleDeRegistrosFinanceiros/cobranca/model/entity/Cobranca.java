@@ -36,32 +36,32 @@ public class Cobranca {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "cidade_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Cidade cidade;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "cobrador_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Funcionario cobrador;
 
-    @Column(name = "registro_por", nullable = false)
+    @Column(nullable = false)
     private String registroPor;
 
-    @Column(name = "valor_especie", nullable = false)
+    @Column(nullable = false)
     private double valorEspecie;
 
-    @Column(name = "valor_total_pix", nullable = false)
+    @Column(nullable = false)
     private double valorTotalPix;
 
-    @Column(name = "valor_total_vale", nullable = false)
+    @Column(nullable = false)
     private double valorTotalVale;
     
-    @Column(name = "valor_total", nullable = false)
+    @Column(nullable = false)
     private double valorTotal;
 
-    @Column(name = "data", nullable = false)
+    @Column(nullable = false)
     private LocalDate data;
 
-    @Column(name = "veiculo", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String veiculo;
 
     @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -70,6 +70,6 @@ public class Cobranca {
     @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pix> pix = new ArrayList<>();
 
-    @Column(name = "observacoes", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String observacoes;
 }

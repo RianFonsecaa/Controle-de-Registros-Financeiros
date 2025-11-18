@@ -1,5 +1,7 @@
 package com.system.controleDeRegistrosFinanceiros.cidade.service;
 
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.mapper.CidadeMapper;
@@ -24,7 +26,7 @@ public class CidadeService {
 
     public CidadeDTO criar(CidadeDTO cidadeDTO) {
         if (cidadeRepository.existsByNome(cidadeDTO.getNome())) {
-            throw new IllegalArgumentException("Cidade já cadastrada.");
+            throw new ResourceAlreadyExistsException("Cidade", "Nome", cidadeDTO.getNome());
         }
         Cidade cidadeSalva = cidadeRepository.save(cidadeMapper.toEntity(cidadeDTO));
         return cidadeMapper.toDTO(cidadeSalva);
@@ -32,8 +34,13 @@ public class CidadeService {
 
     public void excluir(Long id){
         if (!cidadeRepository.existsById(id)){
-            throw new EntityNotFoundException("Não foi possível excluir. Cidade com ID " + id + " não encontrada.");
+                throw new ResourceNotFoundException("Cidade", "Id", id);
         };
         cidadeRepository.deleteById(id);
+    }
+
+    public Cidade getById(Long id){
+        return cidadeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cidade", "id", id));
     }
 }

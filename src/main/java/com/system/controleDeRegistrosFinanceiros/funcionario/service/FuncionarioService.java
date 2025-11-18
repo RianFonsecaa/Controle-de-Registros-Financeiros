@@ -1,5 +1,8 @@
 package com.system.controleDeRegistrosFinanceiros.funcionario.service;
 
+import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.funcionario.mapper.FuncionarioMapper;
@@ -8,9 +11,6 @@ import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcio
 import com.system.controleDeRegistrosFinanceiros.funcionario.repository.FuncionarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-
-
-
 
 @Service
 public class FuncionarioService {
@@ -26,7 +26,7 @@ public class FuncionarioService {
 
     public FuncionarioDTO criar(FuncionarioDTO funcionarioDTO) {
         if (funcionarioRepository.existsByNome(funcionarioDTO.getNome())) {
-             throw new IllegalArgumentException("Funcionário já cadastrado.");
+            throw new ResourceAlreadyExistsException("Funcionário", "Nome", funcionarioDTO.getNome());
         }
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioMapper.toEntity(funcionarioDTO));
         return funcionarioMapper.toDTO(funcionarioSalvo);
@@ -34,8 +34,13 @@ public class FuncionarioService {
 
     public void excluir(Long id){
         if (!funcionarioRepository.existsById(id)){
-            throw new EntityNotFoundException("Não foi possível excluir. Funcionário com ID " + id + " não encontrado."); 
+            throw new ResourceNotFoundException("Funcionario", "id", id);
         } 
         funcionarioRepository.deleteById(id);
+    }
+
+    public Funcionario getById(Long id){
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionario", "id", id));
     }
 }

@@ -1,6 +1,4 @@
-package com.system.controleDeRegistrosFinanceiros.security;
-
-import java.net.http.HttpRequest;
+package com.system.controleDeRegistrosFinanceiros.authentication.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

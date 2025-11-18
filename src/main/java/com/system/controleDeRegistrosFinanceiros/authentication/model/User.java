@@ -1,4 +1,4 @@
-package com.system.controleDeRegistrosFinanceiros.auth.model;
+package com.system.controleDeRegistrosFinanceiros.authentication.model;
 
 import java.util.Collection;
 import java.util.List;

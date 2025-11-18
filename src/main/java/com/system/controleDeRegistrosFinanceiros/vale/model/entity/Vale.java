@@ -4,14 +4,8 @@ import java.time.LocalDate;
 
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,16 +26,22 @@ public class Vale {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "observacoes", nullable = false)
-    private String observacoes;
+    @Column
+    private String justificativa;
 
-    @Column(name = "valor", nullable = false)
+    @Column
     private Double valor;
 
-    @Column(name = "data", nullable = false)
+    @Column
     private LocalDate data;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "cobranca_id", nullable = true)
+    @JoinColumn
     private Cobranca cobranca;
+
+    @OneToOne(optional = true)
+    @JoinColumn
+    private Funcionario funcionario;
+
+
 }

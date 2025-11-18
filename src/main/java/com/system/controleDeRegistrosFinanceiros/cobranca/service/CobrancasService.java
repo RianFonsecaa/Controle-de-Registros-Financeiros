@@ -1,15 +1,15 @@
 package com.system.controleDeRegistrosFinanceiros.cobranca.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.system.controleDeRegistrosFinanceiros.auth.model.User;
+import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cidade.repository.CidadeRepository;
 import com.system.controleDeRegistrosFinanceiros.cobranca.mapper.CobrancasMapper;
@@ -33,22 +33,25 @@ public class CobrancasService {
 
     private final CobrancaRepository cobrancaRepository;
     private final CobrancasMapper cobrancasMapper;
-    private final CidadeRepository cidadeRepository;
-    private final FuncionarioRepository funcionarioRepository;
+    private final CidadeService cidadeService;
+    private final FuncionarioService funcionarioService;
+
     private final PixMapper pixMapper;
     private final ValeMapper valeMapper;
 
     public CobrancasService(
             CobrancaRepository cobrancaRepository, 
             CobrancasMapper cobrancasMapper, 
-            CidadeRepository cidadeRepository,
-            FuncionarioRepository funcionarioRepository, 
+            CidadeService cidadeService,
+            FuncionarioService funcionarioService,
             PixMapper pixMapper,
             ValeMapper valeMapper) {
         this.cobrancaRepository = cobrancaRepository;
         this.cobrancasMapper = cobrancasMapper;
-        this.cidadeRepository = cidadeRepository;
-        this.funcionarioRepository = funcionarioRepository;
+
+        this.cidadeService = cidadeService;
+        this.funcionarioService = funcionarioService;
+
         this.pixMapper = pixMapper;
         this.valeMapper = valeMapper;
     }
@@ -67,11 +70,6 @@ public class CobrancasService {
     }
 
     public CobrancaDTO salvar(CobrancaDTO cobrancaDTO) {
-        Cidade cidade = cidadeRepository.findById(cobrancaDTO.getCidade().getId())
-                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
-
-        Funcionario cobrador = funcionarioRepository.findById(cobrancaDTO.getCobrador().getId())
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
                 
         User user = (User) SecurityContextHolder
         .getContext()
@@ -79,8 +77,8 @@ public class CobrancasService {
         .getPrincipal();
 
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
-        cobranca.setCidade(cidade);
-        cobranca.setCobrador(cobrador);
+        cobranca.setCidade(cidadeService.getById(cobrancaDTO.getCidade().getId()));
+        cobranca.setCobrador(funcionarioService.getById(cobrancaDTO.getCobrador().getId()));
         cobranca.setRegistroPor(user.getName());
         cobranca.setPix(associarPix(cobrancaDTO, cobranca));
         cobranca.setVales(associarVales(cobrancaDTO, cobranca));
@@ -135,7 +133,7 @@ public class CobrancasService {
 
     public void excluir(Long id){
         if (!cobrancaRepository.existsById(id)){
-            throw new EntityNotFoundException("Não foi possível excluir. Cobrança com ID " + id + " não encontrada.");
+            throw new ResourceNotFoundException("Cobrança","Id",id);
         };
 
         cobrancaRepository.deleteById(id);

@@ -1,4 +1,4 @@
-package com.system.controleDeRegistrosFinanceiros.auth.model;
+package com.system.controleDeRegistrosFinanceiros.authentication.model;
 
 public record LoginResponseDTO(String accessToken, String refreshToken) {
     

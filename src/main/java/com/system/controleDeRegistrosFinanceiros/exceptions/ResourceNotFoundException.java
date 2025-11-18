@@ -1,0 +1,13 @@
+package com.system.controleDeRegistrosFinanceiros.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException{
+
+    public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
+        super(String.format("Não foi possível encontrar um(a) %s com %s '%s'", resourceName, fieldName, fieldValue));
+    }
+
+}
