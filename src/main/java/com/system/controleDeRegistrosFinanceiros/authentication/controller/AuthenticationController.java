@@ -8,13 +8,12 @@ import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundExce
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.system.controleDeRegistrosFinanceiros.authentication.model.LoginRequestDTO;
 import com.system.controleDeRegistrosFinanceiros.authentication.model.LoginResponseDTO;
@@ -40,14 +39,18 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var user = (User) auth.getPrincipal();
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+            var auth = authenticationManager.authenticate(usernamePassword);
+            var user = (User) auth.getPrincipal();
 
-        var accessToken = tokenService.generateAccessToken(user);
-        var refreshToken = tokenService.generateRefreshToken(user);
+            var accessToken = tokenService.generateAccessToken(user);
+            var refreshToken = tokenService.generateRefreshToken(user);
 
-        return ResponseEntity.ok(new LoginResponseDTO(accessToken, refreshToken));
+            return ResponseEntity.ok(new LoginResponseDTO(accessToken, refreshToken));
+        } catch (AuthenticationException ex) {
+            throw new BadCredentialsException("Credenciais inválidas. Verifique seu login e senha.");
+        }
     }
 
     @PostMapping("/refresh-token")

@@ -12,6 +12,12 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+        String message = "Ocorreu um erro inesperado no servidor. Por favor, contate o administrador.";
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
+    }
+
     private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message) {
         ErrorResponse apiError = new ErrorResponse(status, message);
         return new ResponseEntity<>(apiError, status);
@@ -35,12 +41,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReportGenerationException.class)
     public ResponseEntity<ErrorResponse> handleReportGenerationException(ReportGenerationException ex) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-        String message = "Ocorreu um erro inesperado no servidor. Por favor, contate o administrador.";
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
