@@ -3,7 +3,7 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,7 +19,8 @@ import { LoginResponse } from './LoginResponse';
   styleUrl: './login.css',
 })
 export class Login {
-  mensagemErro: String = '';
+  mensagemErro: string = '';
+  exibirToast = signal(false);
 
   private apiUrl = 'http://localhost:8080/auth/login';
 
@@ -57,16 +58,20 @@ export class Login {
       login: string;
       password: string;
     };
-    console.log('Dados enviados:', formValue);
 
     this.http.post<LoginResponse>(this.apiUrl, formValue).subscribe({
       next: (response) => {
-        alert('Login Success!');
         console.log('Token recebido:', response.accessToken);
       },
       error: (error: HttpErrorResponse) => {
-        alert(error.error.message);
+        this.mensagemErro = error.error.message || 'Erro inesperado!';
+        console.log(this.mensagemErro)
+        this.abreErrorToast();
       },
     });
+  }
+
+  abreErrorToast() {
+    this.exibirToast.set(true);
   }
 }
