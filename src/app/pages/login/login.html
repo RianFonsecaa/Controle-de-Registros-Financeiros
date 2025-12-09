@@ -21,7 +21,6 @@
   <section
     class="flex flex-col justify-center items-center w-2/5 gap-20 bg-white"
   >
-
     <h1
       class="font-montserrat font-bold text-3xl text-[#0067EB] tracking-[10px]"
     >
@@ -175,7 +174,7 @@
 
         <div class="w-full flex flex-row justify-between text-sm">
           <div class="flex flex-row items-center gap-1">
-            <input class="w-4 h-4" type="checkbox" />
+            <input class="w-4 h-4 bg-white!" type="checkbox" />
             <span class="text-gray-400">Lembrar login</span>
           </div>
 
@@ -184,20 +183,32 @@
       </div>
     </form>
 
-      @if (exibirToast()) {
-        <div  
-          class="toast toast-top toast-end animate-fadeIn"
+    @if (exibirToast()) {
+    <div class="toast toast-top toast-end animate-fadeIn">
+      <div
+        class="flex flex-row align-middle gap-2 bg-white rounded-md p-4 border-l-3 border-red-500 shadow-md"
+      >
+        <svg
+          class="w-6 h-6 text-red-500"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
         >
-          <div class="flex flex-row gap-2 bg-white rounded-xl p-4 border-2 border-gray-200 shadow-md">
-            <svg class="w-6 h-6 text-red-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
-                stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
 
-            <span class="text-gray-800 font-medium">{{ mensagemErro }}</span>
-          </div>
-        </div>
-        }
+        <span class="text-gray-800 font-medium">{{ mensagemErro }}</span>
+      </div>
+    </div>
+    }
   </section>
 </main>

@@ -10,7 +10,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginResponse } from './LoginResponse';
+import { LoginResponse } from '../../model/responses/LoginResponse';
+import { LoginRequest } from '../../model/requests/LoginRequest';
+import { AuthService } from '../../services/auth.service';
+import { TokenStorageService } from '../../services/token-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,16 +25,12 @@ import { LoginResponse } from './LoginResponse';
 export class Login {
   mensagemErro: string = '';
   exibirToast = signal(false);
-
-  private apiUrl = 'http://localhost:8080/auth/login';
-
-  http = inject(HttpClient);
+  authService = inject(AuthService);
+  tokenStorageService = inject(TokenStorageService);
+  router = inject(Router);
 
   loginForm = new FormGroup({
-    login: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
-    ]),
+    login: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
   });
 
@@ -54,18 +54,16 @@ export class Login {
       return;
     }
 
-    const formValue = this.loginForm.value as {
-      login: string;
-      password: string;
-    };
+    const loginRequest = this.loginForm.value as LoginRequest;
 
-    this.http.post<LoginResponse>(this.apiUrl, formValue).subscribe({
-      next: (response) => {
-        console.log('Token recebido:', response.accessToken);
+    this.authService.login(loginRequest).subscribe({
+      next: (response: LoginResponse) => {
+        this.router.navigate(['home']);
+        this.tokenStorageService.setTokens(response);
       },
       error: (error: HttpErrorResponse) => {
         this.mensagemErro = error.error.message || 'Erro inesperado!';
-        console.log(this.mensagemErro)
+        console.log(this.mensagemErro);
         this.abreErrorToast();
       },
     });
@@ -73,5 +71,9 @@ export class Login {
 
   abreErrorToast() {
     this.exibirToast.set(true);
+
+    setTimeout(() => {
+      this.exibirToast.set(false);
+    }, 4000);
   }
 }
