@@ -1,8 +1,10 @@
 package com.system.controleDeRegistrosFinanceiros.relatorio.service;
+import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
@@ -28,24 +30,41 @@ public class RelatorioService{
         this.resourceLoader = resourceLoader;
     };
 
-    public byte[] gerarRelatorioDiarioDeCobranca() throws Exception {        
+    public byte[] gerarRelatorioDiarioDeCobranca() throws Exception {
 
-        
+        User user = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        double totalPix = 0;
+        double totalVale = 0;
+        double totalEspecie = 0;
+        double totalFinal = 0;
+
         List<CobrancaDiaria> dadosRelatorio = geraDadosDoRelatorio();
 
         final Resource resource = resourceLoader.getResource("classpath:reports/cobranca-report.jrxml");
         final InputStream inputStream = resource.getInputStream();
         JasperReport relatorioPrincipal = JasperCompileManager.compileReport(inputStream);
 
-        Double somatorioTotalGeral = dadosRelatorio.stream()
-                                                .mapToDouble(CobrancaDiaria::getValorTotal)
-                                                .sum();
+        for (CobrancaDiaria cobrancaDiaria : dadosRelatorio) {
+            totalPix     += cobrancaDiaria.getValorPix();
+            totalVale    += cobrancaDiaria.getValorVale();
+            totalEspecie += cobrancaDiaria.getValorEspecie();
+            totalFinal += cobrancaDiaria.getValorTotal();
+        }
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("DATA_GERACAO", java.time.LocalDate.now());
+        parameters.put("PERIODO", java.time.LocalDate.now());
+        parameters.put("DATA_EMISSAO", java.time.LocalDate.now());
+        parameters.put("USUARIO_EMITENTE", user.getName());
         parameters.put("REPORT_LOCALE", Locale.of("pt", "BR"));
-        parameters.put("CABECALHO", "classpath:images/CABECALHO.png");
-        parameters.put("SOMATORIO_TOTAL_GERAL", somatorioTotalGeral);
+        parameters.put("LOGO", "classpath:images/Logo_branca.png");
+        parameters.put("TOTAL_FINAL", totalFinal);
+        parameters.put("TOTAL_PIX", totalPix);
+        parameters.put("TOTAL_VALE", totalVale);
+        parameters.put("TOTAL_ESPECIE", totalEspecie);
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dadosRelatorio);
         JasperPrint jasperPrint = JasperFillManager.fillReport(relatorioPrincipal, parameters, dataSource);
