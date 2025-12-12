@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 
 @Component({
@@ -7,4 +7,6 @@ import { RouterLinkActive, RouterLink } from '@angular/router';
   templateUrl: './pagina-em-manutencao.html',
   styleUrl: './pagina-em-manutencao.css',
 })
-export class PaginaEmManutencao {}
+export class PaginaEmManutencao {
+  @Input() tituloPagina: String = '';
+}
