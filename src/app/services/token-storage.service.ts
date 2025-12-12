@@ -7,7 +7,7 @@ import { of } from 'rxjs';
   providedIn: 'root',
 })
 export class TokenStorageService {
-  private readonly accessTokenKey: string = 'acess-token';
+  private readonly accessTokenKey: string = 'access-token';
   private readonly refreshTokenKey: string = 'refresh-token';
 
   setTokens(tokens: LoginResponse) {
@@ -29,6 +29,6 @@ export class TokenStorageService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    return of(!!localStorage.getItem('token'));
+    return of(!!this.getAccessToken());
   }
 }
