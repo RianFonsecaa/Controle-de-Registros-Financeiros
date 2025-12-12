@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { SideBar } from '../../components/side-bar/side-bar';
 import { PaginaEmManutencao } from '../../components/pagina-em-manutencao/pagina-em-manutencao';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-relatorios',
   imports: [PaginaEmManutencao],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+  templateUrl: './relatorios.html',
+  styleUrl: './relatorios.css',
 })
-export class Dashboard {}
+export class Relatorios {}
