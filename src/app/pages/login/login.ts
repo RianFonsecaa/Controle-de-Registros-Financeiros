@@ -58,8 +58,8 @@ export class Login {
 
     this.authService.login(loginRequest).subscribe({
       next: (response: LoginResponse) => {
-        this.router.navigate(['home']);
         this.tokenStorageService.setTokens(response);
+        this.router.navigate(['dashboard']);
       },
       error: (error: HttpErrorResponse) => {
         this.mensagemErro = error.error.message || 'Erro inesperado!';

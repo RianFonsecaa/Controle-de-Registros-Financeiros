@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../model/responses/LoginResponse';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,7 @@ export class TokenStorageService {
     localStorage.removeItem(this.refreshTokenKey);
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getAccessToken();
+  isLoggedIn(): Observable<boolean> {
+    return of(!!localStorage.getItem('token'));
   }
 }
