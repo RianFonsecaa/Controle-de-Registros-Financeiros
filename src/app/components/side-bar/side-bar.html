@@ -1,8 +1,8 @@
 <section
-  class="flex flex-col justify-between h-screen w-[270px] bg-[#00061B] font-inter"
+  class="flex flex-col justify-between h-screen w-[300px] bg-[#00061B] font-inter"
 >
   <div
-    class="flex flex-col w-full items-center gap-4 p-6 border-b border-[#51647D]"
+    class="flex flex-col w-full items-center gap-4 px-4 py-8 border-b border-[#51647D]"
   >
     <div class="flex flex-row w-full align-middle gap-1">
       <svg
@@ -20,28 +20,36 @@
           clip-rule="evenodd"
         />
       </svg>
+
+      @switch (usuario?.role) { @case ('ADMIN') {
       <span class="font-medium text-[12px] text-[#51647D]">ADMINISTRADOR</span>
+      } @case ('USER') {
+      <span class="font-medium text-[12px] text-[#51647D]">USUÁRIO PADRÃO</span>
+      } }
     </div>
 
-    <div class="flex flex-row w-full items-center">
-      <div class="flex flex-row items-center gap-4">
+    <div
+      class="flex flex-row w-full items-center p-3 rounded-md border border-[#1e2d61] bg-[#051038]"
+    >
+      <div class="flex flex-row w-full items-center gap-2">
         <img
           class="rounded-md h-12 w-12"
           src="/800870_19676-NS9212.jpg"
           alt=""
         />
-        <div class="flex flex-col items-center">
-          <h1 class="font-bold text-white">Rian Fonseca</h1>
-
-          <span class="font-extralight text-sm text-[#b4dbffa4]"
-            >rian@gmail.com</span
-          >
+        <div class="flex flex-col gap-1">
+          <h1 class="font-bold text-white">{{ usuario?.name }}</h1>
+          <span class="text-[#8da2f0] text-[13px] font-light">{{
+            usuario?.sub
+          }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <ul class="flex flex-col flex-1 overflow-y-scroll pl-4 py-4 gap-4">
+  <ul
+    class="flex flex-col flex-1 overflow-y-scroll pl-4 py-4 gap-4 text-[14px] font-semibold"
+  >
     <li
       class="text-[#586c88] rounded-md transition-colors duration-150 hover:bg-[#060e29] hover:text-white"
     >
@@ -66,7 +74,7 @@
             <rect x="13" y="11" width="9" height="11" rx="2"></rect>
           </g>
         </svg>
-        <span class="text-[18px]">Dashboard</span>
+        <span>Dashboard</span>
       </a>
     </li>
 
@@ -77,7 +85,7 @@
         <div class="collapse collapse-arrow px-4 py-2">
           <input class="p-6" type="checkbox" />
           <span
-            class="h-full collapse-title p-0 text-[18px] flex flex-row items-center gap-4"
+            class="h-full collapse-title p-0 flex flex-row items-center gap-4"
           >
             <svg
               class="w-5 h-5"
@@ -153,7 +161,7 @@
             ></path>
           </g>
         </svg>
-        <span class="text-[18px]">Relatórios</span>
+        <span>Relatórios</span>
       </a>
     </li>
 
@@ -203,14 +211,14 @@
             </g>
           </g>
         </svg>
-        <span class="text-[18px]">Cadastros</span>
+        <span>Cadastros</span>
       </a>
     </li>
   </ul>
 
   <div class="p-4 border-t border-[#51647D]">
     <button
-      class="flex flex-row align-middle items-center rounded-md gap-2 p-4 text-[#F43030] w-full cursor-pointer transition-colors duration-200 hover:bg-[#060e29]"
+      class="flex flex-row align-middle justify-center rounded-md gap-2 p-4 text-[#F43030] text-[14px] w-full cursor-pointer transition-colors duration-200 hover:bg-[#060e29]"
     >
       <svg
         class="w-5 h-5"
