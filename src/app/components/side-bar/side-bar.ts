@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
 
@@ -11,6 +11,7 @@ import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse
 })
 export class SideBar {
   private tokenStorage = inject(TokenStorageService);
+  private router = inject(Router);
 
   usuario: TokenPayloadResponse | null = null;
 
@@ -18,12 +19,17 @@ export class SideBar {
     this.carregarDadosUsuario();
   }
 
-  private carregarDadosUsuario() {
+  carregarDadosUsuario() {
     const token = this.tokenStorage.getAccessToken();
 
     if (token) {
       this.usuario = this.tokenStorage.decodeToken(token);
       console.log(this.usuario);
     }
+  }
+
+  logout() {
+    this.tokenStorage.logout();
+    this.router.navigate(['/login']);
   }
 }
