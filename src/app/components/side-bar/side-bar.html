@@ -1,9 +1,7 @@
 <section
   class="flex flex-col justify-between h-screen w-[300px] bg-[#00061B] font-inter"
 >
-  <div
-    class="flex flex-col w-full items-center gap-4 px-4 py-8 border-b border-[#51647D]"
-  >
+  <div class="flex flex-col w-full items-center gap-4 px-4 py-8">
     <div class="flex flex-row w-full align-middle gap-1">
       <svg
         class="w-4 h-4 text-[#51647D]"
@@ -29,7 +27,7 @@
     </div>
 
     <div
-      class="flex flex-row w-full items-center p-3 rounded-md border border-[#1e2d61] bg-[#051038]"
+      class="flex flex-row w-full items-center p-4 rounded-2xl border-2 border-[#0e1d53] bg-[#020d33]"
     >
       <div class="flex flex-row w-full items-center gap-2">
         <img
@@ -38,20 +36,16 @@
           alt=""
         />
         <div class="flex flex-col gap-1">
-          <h1 class="font-bold text-white">{{ usuario?.name }}</h1>
-          <span class="text-[#8da2f0] text-[13px] font-light">{{
-            usuario?.sub
-          }}</span>
+          <h1 class="font-semibold text-white">{{ usuario?.name }}</h1>
+          <span class="text-[#7889c5] text-[13px]">{{ usuario?.sub }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <ul
-    class="flex flex-col flex-1 overflow-y-scroll pl-4 py-4 gap-4 text-[14px] font-semibold"
-  >
+  <ul class="flex flex-col flex-1 overflow-y-auto p-4 gap-4 text-base">
     <li
-      class="text-[#586c88] rounded-md transition-colors duration-150 hover:bg-[#060e29] hover:text-white"
+      class="text-[#51647D] rounded-2xl transition-colors duration-150 hover:bg-[#020d33] hover:text-white"
     >
       <a class="flex flex-row items-center p-4 gap-4" routerLink="/dashboard">
         <svg
@@ -79,10 +73,10 @@
     </li>
 
     <li
-      class="text-[#586c88] rounded-md transition-colors duration-150 hover:bg-[#060e29] hover:text-white"
+      class="text-[#51647D] rounded-2xl transition-colors duration-150 hover:bg-[#020d33] hover:text-white"
     >
       <a>
-        <div class="collapse collapse-arrow px-4 py-2">
+        <div class="collapse collapse-arrow px-4 py-1">
           <input class="p-6" type="checkbox" />
           <span
             class="h-full collapse-title p-0 flex flex-row items-center gap-4"
@@ -140,7 +134,7 @@
     </li>
 
     <li
-      class="text-[#586c88] rounded-md transition-colors duration-150 hover:bg-[#060e29] hover:text-white"
+      class="text-[#51647D] rounded-2xl transition-colors duration-150 hover:bg-[#020d33] hover:text-white"
     >
       <a class="flex flex-row items-center p-4 gap-4" routerLink="/relatorios">
         <svg
@@ -166,7 +160,7 @@
     </li>
 
     <li
-      class="text-[#586c88] rounded-md transition-colors duration-150 hover:bg-[#060e29] hover:text-white"
+      class="text-[#51647D] rounded-2xl transition-colors duration-150 hover:bg-[#020d33] hover:text-white"
     >
       <a class="flex flex-row items-center p-4 gap-4" routerLink="/cadastros">
         <svg
@@ -216,10 +210,10 @@
     </li>
   </ul>
 
-  <div class="p-4 border-t border-[#51647D]">
+  <div class="p-4">
     <button
       (click)="logout()"
-      class="flex flex-row align-middle justify-center rounded-md gap-2 p-4 text-[#F43030] text-[14px] w-full cursor-pointer transition-colors duration-200 hover:bg-[#060e29]"
+      class="flex flex-row align-middle transition-colors duration-200 justify-center rounded-2xl gap-2 p-4 text-[#a53333] text-[14px] font-semibold w-full cursor-pointer hover:bg-[#020d33] hover:text-[#F43030]"
     >
       <svg
         class="w-5 h-5"
