@@ -1,6 +1,6 @@
-<section class="h-[90%] w-full p-6 font-inter">
+<section class="flex flex-col w-full gap-4 h-[90%] p-6 font-inter">
   <div
-    class="flex flex-row p-4 justify-between rounded-xl border border-[#dfdfdf] shadow-lg"
+    class="flex flex-row h-[80px] w-full p-4 justify-between rounded-xl border border-[#dfdfdf] shadow-md"
   >
     <div class="flex flex-row gap-2">
       <div
@@ -44,7 +44,7 @@
         class="flex flex-row h-full items-center gap-2 p-2 border border-[#c2c2c2] rounded-lg"
       >
         <svg
-          class="w-6 h-6 text-[#c2c2c2]"
+          class="w-5 h-5 text-[#c2c2c2]"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -63,7 +63,7 @@
         <input
           placeholder="Palavra-chave..."
           type="text"
-          class="h-full placeholder:text-[#c2c2c2]"
+          class="h-full text-sm placeholder:text-[#c2c2c2]"
         />
       </div>
     </div>
@@ -124,6 +124,79 @@
         </svg>
         Gerar Relatório
       </button>
+    </div>
+  </div>
+
+  <div class="w-full h-full rounded-xl border border-[#dfdfdf] shadow-lg">
+    <div class="w-full h-full overflow-x-auto">
+      <table class="min-w-max overflow-x-auto text-[12px] text-[#636363]">
+        <thead>
+          <tr>
+            <th class="w-[160px] p-6 text-left">COBRADOR</th>
+            <th class="w-[160px] p-6 text-left">CIDADE</th>
+            <th class="w-[160px] p-6 text-left">VEÍCULO</th>
+            <th class="w-[160px] p-6 text-left">DATA</th>
+            <th class="w-[160px] p-6 text-left">V. ESPÉCIE</th>
+            <th class="w-[160px] p-6 text-left">V. PIX</th>
+            <th class="w-[160px] p-6 text-left">V. VALE</th>
+            <th class="w-[160px] p-6 text-left">REGISTRO POR</th>
+            <th class="w-[160px] p-6 text-left">TOTAL</th>
+            <th class="w-[250px] p-6 text-left">OBSERVAÇÕES</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (cobranca of cobrancas(); track cobranca.id) {
+          <tr
+            class="border-t h-16 border border-gray-200 hover:bg-gray-50 transition-colors"
+          >
+            <td class="p-2">
+              {{ cobranca.cobrador.nome }}
+            </td>
+
+            <td class="p-2">
+              {{ cobranca.cidade.nome }}
+            </td>
+
+            <td class="p-2">
+              {{ cobranca.veiculo }}
+            </td>
+
+            <td class="p-2">
+              {{ cobranca.data | date : "dd/MM/yyyy" }}
+            </td>
+
+            <td class="p-2">
+              {{
+                cobranca.valorEspecie | currency : "BRL" : "symbol" : "1.2-2"
+              }}
+            </td>
+
+            <td class="p-2">
+              {{
+                cobranca.valorTotalPix | currency : "BRL" : "symbol" : "1.2-2"
+              }}
+            </td>
+
+            <td class="p-2">
+              {{
+                cobranca.valorTotalVale | currency : "BRL" : "symbol" : "1.2-2"
+              }}
+            </td>
+
+            <td class="p-2">
+              {{ cobranca.registroPor }}
+            </td>
+
+            <td class="p-2 font-semibold text-gray-800">
+              {{ cobranca.valorTotal | currency : "BRL" : "symbol" : "1.2-2" }}
+            </td>
+
+            <td class="p-2 text-gray-400 italic">{{ cobranca.observacoes }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
