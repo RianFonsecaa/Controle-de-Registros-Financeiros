@@ -20,9 +20,13 @@
       </svg>
 
       @switch (usuario?.role) { @case ('ADMIN') {
-      <span class="font-medium text-[12px] text-[#6575ad]">ADMINISTRADOR</span>
+      <span class="font-semibold text-[12px] text-[#6575ad]"
+        >ADMINISTRADOR</span
+      >
       } @case ('USER') {
-      <span class="font-medium text-[12px] text-[#6575ad]">USUÁRIO PADRÃO</span>
+      <span class="font-semibold text-[12px] text-[#6575ad]"
+        >USUÁRIO PADRÃO</span
+      >
       } }
     </div>
 
@@ -114,17 +118,17 @@
           </span>
           <ul class="collapse-content flex flex-col w-full p-0 pl-8">
             <li
-              class="text-[#51647D] flex mt-4 transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex mt-4 transition-colors duration-200 rounded-2xl hover:bg-[#102057] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/cobrancas">Cobranças</a>
             </li>
             <li
-              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#102057] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/pix">Pix</a>
             </li>
             <li
-              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#102057] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/vales">Vales</a>
             </li>

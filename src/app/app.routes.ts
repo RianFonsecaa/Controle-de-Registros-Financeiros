@@ -4,6 +4,11 @@ import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
     path: 'login',
     loadComponent: () => import('./pages/login/login').then((m) => m.Login),
   },
@@ -12,7 +17,6 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./pages/main-layout/main-layout').then((m) => m.MainLayout),
-    canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
       {

@@ -1,0 +1,129 @@
+<section class="h-[90%] w-full p-6 font-inter">
+  <div
+    class="flex flex-row p-4 justify-between rounded-xl border border-[#dfdfdf] shadow-lg"
+  >
+    <div class="flex flex-row gap-2">
+      <div
+        class="flex flex-row h-full items-center px-4 rounded-lg border border-[#c2c2c2]"
+      >
+        <svg
+          class="w-5 h-5 text-blue-500"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M4.22657 2C2.50087 2 1.58526 4.03892 2.73175 5.32873L8.99972 12.3802V19C8.99972 19.3788 9.21373 19.725 9.55251 19.8944L13.5525 21.8944C13.8625 22.0494 14.2306 22.0329 14.5255 21.8507C14.8203 21.6684 14.9997 21.3466 14.9997 21V12.3802L21.2677 5.32873C22.4142 4.03893 21.4986 2 19.7729 2H4.22657Z"
+              fill="#currentColor"
+            ></path>
+          </g>
+        </svg>
+
+        <select class="select select-ghost h-full outline-0 text-blue-500">
+          <option disabled selected class="text-gray-500">Selecione</option>
+          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+            Crimson
+          </option>
+          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+            Amber
+          </option>
+          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+            Velvet
+          </option>
+        </select>
+      </div>
+
+      <div
+        class="flex flex-row h-full items-center gap-2 p-2 border border-[#c2c2c2] rounded-lg"
+      >
+        <svg
+          class="w-6 h-6 text-[#c2c2c2]"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+          />
+        </svg>
+
+        <input
+          placeholder="Palavra-chave..."
+          type="text"
+          class="h-full placeholder:text-[#c2c2c2]"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-row items-end gap-2">
+      <button
+        routerLink="/dashboard"
+        type="submit"
+        class="flex flex-row items-center h-full gap-2 px-4 bg-[#0051FF] font-medium text-sm text-white rounded-lg cursor-pointer"
+      >
+        <svg
+          class="w-4 h-4 text-white"
+          viewBox="0 0 8 8"
+          id="meteor-icon-kit__regular-plus-xxs"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3 3V0.83333C3 0.3731 3.4477 0 4 0C4.5523 0 5 0.3731 5 0.83333V3H7.1667C7.6269 3 8 3.4477 8 4C8 4.5523 7.6269 5 7.1667 5H5V7.1667C5 7.6269 4.5523 8 4 8C3.4477 8 3 7.6269 3 7.1667V5H0.83333C0.3731 5 0 4.5523 0 4C0 3.4477 0.3731 3 0.83333 3H3z"
+              fill="currentColor"
+            ></path>
+          </g>
+        </svg>
+        Novo Registro
+      </button>
+
+      <button
+        routerLink="/dashboard"
+        type="submit"
+        class="flex flex-row items-center h-full gap-2 border border-[#0051FF] px-4 font-medium text-sm text-[#0051FF] rounded-md cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5 text-[#0051FF]"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="m20 8-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9 19H7v-9h2v9zm4 0h-2v-6h2v6zm4 0h-2v-3h2v3zM14 9h-1V4l5 5h-4z"
+            ></path>
+          </g>
+        </svg>
+        Gerar Relatório
+      </button>
+    </div>
+  </div>
+</section>
