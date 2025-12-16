@@ -25,7 +25,7 @@ export class TokenStorageService {
     return localStorage.getItem(this.refreshTokenKey);
   }
 
-  logout() {
+  deleteTokens() {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
   }
@@ -59,7 +59,7 @@ export class TokenStorageService {
     if (!token) return of(false);
 
     if (this.isTokenExpired(token)) {
-      this.logout();
+      this.deleteTokens();
       return of(false);
     }
 

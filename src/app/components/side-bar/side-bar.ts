@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,7 +12,7 @@ import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse
 })
 export class SideBar {
   private tokenStorage = inject(TokenStorageService);
-  private router = inject(Router);
+  authService = inject(AuthService);
 
   usuario: TokenPayloadResponse | null = null;
 
@@ -26,10 +27,5 @@ export class SideBar {
       this.usuario = this.tokenStorage.decodeToken(token);
       console.log(this.usuario);
     }
-  }
-
-  logout() {
-    this.tokenStorage.logout();
-    this.router.navigate(['/login']);
   }
 }

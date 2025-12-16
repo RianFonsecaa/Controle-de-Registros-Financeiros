@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroments';
 import { TokenStorageService } from './token-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { TokenStorageService } from './token-storage.service';
 export class AuthService {
   private readonly BASE_URL = environment.apiUrl;
   tokenStorageService = inject(TokenStorageService);
+  private router = inject(Router);
 
   constructor(private http: HttpClient) {}
 
@@ -24,5 +26,10 @@ export class AuthService {
 
   isLoggedIn(): Observable<boolean> {
     return this.tokenStorageService.isLoggedIn();
+  }
+
+  logout() {
+    this.tokenStorageService.deleteTokens();
+    this.router.navigate(['/login']);
   }
 }

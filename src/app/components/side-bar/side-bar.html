@@ -4,7 +4,7 @@
   <div class="flex flex-col w-full items-center gap-4 px-4 py-8">
     <div class="flex flex-row w-full align-middle gap-1">
       <svg
-        class="w-4 h-4 text-[#51647D]"
+        class="w-4 h-4 text-[#6575ad]"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -20,9 +20,9 @@
       </svg>
 
       @switch (usuario?.role) { @case ('ADMIN') {
-      <span class="font-medium text-[12px] text-[#51647D]">ADMINISTRADOR</span>
+      <span class="font-medium text-[12px] text-[#6575ad]">ADMINISTRADOR</span>
       } @case ('USER') {
-      <span class="font-medium text-[12px] text-[#51647D]">USUÁRIO PADRÃO</span>
+      <span class="font-medium text-[12px] text-[#6575ad]">USUÁRIO PADRÃO</span>
       } }
     </div>
 
@@ -114,17 +114,17 @@
           </span>
           <ul class="collapse-content flex flex-col w-full p-0 pl-8">
             <li
-              class="text-[#51647D] flex mt-4 transition-colors duration-200 rounded-lg hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex mt-4 transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/cobrancas">Cobranças</a>
             </li>
             <li
-              class="text-[#51647D] flex transition-colors duration-200 rounded-lg hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/pix">Pix</a>
             </li>
             <li
-              class="text-[#51647D] flex transition-colors duration-200 rounded-lg hover:bg-[#0A1437] hover:text-white"
+              class="text-[#51647D] flex transition-colors duration-200 rounded-2xl hover:bg-[#0A1437] hover:text-white"
             >
               <a class="p-4 w-full" routerLink="/vales">Vales</a>
             </li>
@@ -212,8 +212,8 @@
 
   <div class="p-4">
     <button
-      (click)="logout()"
-      class="flex flex-row align-middle transition-colors duration-200 justify-center rounded-2xl gap-2 p-4 text-[#a53333] text-[14px] font-semibold w-full cursor-pointer hover:bg-[#020d33] hover:text-[#F43030]"
+      (click)="authService.logout()"
+      class="flex flex-row align-middle transition-colors duration-200 justify-center rounded-2xl gap-2 p-4 text-[#b92e2e] text-[14px] font-semibold w-full cursor-pointer hover:bg-[#020d33] hover:text-[#F43030]"
     >
       <svg
         class="w-5 h-5"

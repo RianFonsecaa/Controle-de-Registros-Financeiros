@@ -14,6 +14,8 @@ export const roleGuard: CanActivateFn = (route) => {
   }
 
   if (!allowedRoles || !allowedRoles.includes(payload.role)) {
+    console.log(payload.role);
+    console.log(allowedRoles);
     return router.createUrlTree(['/dashboard']);
   }
 
