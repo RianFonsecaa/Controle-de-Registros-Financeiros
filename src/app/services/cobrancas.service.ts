@@ -8,16 +8,20 @@ import { CobrancaResponse } from '../model/responses/CobrancaResponse';
   providedIn: 'root',
 })
 export class CobrancaService {
-  private readonly apiUrl = 'http://localhost:8080/cobrancas';
+  private readonly BASE_URL = `${environment.apiUrl}/cobrancas`;
 
   cobrancas = signal<CobrancaResponse[]>([]);
 
   constructor(private http: HttpClient) {}
 
-  carregar() {
-    this.http.get<CobrancaResponse[]>(this.apiUrl).subscribe({
+  buscaCobrancas() {
+    this.http.get<CobrancaResponse[]>(this.BASE_URL).subscribe({
       next: (data) => this.cobrancas.set(data),
       error: () => this.cobrancas.set([]),
     });
+  }
+
+  deletaCobranca(id: number) {
+    return this.http.delete<void>(`${this.BASE_URL}/${id}`);
   }
 }
