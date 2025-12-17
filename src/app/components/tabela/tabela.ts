@@ -12,8 +12,13 @@ import { CurrencyPipe, DatePipe, NgFor } from '@angular/common';
 export class Tabela {
   private cobrancaService = inject(CobrancaService);
   cobrancas = this.cobrancaService.cobrancas;
+  selectedId: number | null = null;
 
   ngOnInit() {
     this.cobrancaService.carregar();
+  }
+
+  selecionar(id: number) {
+    this.selectedId = this.selectedId === id ? null : id;
   }
 }
