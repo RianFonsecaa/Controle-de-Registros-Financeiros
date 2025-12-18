@@ -26,15 +26,25 @@
           </g>
         </svg>
 
-        <select class="select select-ghost h-full outline-0 text-blue-500">
-          <option disabled selected class="text-gray-500">Selecione</option>
-          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+        <select
+          class="select select-ghost h-full outline-0 text-blue-500 font-semibold"
+        >
+          <option disabled selected class="text-gray-500 font-semibold">
+            Selecione
+          </option>
+          <option
+            class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+          >
             Crimson
           </option>
-          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+          <option
+            class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+          >
             Amber
           </option>
-          <option class="text-gray-500 active:bg-blue-600 active:text-white">
+          <option
+            class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+          >
             Velvet
           </option>
         </select>
@@ -70,9 +80,9 @@
 
     <div class="flex flex-row items-end gap-2">
       <button
-        routerLink="/dashboard"
+        (click)="abrirModal(null, createModal)"
         type="submit"
-        class="flex flex-row items-center justify-center rounded-xl gap-2 h-12 w-36 bg-[#0051FF] font-medium text-sm text-white cursor-pointer transition-colors duration-200 hover:bg-[#0048e3]"
+        class="flex flex-row items-center justify-center rounded-xl gap-2 h-12 w-36 bg-[#0051FF] font-medium text-sm text-white cursor-pointer transition-colors duration-200 hover:bg-[#0245d4]"
       >
         <svg
           class="w-3 h-3 text-white"
@@ -194,7 +204,7 @@
           <td class="py-2 px-6">
             <div class="flex flex-row gap-1">
               <button
-                class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-blue-500 cursor-pointer"
+                class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-blue-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
               >
                 <svg
                   class="text-white w-4 h-4"
@@ -222,7 +232,7 @@
               </button>
 
               <button
-                class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-red-500 cursor-pointer"
+                class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-red-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
                 (click)="abrirModal(cobranca, deleteModal)"
               >
                 <svg
@@ -297,4 +307,8 @@
     (deletar)="deletaCobranca(deleteModal)"
     (cancelar)="fecharModal(deleteModal)"
   ></app-delete-modal>
+</dialog>
+
+<dialog #createModal class="modal">
+  <app-save-cobranca-modal></app-save-cobranca-modal>
 </dialog>
