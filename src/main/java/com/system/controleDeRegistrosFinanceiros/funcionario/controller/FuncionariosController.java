@@ -1,17 +1,12 @@
 package com.system.controleDeRegistrosFinanceiros.funcionario.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.dto.FuncionarioDTO;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
 
+import java.util.List;
 
 
 @RestController
@@ -28,6 +23,11 @@ public class FuncionariosController {
     public ResponseEntity<FuncionarioDTO> criar(@RequestBody FuncionarioDTO funcionario){
     return ResponseEntity.ok(funcionarioService.criar(funcionario));
     };
+
+    @GetMapping
+    public ResponseEntity<List<FuncionarioDTO>> buscaTodos(){
+        return ResponseEntity.ok(funcionarioService.buscaTodos());
+    }
     
 
     @DeleteMapping("/{id}")

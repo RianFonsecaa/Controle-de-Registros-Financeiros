@@ -27,6 +27,7 @@ public class CobrancasController{
 
     @GetMapping
     public ResponseEntity<List<CobrancaDTO>> buscaTodos() {
+
         return ResponseEntity.ok(cobrancasService.buscaTodos());
     }
 

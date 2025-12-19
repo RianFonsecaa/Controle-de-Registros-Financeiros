@@ -11,6 +11,8 @@ import com.system.controleDeRegistrosFinanceiros.cidade.repository.CidadeReposit
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.List;
+
 
 @Service
 public class CidadeService {
@@ -30,6 +32,10 @@ public class CidadeService {
         }
         Cidade cidadeSalva = cidadeRepository.save(cidadeMapper.toEntity(cidadeDTO));
         return cidadeMapper.toDTO(cidadeSalva);
+    }
+
+    public List<CidadeDTO> buscaTodos (){
+        return cidadeRepository.findAll().stream().map(cidadeMapper::toDTO).toList();
     }
 
     public void excluir(Long id){

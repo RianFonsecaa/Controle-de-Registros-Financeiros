@@ -12,6 +12,8 @@ import com.system.controleDeRegistrosFinanceiros.funcionario.repository.Funciona
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.List;
+
 @Service
 public class FuncionarioService {
 
@@ -30,6 +32,10 @@ public class FuncionarioService {
         }
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioMapper.toEntity(funcionarioDTO));
         return funcionarioMapper.toDTO(funcionarioSalvo);
+    }
+
+    public List<FuncionarioDTO> buscaTodos(){
+        return funcionarioRepository.findAll().stream().map(funcionarioMapper::toDTO).toList();
     }
 
     public void excluir(Long id){
