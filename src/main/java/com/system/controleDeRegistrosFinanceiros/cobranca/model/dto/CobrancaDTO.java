@@ -8,6 +8,7 @@ import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcio
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
 
+import com.system.controleDeRegistrosFinanceiros.veiculo.model.entity.Veiculo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,15 +22,15 @@ import lombok.Setter;
 @Builder
 public class CobrancaDTO {
     private Long id;
-    private Cidade cidade;
-    private Funcionario cobrador;
+    private String cidade;
+    private String cobrador;
+    private String veiculo;
     private String registroPor;
     private Double valorEspecie;
     private Double valorTotal;
     private Double valorTotalPix;
     private Double valorTotalVale;
     private LocalDate data;
-    private String veiculo;
     private List<ValeDTO> vales;
     private List<PixDTO> pix;
     private String observacoes;

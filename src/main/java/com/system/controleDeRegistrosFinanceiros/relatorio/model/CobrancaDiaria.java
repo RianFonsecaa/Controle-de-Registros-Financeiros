@@ -22,8 +22,8 @@ public class CobrancaDiaria {
 
     public CobrancaDiaria(Cobranca cobranca) {
         this.id = cobranca.getId();
-        this.nomeCidade = cobranca.getCidade().getNome();
-        this.nomeCobrador = cobranca.getCobrador().getNome();
+        this.nomeCidade = cobranca.getCidade();
+        this.nomeCobrador = cobranca.getCobrador();
         this.registroPor = cobranca.getRegistroPor();
         this.valorEspecie = cobranca.getValorEspecie();
         this.valorPix = cobranca.getValorTotalPix();

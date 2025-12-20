@@ -46,7 +46,6 @@ public class Pix {
     @JoinColumn(nullable = true)
     private Cobranca cobranca;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Cidade cidade;
+    @Column(nullable = false)
+    private String cidade;
 }

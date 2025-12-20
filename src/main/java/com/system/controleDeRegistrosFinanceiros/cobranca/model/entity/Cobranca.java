@@ -12,6 +12,7 @@ import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
 import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
 
+import com.system.controleDeRegistrosFinanceiros.veiculo.model.entity.Veiculo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,13 +36,14 @@ public class Cobranca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Cidade cidade;
+    @Column(nullable = false)
+    private String cidade;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Funcionario cobrador;
+    @Column(nullable = false)
+    private String cobrador;
+
+    @Column(nullable = false)
+    private String veiculo;
 
     @Column(nullable = false)
     private String registroPor;
@@ -60,9 +62,6 @@ public class Cobranca {
 
     @Column(nullable = false)
     private LocalDate data;
-
-    @Column(nullable = false, length = 50)
-    private String veiculo;
 
     @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vale> vales = new ArrayList<>();

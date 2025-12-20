@@ -6,18 +6,15 @@ import java.util.List;
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
+import com.system.controleDeRegistrosFinanceiros.veiculo.service.VeiculoService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
-import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
-import com.system.controleDeRegistrosFinanceiros.cidade.repository.CidadeRepository;
 import com.system.controleDeRegistrosFinanceiros.cobranca.mapper.CobrancasMapper;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 import com.system.controleDeRegistrosFinanceiros.cobranca.repository.CobrancaRepository;
-import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
-import com.system.controleDeRegistrosFinanceiros.funcionario.repository.FuncionarioRepository;
 import com.system.controleDeRegistrosFinanceiros.pix.mapper.PixMapper;
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
 import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
@@ -33,24 +30,17 @@ public class CobrancasService {
 
     private final CobrancaRepository cobrancaRepository;
     private final CobrancasMapper cobrancasMapper;
-    private final CidadeService cidadeService;
-    private final FuncionarioService funcionarioService;
 
     private final PixMapper pixMapper;
     private final ValeMapper valeMapper;
 
     public CobrancasService(
             CobrancaRepository cobrancaRepository, 
-            CobrancasMapper cobrancasMapper, 
-            CidadeService cidadeService,
-            FuncionarioService funcionarioService,
+            CobrancasMapper cobrancasMapper,
             PixMapper pixMapper,
             ValeMapper valeMapper) {
         this.cobrancaRepository = cobrancaRepository;
         this.cobrancasMapper = cobrancasMapper;
-
-        this.cidadeService = cidadeService;
-        this.funcionarioService = funcionarioService;
 
         this.pixMapper = pixMapper;
         this.valeMapper = valeMapper;
@@ -77,8 +67,9 @@ public class CobrancasService {
         .getPrincipal();
 
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
-        cobranca.setCidade(cidadeService.getById(cobrancaDTO.getCidade().getId()));
-        cobranca.setCobrador(funcionarioService.getById(cobrancaDTO.getCobrador().getId()));
+        cobranca.setCidade(cobrancaDTO.getCidade());
+        cobranca.setCobrador(cobrancaDTO.getCobrador());
+        cobranca.setVeiculo(cobrancaDTO.getVeiculo());
         cobranca.setRegistroPor(user.getName());
         cobranca.setPix(associarPix(cobrancaDTO, cobranca));
         cobranca.setVales(associarVales(cobrancaDTO, cobranca));

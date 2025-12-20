@@ -45,8 +45,8 @@ public class CidadeService {
         cidadeRepository.deleteById(id);
     }
 
-    public Cidade getById(Long id){
-        return cidadeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cidade", "id", id));
+    public Cidade getByNome(String nome){
+        return cidadeRepository.findByNome(nome)
+                .orElseThrow(() -> new ResourceNotFoundException("Cidade", "Nome", nome));
     }
 }

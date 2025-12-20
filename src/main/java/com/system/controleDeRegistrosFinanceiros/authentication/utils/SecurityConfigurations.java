@@ -40,6 +40,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/cobrancas/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cidades").permitAll()
                         .requestMatchers(HttpMethod.GET, "/funcionarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/veiculos").permitAll()
             .requestMatchers("/cidades/**").hasRole("ADMIN")
             .requestMatchers("/funcionarios/**").hasRole("ADMIN")
             .anyRequest().authenticated()
