@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { DeleteButton } from '../../buttons/delete-button/delete-button';
+import { CancelButton } from '../../buttons/cancel-button/cancel-button';
 
 @Component({
   selector: 'app-delete-modal',
-  imports: [],
+  imports: [DeleteButton, CancelButton],
   templateUrl: './delete-modal.html',
   styleUrl: './delete-modal.css',
 })
@@ -16,9 +18,5 @@ export class DeleteModal {
 
   onCancelar() {
     this.cancelar.emit();
-  }
-
-  fecharModal(modal: HTMLDialogElement) {
-    modal.close();
   }
 }

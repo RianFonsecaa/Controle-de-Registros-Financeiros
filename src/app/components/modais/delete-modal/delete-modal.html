@@ -51,17 +51,13 @@
   </div>
 
   <div class="flex flex-row gap-2 justify-center w-full">
-    <button
-      class="flex-1 bg-[#e6e6e6] rounded-xl text-gray-800 font-semibold text-sm p-3 transition-colors duration-200 cursor-pointer hover:bg-[#dddddd]"
-      (click)="onCancelar()"
-    >
-      Cancelar
-    </button>
-    <button
-      class="flex-1 bg-[#fd4848] rounded-xl text-white font-semibold text-sm p-3 transition-colors duration-200 cursor-pointer hover:bg-[#ff1c1c]"
-      (click)="onDeletar()"
-    >
-      Sim, excluir
-    </button>
+    <app-cancel-button
+      class="w-full"
+      (cancelar)="onCancelar()"
+    ></app-cancel-button>
+    <app-delete-button
+      class="w-full"
+      (deletar)="onDeletar()"
+    ></app-delete-button>
   </div>
 </div>

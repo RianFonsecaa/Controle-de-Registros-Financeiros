@@ -1,1 +1,67 @@
-<p>save-pix-modal works!</p>
+<div class="modal-box max-w-none w-auto flex flex-col gap-4 rounded-xl">
+  <h1 class="text-xl font-semibold">Novo Registro de Pix</h1>
+
+  <form class="flex flex-col flex-1 gap-4" [formGroup]="pixForm">
+    <div class="flex flex-row gap-2">
+      <app-primary-input
+        class="w-[50%]"
+        id="cliente"
+        label="Cliente"
+        placeholder="Nome do cliente"
+        [control]="getControl('cliente')"
+      ></app-primary-input>
+
+      <app-primary-select
+        class="w-[50%]"
+        id="cidade"
+        [options]="cidadesService.cidades()"
+        [control]="getControl('cidade')"
+        label="Cidade"
+      ></app-primary-select>
+    </div>
+
+    <div class="flex flex-row gap-4">
+      <app-money-input
+        class="w-[50%]"
+        id="valor"
+        [control]="getControl('valor')"
+        placeholder="R$ 0,00"
+        label="Valor"
+      ></app-money-input>
+
+      <app-primary-input
+        class="w-[50%]"
+        id="data"
+        label="Data"
+        type="date"
+        [control]="getControl('data')"
+      ></app-primary-input>
+    </div>
+
+    <fieldset class="fieldset w-full">
+      <label class="text-[13px] text-gray-600">Comprovante</label>
+
+      <input
+        #fileInput
+        type="file"
+        class="file-input w-full h-12 rounded-xl"
+        (change)="onFileChange(fileInput)"
+      />
+
+      @if (getControl('comprovante').value) {
+      <span class="text-xs text-gray-500 mt-1">
+        {{ (getControl("comprovante").value.size / 1024).toFixed(2) }} KB
+      </span>
+      }
+    </fieldset>
+  </form>
+
+  <div class="flex flex-row gap-2 justify-start w-full">
+    <app-cancel-button
+      class="w-full"
+      (cancelar)="onCancelar()"
+    ></app-cancel-button>
+
+    <app-save-button class="w-full" (salvar)="onSalvar()"></app-save-button>
+  </div>
+</div>

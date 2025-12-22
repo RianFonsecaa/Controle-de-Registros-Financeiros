@@ -1,4 +1,4 @@
-<div>
+<div class="flex flex-col gap-2">
   <label class="text-[13px] text-gray-600" [htmlFor]="id">{{ label }}</label>
   <input
     currencyMask
@@ -15,8 +15,8 @@
     [readonly]="readonly"
     [placeholder]="placeholder"
     [ngClass]="{
-      'border-gray-300 text-gray-700': !readonly,
-      'border-gray-200 bg-gray-200 text-gray-500': readonly
+      'border-gray-300 text-gray-800': !readonly,
+      'border-gray-200 bg-gray-200 text-gray-600': readonly
     }"
     class="h-12 w-full text-md p-4 rounded-xl border"
   />

@@ -1,94 +1,132 @@
-<div
-  class="modal-box max-w-none min-w-[500px] w-auto flex flex-row justify-center items-center rounded-xl"
->
-  <div class="flex flex-col w-full gap-6">
-    <h1 class="text-xl font-semibold">Novo Registro de Cobrança</h1>
-    <form class="flex flex-col max-w-[500px] gap-4" [formGroup]="cobrancaForm">
-      <div class="flex flex-row relative w-full gap-2">
-        <app-primary-select
-          class="relative w-[60%]"
-          id="cidade"
-          [options]="cidades()"
-          [control]="getControl('cidade')"
-          label="Cidade"
-        ></app-primary-select>
+<div class="modal-box max-w-none w-auto flex flex-col gap-4 rounded-xl">
+  <h1 class="text-xl font-semibold">Novo Registro de Cobrança</h1>
 
-        <app-primary-input
-          class="relative w-[40%]"
-          [control]="getControl('data')"
-          placeholder="Data"
-          id="data"
-          type="date"
-          label="Data"
-        ></app-primary-input>
-      </div>
-      <div class="flex flex-row relative w-full gap-2">
-        <app-primary-select
-          class="relative w-[60%]"
-          id="cobrador"
-          [options]="cobradores()"
-          [control]="getControl('cobrador')"
-          label="Cobrador"
-        ></app-primary-select>
+  <div class="flex flex-row w-[1000px] h-[600px] gap-6">
+    <section class="flex flex-col h-full justify-between w-1/2 gap-6">
+      <form class="flex flex-col flex-1 gap-4" [formGroup]="cobrancaForm">
+        <div class="flex flex-row relative w-full gap-2">
+          <app-primary-select
+            class="relative w-[60%]"
+            id="cidade"
+            [options]="cidadesService.cidades()"
+            [control]="getControl('cidade')"
+            label="Cidade"
+          ></app-primary-select>
 
-        <app-primary-select
-          class="relative w-[60%]"
-          id="veiculo"
-          [options]="veiculos()"
-          [control]="getControl('veiculo')"
-          label="Veículo"
-        ></app-primary-select>
-      </div>
+          <app-primary-input
+            class="relative w-[40%]"
+            [control]="getControl('data')"
+            placeholder="Data"
+            id="data"
+            type="date"
+            label="Data"
+          ></app-primary-input>
+        </div>
+        <div class="flex flex-row relative w-full gap-2">
+          <app-primary-select
+            class="relative w-[60%]"
+            id="cobrador"
+            [options]="funcionarioService.cobradores()"
+            [control]="getControl('cobrador')"
+            label="Cobrador"
+          ></app-primary-select>
 
-      <div class="flex flex-row relative w-full gap-2">
-        <app-money-input
-          id="valorEspecie"
-          [control]="getControl('valorEspecie')"
-          placeholder="R$ 0,00"
-          label="Valor Espécie"
-        ></app-money-input>
+          <app-primary-select
+            class="relative w-[60%]"
+            id="veiculo"
+            [options]="veiculoService.veiculos()"
+            [control]="getControl('veiculo')"
+            label="Veículo"
+          ></app-primary-select>
+        </div>
 
-        <app-money-input
-          id="valorPix"
-          [readonly]="true"
-          [control]="getControl('valorPix')"
-          placeholder="R$ 0,00"
-          label="Valor Pix"
-        ></app-money-input>
+        <div class="flex flex-row relative w-full gap-2">
+          <app-money-input
+            id="valorEspecie"
+            [control]="getControl('valorEspecie')"
+            placeholder="R$ 0,00"
+            label="Valor Espécie"
+          ></app-money-input>
 
-        <app-money-input
-          id="valorVale"
-          [readonly]="true"
-          [control]="getControl('valorVales')"
-          placeholder="R$ 0,00"
-          label="Valor Vales"
-        ></app-money-input>
-      </div>
+          <app-money-input
+            id="valorPix"
+            [readonly]="true"
+            [control]="getControl('valorPix')"
+            placeholder="R$ 0,00"
+            label="Valor Pix"
+          ></app-money-input>
 
-      <div class="flex flex-col relative w-full gap-2">
-        <label class="text-[13px] text-gray-600" for="observacoes"
-          >Observações</label
-        >
-        <textarea
-          id="observacoes"
-          rows="4"
-          placeholder="Digite as observações..."
-          class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
-        ></textarea>
-      </div>
+          <app-money-input
+            id="valorVale"
+            [readonly]="true"
+            [control]="getControl('valorVales')"
+            placeholder="R$ 0,00"
+            label="Valor Vales"
+          ></app-money-input>
+        </div>
 
-      <div class="flex relative w-full">
-        <app-money-input
+        <div class="flex flex-col relative w-full gap-2">
+          <label class="text-[13px] text-gray-600" for="observacoes"
+            >Observações</label
+          >
+          <textarea
+            id="observacoes"
+            rows="4"
+            placeholder="Digite as observações..."
+            class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
+          ></textarea>
+        </div>
+
+        <div class="flex relative w-full">
+          <app-money-input
+            class="w-full"
+            id="valorTotal"
+            [readonly]="true"
+            [control]="getControl('valorTotal')"
+            placeholder="R$ 0,00"
+            label="Valor Total"
+          ></app-money-input>
+        </div>
+      </form>
+
+      <div class="flex flex-row gap-2 justify-start w-full">
+        <app-cancel-button
           class="w-full"
-          id="valorTotal"
-          [readonly]="true"
-          [control]="getControl('valorTotal')"
-          placeholder="R$ 0,00"
-          label="Valor Total"
-        ></app-money-input>
+          (cancelar)="onCancelar()"
+        ></app-cancel-button>
+        <app-save-button class="w-full" (salvar)="onSalvar()"></app-save-button>
       </div>
-    </form>
-  </div>
+    </section>
 
-  <div></div>
+    <section class="flex flex-row h-full w-1/2 gap-4">
+      <div class="flex flex-col h-full justify-between w-1/2 gap-2">
+        <span class="text-[13px] text-gray-600">Lista de Pix</span>
+        <div class="flex-1 border border-gray-300 rounded-xl p-2">
+          @for (pix of pixs; track $index) {
+          <div class="flex justify-between text-sm">
+            <span>{{ pix.cliente }}</span>
+            <span>R$ {{ pix.valor | number : "1.2-2" }}</span>
+          </div>
+          }
+        </div>
+        <app-add-button
+          nome="Pix"
+          (add)="onAddPix(savePixModal)"
+        ></app-add-button>
+      </div>
+
+      <div class="flex flex-col h-full justify-between w-1/2 gap-2">
+        <span class="text-[13px] text-gray-600">Lista de Pix</span>
+        <div class="flex-1 border border-gray-300 rounded-xl"></div>
+        <app-add-button nome="Vale"></app-add-button>
+      </div>
+    </section>
+  </div>
 </div>
+
+<dialog #savePixModal class="modal">
+  <app-save-pix-modal
+    (salvar)="onAdicionarPix($event, savePixModal)"
+    (cancelar)="savePixModal.close()"
+  ></app-save-pix-modal>
+</dialog>

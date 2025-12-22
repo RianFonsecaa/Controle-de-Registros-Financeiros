@@ -80,7 +80,7 @@
 
     <div class="flex flex-row items-end gap-2">
       <button
-        (click)="abrirModal(null, createModal)"
+        (click)="abrirModal(null, saveCobrancaModal)"
         type="submit"
         class="flex flex-row items-center justify-center rounded-xl gap-2 h-12 w-36 bg-[#0051FF] font-medium text-sm text-white cursor-pointer transition-colors duration-200 hover:bg-[#0245d4]"
       >
@@ -309,6 +309,9 @@
   ></app-delete-modal>
 </dialog>
 
-<dialog #createModal class="modal">
-  <app-save-cobranca-modal></app-save-cobranca-modal>
+<dialog #saveCobrancaModal class="modal">
+  <app-save-cobranca-modal
+    (deletar)="deletaCobranca(saveCobrancaModal)"
+    (cancelar)="fecharModal(saveCobrancaModal)"
+  ></app-save-cobranca-modal>
 </dialog>

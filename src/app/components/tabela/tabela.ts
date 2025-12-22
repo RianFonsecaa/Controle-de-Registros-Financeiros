@@ -4,6 +4,7 @@ import { CobrancaService } from '../../services/cobrancas.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { DeleteModal } from '../modais/delete-modal/delete-modal';
 import { SaveCobrancaModal } from '../modais/save-cobranca-modal/save-cobranca-modal';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-tabela',
@@ -12,6 +13,7 @@ import { SaveCobrancaModal } from '../modais/save-cobranca-modal/save-cobranca-m
   styleUrl: './tabela.css',
 })
 export class Tabela {
+  private modalService = inject(ModalService);
   private cobrancaService = inject(CobrancaService);
   cobrancas = this.cobrancaService.cobrancas;
 
@@ -36,11 +38,11 @@ export class Tabela {
     if (cobranca) {
       this.cobrancaSelecionada = cobranca;
     }
-    modal.showModal();
+    this.modalService.abrirModal(modal);
   }
 
   fecharModal(modal: HTMLDialogElement) {
     this.cobrancaSelecionada = null;
-    modal.close();
+    this.modalService.fecharModal(modal);
   }
 }

@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CidadeResponse } from '../../model/responses/CidadeResponse';
-import { SelectOptions } from '../../model/responses/SelectOptions';
+import { SelectOptions } from '../../../model/responses/SelectOptions';
 
 @Component({
   selector: 'app-primary-select',
