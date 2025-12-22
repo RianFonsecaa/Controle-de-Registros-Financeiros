@@ -1,0 +1,16 @@
+<div>
+  <label class="text-[13px] text-gray-600" [htmlFor]="id">{{ label }}</label>
+  <input
+    [placeholder]="placeholder"
+    [type]="type"
+    [id]="id"
+    [formControl]="control"
+    class="relative h-12 w-full text-md p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
+  />
+
+  @if (control.invalid && control.touched){
+  <small class="text-red-500">
+    {{ getMensagemErro(control) }}
+  </small>
+  }
+</div>

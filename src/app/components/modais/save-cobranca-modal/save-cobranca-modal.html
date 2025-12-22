@@ -1,6 +1,93 @@
-<div class="modal-box flex flex-row w-fit p-8 gap-6 items-center rounded-xl">
-  <div>
-    <form action=""></form>
+<div
+  class="modal-box max-w-none min-w-[500px] w-auto flex flex-row justify-center items-center rounded-xl"
+>
+  <div class="flex flex-col w-full gap-6">
+    <h1 class="text-xl font-semibold">Novo Registro de Cobrança</h1>
+    <form class="flex flex-col max-w-[500px] gap-4" [formGroup]="cobrancaForm">
+      <div class="flex flex-row relative w-full gap-2">
+        <app-primary-select
+          class="relative w-[60%]"
+          id="cidade"
+          [options]="cidades()"
+          [control]="getControl('cidade')"
+          label="Cidade"
+        ></app-primary-select>
+
+        <app-primary-input
+          class="relative w-[40%]"
+          [control]="getControl('data')"
+          placeholder="Data"
+          id="data"
+          type="date"
+          label="Data"
+        ></app-primary-input>
+      </div>
+      <div class="flex flex-row relative w-full gap-2">
+        <app-primary-select
+          class="relative w-[60%]"
+          id="cobrador"
+          [options]="cobradores()"
+          [control]="getControl('cobrador')"
+          label="Cobrador"
+        ></app-primary-select>
+
+        <app-primary-select
+          class="relative w-[60%]"
+          id="veiculo"
+          [options]="veiculos()"
+          [control]="getControl('veiculo')"
+          label="Veículo"
+        ></app-primary-select>
+      </div>
+
+      <div class="flex flex-row relative w-full gap-2">
+        <app-money-input
+          id="valorEspecie"
+          [control]="getControl('valorEspecie')"
+          placeholder="R$ 0,00"
+          label="Valor Espécie"
+        ></app-money-input>
+
+        <app-money-input
+          id="valorPix"
+          [readonly]="true"
+          [control]="getControl('valorPix')"
+          placeholder="R$ 0,00"
+          label="Valor Pix"
+        ></app-money-input>
+
+        <app-money-input
+          id="valorVale"
+          [readonly]="true"
+          [control]="getControl('valorVales')"
+          placeholder="R$ 0,00"
+          label="Valor Vales"
+        ></app-money-input>
+      </div>
+
+      <div class="flex flex-col relative w-full gap-2">
+        <label class="text-[13px] text-gray-600" for="observacoes"
+          >Observações</label
+        >
+        <textarea
+          id="observacoes"
+          rows="4"
+          placeholder="Digite as observações..."
+          class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
+        ></textarea>
+      </div>
+
+      <div class="flex relative w-full">
+        <app-money-input
+          class="w-full"
+          id="valorTotal"
+          [readonly]="true"
+          [control]="getControl('valorTotal')"
+          placeholder="R$ 0,00"
+          label="Valor Total"
+        ></app-money-input>
+      </div>
+    </form>
   </div>
 
   <div></div>

@@ -35,10 +35,12 @@ export class Login {
   });
 
   getMensagemErro(formControl: FormControl): string {
-    if (!formControl.errors) return '';
-
     if (formControl.hasError('required')) {
       return 'Este campo é obrigatório.';
+    }
+
+    if (formControl.hasError('email')) {
+      return 'Formato de E-mail inválido.';
     }
 
     if (formControl.hasError('pattern')) {

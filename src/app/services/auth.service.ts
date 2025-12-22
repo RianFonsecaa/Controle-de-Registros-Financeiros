@@ -12,10 +12,9 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private readonly BASE_URL = environment.apiUrl;
-  tokenStorageService = inject(TokenStorageService);
   private router = inject(Router);
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+  private tokenStorageService = inject(TokenStorageService);
 
   login(credenciais: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(

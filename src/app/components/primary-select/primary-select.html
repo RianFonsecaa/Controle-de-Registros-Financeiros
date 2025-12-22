@@ -1,0 +1,25 @@
+<div>
+  <label class="text-[13px] text-gray-600" [htmlFor]="id">{{ label }}</label>
+  <select
+    [formControl]="control"
+    [id]="id"
+    class="select select-ghost text-md h-12 w-full border border-gray-300 rounded-xl outline-0 text-gray-700"
+  >
+    <option disabled selected class="text-gray-800 font-semibold">
+      Selecione
+    </option>
+    @for (option of options; track $index) {
+    <option
+      class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+    >
+      {{ option.nome }}
+    </option>
+    }
+  </select>
+
+  @if (control.invalid && control.touched){
+  <small class="text-red-500">
+    {{ getMensagemErro(control) }}
+  </small>
+  }
+</div>

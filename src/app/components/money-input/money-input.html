@@ -1,0 +1,23 @@
+<div>
+  <label class="text-[13px] text-gray-600" [htmlFor]="id">{{ label }}</label>
+  <input
+    currencyMask
+    [options]="{
+      prefix: 'R$ ',
+      thousands: '.',
+      decimal: ',',
+      align: 'left',
+      allowNegative: false
+    }"
+    type="text"
+    [id]="id"
+    [formControl]="control"
+    [readonly]="readonly"
+    [placeholder]="placeholder"
+    [ngClass]="{
+      'border-gray-300 text-gray-700': !readonly,
+      'border-gray-200 bg-gray-200 text-gray-500': readonly
+    }"
+    class="h-12 w-full text-md p-4 rounded-xl border"
+  />
+</div>
