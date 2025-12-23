@@ -45,8 +45,8 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 
-    public Funcionario getByNome(String nome){
-        return funcionarioRepository.findByNome(nome)
-                .orElseThrow(() -> new ResourceNotFoundException("Funcionario", "Nome", nome));
+    public Funcionario getById(Long id){
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionario", "Nome", id));
     }
 }

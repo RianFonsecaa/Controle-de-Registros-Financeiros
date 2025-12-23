@@ -36,14 +36,17 @@ public class Cobranca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String cidade;
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private Cidade cidade;
 
-    @Column(nullable = false)
-    private String cobrador;
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private Funcionario cobrador;
 
-    @Column(nullable = false)
-    private String veiculo;
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private Veiculo veiculo;
 
     @Column(nullable = false)
     private String registroPor;

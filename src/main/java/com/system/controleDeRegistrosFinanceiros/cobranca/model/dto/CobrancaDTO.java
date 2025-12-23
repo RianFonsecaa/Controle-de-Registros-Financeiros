@@ -22,9 +22,12 @@ import lombok.Setter;
 @Builder
 public class CobrancaDTO {
     private Long id;
-    private String cidade;
-    private String cobrador;
-    private String veiculo;
+    private Long cidadeId;
+    private String cidadeNome;
+    private Long cobradorId;
+    private String cobradorNome;
+    private Long veiculoId;
+    private String veiculoModelo;
     private String registroPor;
     private Double valorEspecie;
     private Double valorTotal;

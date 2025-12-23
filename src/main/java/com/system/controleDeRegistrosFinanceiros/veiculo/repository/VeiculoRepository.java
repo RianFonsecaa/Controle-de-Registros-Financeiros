@@ -8,8 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
-    boolean existsByModelo(String veiculoModelo);
-
-    Optional<Veiculo> findByModelo(String modelo);
+    boolean existsByPlaca(String placa);
 
 }

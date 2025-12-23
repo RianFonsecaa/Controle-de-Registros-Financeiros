@@ -21,5 +21,5 @@ public class PixDTO {
     private String cliente;
     private Double valor;
     private LocalDate data;
-    private String cidade;
+    private Long cidadeId;
 }

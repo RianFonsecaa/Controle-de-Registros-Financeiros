@@ -23,8 +23,8 @@ public class VeiculoService {
     }
 
     public VeiculoDTO criar(VeiculoDTO veiculoDTO) {
-        if (veiculoRepository.existsByModelo(veiculoDTO.getModelo())) {
-            throw new ResourceAlreadyExistsException("veiculo", "Nome", veiculoDTO.getModelo());
+        if (veiculoRepository.existsByPlaca(veiculoDTO.getPlaca())) {
+            throw new ResourceAlreadyExistsException("veiculo", "Placa", veiculoDTO.getPlaca());
         }
         Veiculo veiculosalva = veiculoRepository.save(veiculoMapper.toEntity(veiculoDTO));
         return veiculoMapper.toDTO(veiculosalva);
@@ -41,8 +41,8 @@ public class VeiculoService {
         veiculoRepository.deleteById(id);
     }
 
-    public Veiculo getByModelo(String modelo){
-        return veiculoRepository.findByModelo(modelo)
-                .orElseThrow(() -> new ResourceNotFoundException("veiculo", "Modelo", modelo));
+    public Veiculo getById(Long id){
+        return veiculoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("veiculo", "Modelo", id));
     }
 }

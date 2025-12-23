@@ -4,13 +4,16 @@ import org.mapstruct.Mapper;
 
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
 import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
-
+import org.mapstruct.Mapping;
 
 
 @Mapper(componentModel = "spring")
 public interface PixMapper {
 
+    @Mapping(target = "cidade", ignore = true)
+    @Mapping(target = "cobranca", ignore = true)
     Pix toEntity(PixDTO dto);
 
-    PixDTO toDTO(Pix entidade);
+    @Mapping(source = "cidade.id", target = "cidadeId")
+    PixDTO toDTO(Pix entity);
 }

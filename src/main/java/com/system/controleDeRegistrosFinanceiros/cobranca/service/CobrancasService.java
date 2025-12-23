@@ -31,16 +31,28 @@ public class CobrancasService {
     private final CobrancaRepository cobrancaRepository;
     private final CobrancasMapper cobrancasMapper;
 
+    private final CidadeService cidadeService;
+    private final FuncionarioService funcionarioService;
+    private final VeiculoService veiculoService;
+
     private final PixMapper pixMapper;
     private final ValeMapper valeMapper;
 
     public CobrancasService(
-            CobrancaRepository cobrancaRepository, 
+            CobrancaRepository cobrancaRepository,
             CobrancasMapper cobrancasMapper,
+            CidadeService cidadeService,
+            FuncionarioService funcionarioService,
+            VeiculoService veiculoService,
             PixMapper pixMapper,
             ValeMapper valeMapper) {
+
         this.cobrancaRepository = cobrancaRepository;
         this.cobrancasMapper = cobrancasMapper;
+
+        this.cidadeService = cidadeService;
+        this.funcionarioService = funcionarioService;
+        this.veiculoService = veiculoService;
 
         this.pixMapper = pixMapper;
         this.valeMapper = valeMapper;
@@ -60,27 +72,42 @@ public class CobrancasService {
     }
 
     public CobrancaDTO salvar(CobrancaDTO cobrancaDTO) {
-                
+
         User user = (User) SecurityContextHolder
-        .getContext()
-        .getAuthentication()
-        .getPrincipal();
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
 
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
-        cobranca.setCidade(cobrancaDTO.getCidade());
-        cobranca.setCobrador(cobrancaDTO.getCobrador());
-        cobranca.setVeiculo(cobrancaDTO.getVeiculo());
+
+        cobranca.setCidade(
+                cidadeService.getById(cobrancaDTO.getCidadeId())
+        );
+
+        cobranca.setCobrador(
+                funcionarioService.getById(cobrancaDTO.getCobradorId())
+        );
+
+        cobranca.setVeiculo(
+                veiculoService.getById(cobrancaDTO.getVeiculoId())
+        );
+
         cobranca.setRegistroPor(user.getName());
+
         cobranca.setPix(associarPix(cobrancaDTO, cobranca));
         cobranca.setVales(associarVales(cobrancaDTO, cobranca));
+
         cobranca.setValorTotalPix(calcularTotalPix(cobrancaDTO));
         cobranca.setValorTotalVale(calcularTotalVale(cobrancaDTO));
-        cobranca.setValorTotal(cobranca.getValorEspecie() 
-                                + calcularTotalPix(cobrancaDTO) 
-                                + calcularTotalVale(cobrancaDTO));
+
+        cobranca.setValorTotal(
+                cobranca.getValorEspecie()
+                        + cobranca.getValorTotalPix()
+                        + cobranca.getValorTotalVale()
+        );
 
         Cobranca salvo = cobrancaRepository.save(cobranca);
-        
+
         return cobrancasMapper.toDTO(salvo);
     }
     
@@ -96,13 +123,13 @@ public class CobrancasService {
                 .sum();
     }
 
-    private List<Pix> associarPix(CobrancaDTO dto, Cobranca cobranca) {
+    private List<Pix> associarPix(CobrancaDTO cobrancaDTO, Cobranca cobranca) {
         List<Pix> novaListaDePix = new ArrayList<>();
-        if (dto.getPix() != null && !dto.getPix().isEmpty()) {
-            for (PixDTO pixDTO : dto.getPix()) {
+        if (cobrancaDTO.getPix() != null && !cobrancaDTO.getPix().isEmpty()) {
+            for (PixDTO pixDTO : cobrancaDTO.getPix()) {
                 Pix pix = pixMapper.toEntity(pixDTO);
                 pix.setCobranca(cobranca);
-                pix.setCidade(cobranca.getCidade()); 
+                pix.setCidade(cidadeService.getById(cobrancaDTO.getCidadeId()));
                 novaListaDePix.add(pix);
             }
         }
