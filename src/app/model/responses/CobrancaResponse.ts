@@ -1,16 +1,23 @@
-import { CidadeResponse } from './CidadeResponse';
-import { FuncionarioResponse } from './FuncionarioResponse';
-
 export interface CobrancaResponse {
   id: number;
-  cidade: CidadeResponse;
-  cobrador: FuncionarioResponse;
+
+  cidadeId: number;
+  cidadeNome: string;
+
+  cobradorId: number;
+  cobradorNome: string;
+
+  veiculoId: number;
+  veiculoModelo: string;
+
   registroPor: string;
+
   valorEspecie: number;
   valorTotal: number;
   valorTotalPix: number;
   valorTotalVale: number;
+
   data: string;
-  veiculo: string;
+
   observacoes?: string;
 }

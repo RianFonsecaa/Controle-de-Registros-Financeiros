@@ -68,7 +68,10 @@ export class SavePixModal {
       this.pixForm.markAllAsTouched();
       return;
     }
+
     const pix = this.pixForm.value;
+
+    console.log(pix);
 
     this.salvar.emit(pix);
 

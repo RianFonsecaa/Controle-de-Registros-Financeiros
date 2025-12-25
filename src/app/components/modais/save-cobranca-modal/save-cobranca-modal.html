@@ -1,127 +1,535 @@
-<div class="modal-box max-w-none w-auto flex flex-col gap-4 rounded-xl">
-  <h1 class="text-xl font-semibold">Novo Registro de Cobrança</h1>
-
-  <div class="flex flex-row w-[1000px] h-[600px] gap-6">
-    <section class="flex flex-col h-full justify-between w-1/2 gap-6">
-      <form class="flex flex-col flex-1 gap-4" [formGroup]="cobrancaForm">
-        <div class="flex flex-row relative w-full gap-2">
-          <app-primary-select
-            class="relative w-[60%]"
-            id="cidade"
-            [options]="cidadesService.cidades()"
-            [control]="getControl('cidade')"
-            label="Cidade"
-          ></app-primary-select>
-
-          <app-primary-input
-            class="relative w-[40%]"
-            [control]="getControl('data')"
-            placeholder="Data"
-            id="data"
-            type="date"
-            label="Data"
-          ></app-primary-input>
-        </div>
-        <div class="flex flex-row relative w-full gap-2">
-          <app-primary-select
-            class="relative w-[60%]"
-            id="cobrador"
-            [options]="funcionarioService.cobradores()"
-            [control]="getControl('cobrador')"
-            label="Cobrador"
-          ></app-primary-select>
-
-          <app-primary-select
-            class="relative w-[60%]"
-            id="veiculo"
-            [options]="veiculoService.veiculos()"
-            [control]="getControl('veiculo')"
-            label="Veículo"
-          ></app-primary-select>
-        </div>
-
-        <div class="flex flex-row relative w-full gap-2">
-          <app-money-input
-            id="valorEspecie"
-            [control]="getControl('valorEspecie')"
-            placeholder="R$ 0,00"
-            label="Valor Espécie"
-          ></app-money-input>
-
-          <app-money-input
-            id="valorPix"
-            [readonly]="true"
-            [control]="getControl('valorPix')"
-            placeholder="R$ 0,00"
-            label="Valor Pix"
-          ></app-money-input>
-
-          <app-money-input
-            id="valorVale"
-            [readonly]="true"
-            [control]="getControl('valorVales')"
-            placeholder="R$ 0,00"
-            label="Valor Vales"
-          ></app-money-input>
-        </div>
-
-        <div class="flex flex-col relative w-full gap-2">
-          <label class="text-[13px] text-gray-600" for="observacoes"
-            >Observações</label
-          >
-          <textarea
-            id="observacoes"
-            rows="4"
-            placeholder="Digite as observações..."
-            class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
-          ></textarea>
-        </div>
-
-        <div class="flex relative w-full">
-          <app-money-input
-            class="w-full"
-            id="valorTotal"
-            [readonly]="true"
-            [control]="getControl('valorTotal')"
-            placeholder="R$ 0,00"
-            label="Valor Total"
-          ></app-money-input>
-        </div>
-      </form>
-
-      <div class="flex flex-row gap-2 justify-start w-full">
-        <app-cancel-button
-          class="w-full"
-          (cancelar)="onCancelar()"
-        ></app-cancel-button>
-        <app-save-button class="w-full" (salvar)="onSalvar()"></app-save-button>
+<div
+  class="modal-box max-w-none flex flex-row w-[1000px] h-[700px] gap-4 rounded-xl"
+>
+  <section class="flex flex-col w-1/2 h-full justify-between gap-6">
+    <div class="flex flex-row items-center gap-2">
+      <div
+        class="flex justify-center items-center p-2 rounded-full bg-blue-100"
+      >
+        <svg
+          class="w-5 h-5 text-blue-500"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 52 52"
+          enable-background="new 0 0 52 52"
+          xml:space="preserve"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M41.4,39.7l-0.9,0.9c-1,1-2.3,1.5-3.7,1.5h-2.6c-2.4,0-5-1.9-5-5.2v-2.5c0-2,0.9-3.2,1.4-3.9l10.8-11 c0.3-0.3,0.6-1,0.6-1.4V9.8C42,7.2,39.8,5,37.2,5H11.6C9,5,6.8,7.4,6.8,9.8H5.2C3.4,9.8,2,11.3,2,13.1s1.4,3.2,3.2,3.2h1.6v6.5H5.2 C3.4,22.8,2,24.2,2,26s1.4,3.2,3.2,3.2h1.6v6.5H5.2c-1.8,0-3.2,1.5-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h1.6c0,3.2,2.2,4.8,4.8,4.8H30h7.2 c2.6,0,4.8-2.2,4.8-4.8V40C42,39.5,41.8,39.4,41.4,39.7z M33.2,17.1c0,0.9-0.7,1.6-1.6,1.6h-16c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h16c0.9,0,1.6,0.7,1.6,1.6V17.1z M26,36.5c0,0.9-0.7,1.6-1.6,1.6h-8.8c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h8.8c0.9,0,1.6,0.7,1.6,1.6V36.5z M28.4,26.8c0,0.9-0.7,1.6-1.6,1.6H15.6c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h11.2c0.9,0,1.6,0.7,1.6,1.6V26.8z"
+            ></path>
+            <path
+              d="M49.5,22.4l-1-1c-0.6-0.6-1.6-0.6-2.2,0L34.1,34C34,34,34,34.2,34,34.2v2.7c0,0.2,0,0.4,0.2,0.4h2.6 c0.1,0,0.2-0.1,0.3-0.1l12.3-12.4C50.2,24.1,50.2,23.1,49.5,22.4z"
+            ></path>
+          </g>
+        </svg>
       </div>
-    </section>
 
-    <section class="flex flex-row h-full w-1/2 gap-4">
-      <div class="flex flex-col h-full justify-between w-1/2 gap-2">
-        <span class="text-[13px] text-gray-600">Lista de Pix</span>
-        <div class="flex-1 border border-gray-300 rounded-xl p-2">
-          @for (pix of pixs; track $index) {
-          <div class="flex justify-between text-sm">
-            <span>{{ pix.cliente }}</span>
-            <span>R$ {{ pix.valor | number : "1.2-2" }}</span>
+      <h1 class="text-[16px] text-blue-500 font-semibold">
+        Novo Registro de Cobrança
+      </h1>
+    </div>
+    <form class="flex flex-col gap-4" [formGroup]="cobrancaForm">
+      <div class="flex flex-row relative w-full gap-2">
+        <app-primary-select
+          class="relative w-[60%]"
+          id="cidade"
+          [options]="cidadesService.cidades()"
+          [control]="getControl('cidade')"
+          label="Cidade"
+        ></app-primary-select>
+
+        <app-primary-input
+          class="relative w-[40%]"
+          [control]="getControl('data')"
+          placeholder="Data"
+          id="data"
+          type="date"
+          label="Data"
+        ></app-primary-input>
+      </div>
+      <div class="flex flex-row relative w-full gap-2">
+        <app-primary-select
+          class="relative w-[60%]"
+          id="cobrador"
+          [options]="funcionarioService.cobradores()"
+          [control]="getControl('cobrador')"
+          label="Cobrador"
+        ></app-primary-select>
+
+        <app-primary-select
+          class="relative w-[60%]"
+          id="veiculo"
+          [options]="veiculoService.veiculos()"
+          [control]="getControl('veiculo')"
+          label="Veículo"
+        ></app-primary-select>
+      </div>
+
+      <div class="flex flex-row relative w-full gap-2">
+        <app-money-input
+          id="valorEspecie"
+          [control]="getControl('valorEspecie')"
+          placeholder="R$ 0,00"
+          label="Valor Espécie"
+        ></app-money-input>
+
+        <app-money-input
+          id="valorPix"
+          [readonly]="true"
+          [control]="getControl('valorPix')"
+          placeholder="R$ 0,00"
+          label="Valor Pix"
+        ></app-money-input>
+
+        <app-money-input
+          id="valorVale"
+          [readonly]="true"
+          [control]="getControl('valorVales')"
+          placeholder="R$ 0,00"
+          label="Valor Vales"
+        ></app-money-input>
+      </div>
+
+      <div class="flex flex-col relative w-full gap-2">
+        <label class="text-[13px] text-gray-600" for="observacoes"
+          >Observações</label
+        >
+        <textarea
+          id="observacoes"
+          rows="4"
+          placeholder="Digite as observações..."
+          class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
+        ></textarea>
+      </div>
+
+      <div class="flex relative w-full">
+        <app-money-input
+          class="w-full"
+          id="valorTotal"
+          [readonly]="true"
+          [control]="getControl('valorTotal')"
+          placeholder="R$ 0,00"
+          label="Valor Total"
+        ></app-money-input>
+      </div>
+    </form>
+
+    <div class="flex flex-row gap-2 justify-start w-full">
+      <app-cancel-button
+        class="w-full"
+        (cancelar)="onCancelar()"
+      ></app-cancel-button>
+      <app-save-button class="w-full" (salvar)="onSalvar()"></app-save-button>
+    </div>
+  </section>
+
+  <section class="flex flex-col w-1/2 h-full justify-between">
+    <div class="flex flex-col justify-between h-1/2 gap-2 pb-2">
+      <div class="flex flex-row w-full justify-between">
+        <div class="flex flex-row items-center gap-2">
+          <div
+            class="flex justify-center items-center p-2 rounded-xl bg-green-100"
+          >
+            <svg
+              class="w-5 h-5 text-[#059669]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M17 7L7 17M7 17H17M7 17V7"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
           </div>
-          }
+
+          <h1 class="text-[16px] text-gray-600 font-semibold">
+            Novo Registro de Pix
+          </h1>
         </div>
+
         <app-add-button
           nome="Pix"
           (add)="onAddPix(savePixModal)"
+          background="bg-[#059669]/15"
+          textColor="text-[#059669]"
         ></app-add-button>
       </div>
 
-      <div class="flex flex-col h-full justify-between w-1/2 gap-2">
-        <span class="text-[13px] text-gray-600">Lista de Pix</span>
-        <div class="flex-1 border border-gray-300 rounded-xl"></div>
-        <app-add-button nome="Vale"></app-add-button>
+      <div
+        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-xl p-2"
+      >
+        @for (pix of pixs; track $index) {
+        <div
+          class="flex flex-row rounded-xl justify-between bg-[#059669]/3 border border-[#059669]/10 p-3"
+        >
+          <div class="flex flex-row gap-4">
+            <div class="flex items-center bg-white rounded-xl shadow-sm p-2">
+              <svg
+                class="w-6 h-6 text-[#51BCAD]"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"
+                  ></path>
+                  <path
+                    d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <span>{{ pix.cliente }}</span>
+              @if (pix.comprovante) {
+              <div
+                class="flex flex-row gap-1 text-[11px] font-semibold text-[#5cc1a1]"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <title>Check</title>
+                    <g
+                      id="Page-1"
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g id="Check">
+                        <rect
+                          id="Rectangle"
+                          fill-rule="nonzero"
+                          x="0"
+                          y="0"
+                          width="24"
+                          height="24"
+                        ></rect>
+                        <circle
+                          id="Oval"
+                          stroke="currentColor"
+                          stroke-width="2.6"
+                          stroke-linecap="round"
+                          cx="12"
+                          cy="12"
+                          r="9"
+                        ></circle>
+                        <path
+                          d="M8.5,12.5 L10.151,14.5638 C10.3372,14.7965 10.6843,14.8157 10.895,14.605 L15.5,10"
+                          id="Path"
+                          stroke="currentColor"
+                          stroke-width="2.6"
+                          stroke-linecap="round"
+                        ></path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+                <span>Comprovante anexado</span>
+              </div>
+              }@else {
+              <div
+                class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <g clip-path="url(#clip0_429_11081)">
+                      <circle
+                        cx="12"
+                        cy="11.9999"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></circle>
+                      <path
+                        d="M14 10.0001L10 14.0001"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M10 10.0001L14 14.0001"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_429_11081">
+                        <rect width="24" height="24" fill="white"></rect>
+                      </clipPath>
+                    </defs>
+                  </g>
+                </svg>
+                <span>Comprovante não anexado</span>
+              </div>
+              }
+            </div>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="font-bold text-[#059669]"
+              >R$ {{ pix.valor | number : "1.2-2" }}</span
+            >
+            <span class="text-[11px]">{{ pix.data }}</span>
+          </div>
+        </div>
+        }
       </div>
-    </section>
-  </div>
+    </div>
+
+    <div class="flex flex-col justify-between h-1/2 gap-2 pt-2">
+      <div class="flex flex-row w-full justify-between">
+        <div class="flex flex-row items-center gap-2">
+          <div
+            class="flex justify-center items-center p-2 rounded-xl bg-orange-500/15"
+          >
+            <svg
+              class="w-5 h-5 text-orange-500"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M7 17L17 7M17 7H8M17 7V16"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
+          </div>
+
+          <h1 class="text-[16px] text-gray-700 font-semibold">
+            Novo Registro de Vale
+          </h1>
+        </div>
+
+        <app-add-button
+          class
+          nome="vale"
+          (add)="onAddPix(savePixModal)"
+          background="bg-orange-500/15"
+          textColor="text-orange-500"
+        ></app-add-button>
+      </div>
+
+      <div
+        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-xl p-2"
+      >
+        @for (pix of pixs; track $index) {
+        <div
+          class="flex flex-row rounded-xl justify-between bg-[#059669]/3 border border-[#059669]/10 p-3"
+        >
+          <div class="flex flex-row gap-4">
+            <div class="flex items-center bg-white rounded-xl shadow-sm p-2">
+              <svg
+                class="w-6 h-6 text-[#51BCAD]"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"
+                  ></path>
+                  <path
+                    d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <span>{{ pix.cliente }}</span>
+              @if (pix.comprovante) {
+              <div
+                class="flex flex-row gap-1 text-[11px] font-semibold text-[#5cc1a1]"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <title>Check</title>
+                    <g
+                      id="Page-1"
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g id="Check">
+                        <rect
+                          id="Rectangle"
+                          fill-rule="nonzero"
+                          x="0"
+                          y="0"
+                          width="24"
+                          height="24"
+                        ></rect>
+                        <circle
+                          id="Oval"
+                          stroke="currentColor"
+                          stroke-width="2.6"
+                          stroke-linecap="round"
+                          cx="12"
+                          cy="12"
+                          r="9"
+                        ></circle>
+                        <path
+                          d="M8.5,12.5 L10.151,14.5638 C10.3372,14.7965 10.6843,14.8157 10.895,14.605 L15.5,10"
+                          id="Path"
+                          stroke="currentColor"
+                          stroke-width="2.6"
+                          stroke-linecap="round"
+                        ></path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+                <span>Comprovante anexado</span>
+              </div>
+              }@else {
+              <div
+                class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <g clip-path="url(#clip0_429_11081)">
+                      <circle
+                        cx="12"
+                        cy="11.9999"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></circle>
+                      <path
+                        d="M14 10.0001L10 14.0001"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M10 10.0001L14 14.0001"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_429_11081">
+                        <rect width="24" height="24" fill="white"></rect>
+                      </clipPath>
+                    </defs>
+                  </g>
+                </svg>
+                <span>Comprovante não anexado</span>
+              </div>
+              }
+            </div>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="font-bold text-[#059669]"
+              >R$ {{ pix.valor | number : "1.2-2" }}</span
+            >
+            <span class="text-[11px]">{{ pix.data }}</span>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
 </div>
 
 <dialog #savePixModal class="modal">

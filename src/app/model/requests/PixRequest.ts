@@ -1,7 +1,7 @@
 export interface PixRequest {
   cliente: string;
   valor: number;
-  cidade: string;
+  cidadeId: number;
   data: string; // yyyy-MM-dd
   comprovante?: File | null;
 }
