@@ -2,18 +2,14 @@ package com.system.controleDeRegistrosFinanceiros.pix.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
 import com.system.controleDeRegistrosFinanceiros.pix.service.PixService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/pix")
@@ -35,10 +31,14 @@ public class PixController{
         return ResponseEntity.ok(pixService.buscarPorId(id));
     }
 
-    @PostMapping
-    public ResponseEntity<PixDTO> salvar(@RequestBody PixDTO pix) {
-        return ResponseEntity.ok(pixService.salvar(pix));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PixDTO> salvar(
+            @RequestPart("pix") PixDTO pix,
+            @RequestPart(value = "comprovante", required = false) MultipartFile arquivo
+    ) {
+        return ResponseEntity.ok(pixService.salvar(pix, arquivo));
     }
+
 
     @DeleteMapping
     public ResponseEntity<Void> excluir(Long id){
@@ -46,9 +46,5 @@ public class PixController{
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<PixDTO> editar(@RequestBody PixDTO pix) {
-        return ResponseEntity.ok(pixService.editar(pix));
-    }
 
 }

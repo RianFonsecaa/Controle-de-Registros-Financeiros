@@ -49,4 +49,13 @@ public class Pix {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Cidade cidade;
+
+    @Column
+    private String caminhoArquivo;
+
+    @Column
+    private String nomeArquivo;
+
+    @Column
+    private String tipoArquivo;
 }

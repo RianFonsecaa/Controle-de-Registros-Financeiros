@@ -1,0 +1,46 @@
+package com.system.controleDeRegistrosFinanceiros.vale.controller;
+
+import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
+import com.system.controleDeRegistrosFinanceiros.vale.service.ValeService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/vales")
+public class ValeController{
+
+    ValeService valeService;
+
+    public ValeController(ValeService valeService){
+        this.valeService = valeService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ValeDTO>> buscaTodos() {
+        return ResponseEntity.ok(valeService.buscaTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ValeDTO> buscaPorId(Long id) {
+        return ResponseEntity.ok(valeService.buscarPorId(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<ValeDTO> salvar(@RequestBody ValeDTO vale) {
+        return ResponseEntity.ok(valeService.salvar(vale));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> excluir(Long id){
+        valeService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<ValeDTO> editar(@RequestBody ValeDTO vale) {
+        return ResponseEntity.ok(valeService.editar(vale));
+    }
+
+}

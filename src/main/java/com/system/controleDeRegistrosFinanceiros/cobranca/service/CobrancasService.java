@@ -16,8 +16,6 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 import com.system.controleDeRegistrosFinanceiros.cobranca.repository.CobrancaRepository;
 import com.system.controleDeRegistrosFinanceiros.pix.mapper.PixMapper;
-import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
-import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
 import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
@@ -35,7 +33,6 @@ public class CobrancasService {
     private final FuncionarioService funcionarioService;
     private final VeiculoService veiculoService;
 
-    private final PixMapper pixMapper;
     private final ValeMapper valeMapper;
 
     public CobrancasService(
@@ -54,7 +51,6 @@ public class CobrancasService {
         this.funcionarioService = funcionarioService;
         this.veiculoService = veiculoService;
 
-        this.pixMapper = pixMapper;
         this.valeMapper = valeMapper;
     }
 
@@ -65,10 +61,9 @@ public class CobrancasService {
                 .toList();
     }
 
-    public CobrancaDTO buscarPorId(Long id) {
-        Cobranca cobranca = cobrancaRepository.findById(id)
+    public Cobranca getById(Long id) {
+        return cobrancaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cobrança não encontrada"));
-        return cobrancasMapper.toDTO(cobranca);
     }
 
     public CobrancaDTO salvar(CobrancaDTO cobrancaDTO) {
@@ -94,14 +89,13 @@ public class CobrancasService {
 
         cobranca.setRegistroPor(user.getName());
 
-        cobranca.setPix(associarPix(cobrancaDTO, cobranca));
         cobranca.setVales(associarVales(cobrancaDTO, cobranca));
 
-        cobranca.setValorTotalPix(calcularTotalPix(cobrancaDTO));
-        cobranca.setValorTotalVale(calcularTotalVale(cobrancaDTO));
+        cobranca.setValorTotalPix(cobrancaDTO.getValorTotalPix());
+        cobranca.setValorTotalVale(cobrancaDTO.getValorTotalVale());
 
         cobranca.setValorTotal(
-                cobranca.getValorEspecie()
+                cobranca.getValorTotalEspecie()
                         + cobranca.getValorTotalPix()
                         + cobranca.getValorTotalVale()
         );
@@ -110,31 +104,7 @@ public class CobrancasService {
 
         return cobrancasMapper.toDTO(salvo);
     }
-    
-    private double calcularTotalPix(CobrancaDTO dto) {
-        return (dto.getPix() == null) ? 0.0 : dto.getPix().stream()
-                .mapToDouble(PixDTO::getValor)
-                .sum();
-    }
 
-    private double calcularTotalVale(CobrancaDTO dto) {
-        return (dto.getVales() == null) ? 0.0 : dto.getVales().stream()
-                .mapToDouble(ValeDTO::getValor)
-                .sum();
-    }
-
-    private List<Pix> associarPix(CobrancaDTO cobrancaDTO, Cobranca cobranca) {
-        List<Pix> novaListaDePix = new ArrayList<>();
-        if (cobrancaDTO.getPix() != null && !cobrancaDTO.getPix().isEmpty()) {
-            for (PixDTO pixDTO : cobrancaDTO.getPix()) {
-                Pix pix = pixMapper.toEntity(pixDTO);
-                pix.setCobranca(cobranca);
-                pix.setCidade(cidadeService.getById(cobrancaDTO.getCidadeId()));
-                novaListaDePix.add(pix);
-            }
-        }
-        return novaListaDePix;
-    }
 
     private List<Vale> associarVales(CobrancaDTO dto, Cobranca cobranca) {
         List<Vale> novaListaDeVales = new ArrayList<>();

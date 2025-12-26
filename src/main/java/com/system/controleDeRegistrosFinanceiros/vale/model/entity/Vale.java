@@ -39,7 +39,7 @@ public class Vale {
     @JoinColumn
     private Cobranca cobranca;
 
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn
     private Funcionario funcionario;
 

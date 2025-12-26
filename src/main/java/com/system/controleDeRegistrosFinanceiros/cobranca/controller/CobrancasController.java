@@ -31,13 +31,10 @@ public class CobrancasController{
         return ResponseEntity.ok(cobrancasService.buscaTodos());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CobrancaDTO> buscaPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(cobrancasService.buscarPorId(id));
-    }
 
     @PostMapping
     public ResponseEntity<CobrancaDTO> salvar(@RequestBody CobrancaDTO cobranca) {
+        System.out.println("CHEGOU----------------");
         return ResponseEntity.ok(cobrancasService.salvar(cobranca));
     }
 

@@ -29,12 +29,11 @@ public class CobrancaDTO {
     private Long veiculoId;
     private String veiculoModelo;
     private String registroPor;
-    private Double valorEspecie;
+    private Double valorTotalEspecie;
     private Double valorTotal;
     private Double valorTotalPix;
     private Double valorTotalVale;
     private LocalDate data;
     private List<ValeDTO> vales;
-    private List<PixDTO> pix;
     private String observacoes;
 }

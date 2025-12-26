@@ -52,7 +52,7 @@ public class Cobranca {
     private String registroPor;
 
     @Column(nullable = false)
-    private double valorEspecie;
+    private double valorTotalEspecie;
 
     @Column(nullable = false)
     private double valorTotalPix;
@@ -69,8 +69,6 @@ public class Cobranca {
     @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vale> vales = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pix> pix = new ArrayList<>();
 
     @Column(nullable = false, length = 500)
     private String observacoes;
