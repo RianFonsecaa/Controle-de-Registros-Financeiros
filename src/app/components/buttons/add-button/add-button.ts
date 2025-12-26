@@ -8,12 +8,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './add-button.css',
 })
 export class AddButton {
-  @Output() add = new EventEmitter<void>();
+  @Output() abrir = new EventEmitter<void>();
   @Input() nome: string = '';
   @Input() textColor: string = '';
   @Input() background: string = '';
 
-  onAdd() {
-    this.add.emit();
+  abrirModal() {
+    this.abrir.emit();
   }
 }

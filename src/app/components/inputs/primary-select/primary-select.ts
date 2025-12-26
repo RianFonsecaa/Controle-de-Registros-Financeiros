@@ -21,4 +21,8 @@ export class PrimarySelect {
 
     return '';
   }
+
+  compareById(a: SelectOptions, b: SelectOptions) {
+    return a && b ? a.id === b.id : a === b;
+  }
 }

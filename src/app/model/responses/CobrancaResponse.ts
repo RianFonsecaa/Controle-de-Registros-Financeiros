@@ -12,7 +12,7 @@ export interface CobrancaResponse {
 
   registroPor: string;
 
-  valorEspecie: number;
+  valorTotalEspecie: number;
   valorTotal: number;
   valorTotalPix: number;
   valorTotalVale: number;

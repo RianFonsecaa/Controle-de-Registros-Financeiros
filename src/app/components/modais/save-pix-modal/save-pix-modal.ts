@@ -20,6 +20,7 @@ import { CidadesService } from '../../../services/cidades.service';
 import { AddButton } from '../../buttons/add-button/add-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { MoneyInput } from '../../inputs/money-input/money-input';
+import { PixRequest } from '../../../model/requests/PixRequest';
 
 @Component({
   selector: 'app-save-pix-modal',
@@ -43,10 +44,10 @@ export class SavePixModal {
 
   ngOnInit() {
     this.pixForm = new FormGroup({
-      cliente: new FormControl('', [Validators.required]),
-      valor: new FormControl('', [Validators.required]),
+      cliente: new FormControl(null, [Validators.required]),
+      valor: new FormControl(0, [Validators.required]),
       cidade: new FormControl(null, [Validators.required]),
-      data: new FormControl('', [Validators.required]),
+      data: new FormControl(null, [Validators.required]),
       comprovante: new FormControl(),
     });
 
@@ -69,9 +70,16 @@ export class SavePixModal {
       return;
     }
 
-    const pix = this.pixForm.value;
+    const formValue = this.pixForm.value;
 
-    console.log(pix);
+    const pix: PixRequest = {
+      cliente: formValue.cliente,
+      valor: formValue.valor,
+      cidadeId: formValue.cidade.id,
+      data: formValue.data,
+      comprovante: formValue.comprovante,
+      cobrancaId: null,
+    };
 
     this.salvar.emit(pix);
 

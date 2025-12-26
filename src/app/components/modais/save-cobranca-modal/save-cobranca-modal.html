@@ -1,7 +1,10 @@
 <div
-  class="modal-box max-w-none flex flex-row w-[1000px] h-[700px] gap-4 rounded-xl"
+  class="modal-box max-w-none flex flex-row w-[1000px] min-h-[700px] gap-4 rounded-xl"
 >
-  <section class="flex flex-col w-1/2 h-full justify-between gap-6">
+  <section
+    class="flex flex-col w-1/2 h-full justify-between gap-6"
+    tabindex="-1"
+  >
     <div class="flex flex-row items-center gap-2">
       <div
         class="flex justify-center items-center p-2 rounded-full bg-blue-100"
@@ -56,15 +59,15 @@
       </div>
       <div class="flex flex-row relative w-full gap-2">
         <app-primary-select
-          class="relative w-[60%]"
+          class="relative w-[50%]"
           id="cobrador"
-          [options]="funcionarioService.cobradores()"
+          [options]="funcionarioService.funcionarios()"
           [control]="getControl('cobrador')"
           label="Cobrador"
         ></app-primary-select>
 
         <app-primary-select
-          class="relative w-[60%]"
+          class="relative w-[50%]"
           id="veiculo"
           [options]="veiculoService.veiculos()"
           [control]="getControl('veiculo')"
@@ -72,7 +75,7 @@
         ></app-primary-select>
       </div>
 
-      <div class="flex flex-row relative w-full gap-2">
+      <div class="flex flex-row relative w-full gap-1">
         <app-money-input
           id="valorEspecie"
           [control]="getControl('valorEspecie')"
@@ -105,8 +108,13 @@
           id="observacoes"
           rows="4"
           placeholder="Digite as observações..."
+          [formControl]="getControl('observacoes')"
           class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
         ></textarea>
+        @if (getControl('observacoes').invalid &&
+        getControl('observacoes').touched){
+        <small class="text-red-500"> Este campo é obrigatório! </small>
+        }
       </div>
 
       <div class="flex relative w-full">
@@ -130,7 +138,7 @@
     </div>
   </section>
 
-  <section class="flex flex-col w-1/2 h-full justify-between">
+  <section class="flex flex-col w-1/2 min-h-full justify-between">
     <div class="flex flex-col justify-between h-1/2 gap-2 pb-2">
       <div class="flex flex-row w-full justify-between">
         <div class="flex flex-row items-center gap-2">
@@ -164,11 +172,19 @@
           <h1 class="text-[16px] text-gray-600 font-semibold">
             Novo Registro de Pix
           </h1>
+
+          @if (pixs.length > 0) {
+          <span
+            class="bg-gray-200 text-gray-500 py-1 px-2 font-bold text-[10px] rounded-full"
+          >
+            {{ pixs.length }}
+          </span>
+          }
         </div>
 
         <app-add-button
           nome="Pix"
-          (add)="onAddPix(savePixModal)"
+          (abrir)="modalService.abrirModal(savePixModal)"
           background="bg-[#059669]/15"
           textColor="text-[#059669]"
         ></app-add-button>
@@ -363,12 +379,19 @@
           <h1 class="text-[16px] text-gray-700 font-semibold">
             Novo Registro de Vale
           </h1>
+
+          @if (vales.length > 0) {
+          <span
+            class="bg-gray-200 text-gray-500 py-1 px-2 font-bold text-[10px] rounded-full"
+            >{{ vales.length }}</span
+          >
+          }
         </div>
 
         <app-add-button
           class
           nome="vale"
-          (add)="onAddPix(savePixModal)"
+          (abrir)="modalService.abrirModal(saveValeModal)"
           background="bg-orange-500/15"
           textColor="text-orange-500"
         ></app-add-button>
@@ -377,17 +400,17 @@
       <div
         class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-xl p-2"
       >
-        @for (pix of pixs; track $index) {
+        @for (vale of vales; track $index) {
         <div
-          class="flex flex-row rounded-xl justify-between bg-[#059669]/3 border border-[#059669]/10 p-3"
+          class="flex flex-row rounded-xl justify-between bg-orange-500/3 border border-orange-500/10 p-3"
         >
           <div class="flex flex-row gap-4">
             <div class="flex items-center bg-white rounded-xl shadow-sm p-2">
               <svg
-                class="w-6 h-6 text-[#51BCAD]"
-                fill="currentColor"
-                viewBox="0 0 16 16"
+                class="w-6 h-6 text-orange-500"
+                viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
               >
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g
@@ -397,133 +420,22 @@
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   <path
-                    d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"
-                  ></path>
-                  <path
-                    d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"
+                    fill="currentColor"
+                    d="M640 832H64V640a128 128 0 1 0 0-256V192h576v160h64V192h256v192a128 128 0 1 0 0 256v192H704V672h-64v160zm0-416v192h64V416h-64z"
                   ></path>
                 </g>
               </svg>
             </div>
             <div class="flex flex-col">
-              <span>{{ pix.cliente }}</span>
-              @if (pix.comprovante) {
-              <div
-                class="flex flex-row gap-1 text-[11px] font-semibold text-[#5cc1a1]"
-              >
-                <svg
-                  class="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  fill="#000000"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <title>Check</title>
-                    <g
-                      id="Page-1"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                    >
-                      <g id="Check">
-                        <rect
-                          id="Rectangle"
-                          fill-rule="nonzero"
-                          x="0"
-                          y="0"
-                          width="24"
-                          height="24"
-                        ></rect>
-                        <circle
-                          id="Oval"
-                          stroke="currentColor"
-                          stroke-width="2.6"
-                          stroke-linecap="round"
-                          cx="12"
-                          cy="12"
-                          r="9"
-                        ></circle>
-                        <path
-                          d="M8.5,12.5 L10.151,14.5638 C10.3372,14.7965 10.6843,14.8157 10.895,14.605 L15.5,10"
-                          id="Path"
-                          stroke="currentColor"
-                          stroke-width="2.6"
-                          stroke-linecap="round"
-                        ></path>
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-                <span>Comprovante anexado</span>
-              </div>
-              }@else {
-              <div
-                class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
-              >
-                <svg
-                  class="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <g clip-path="url(#clip0_429_11081)">
-                      <circle
-                        cx="12"
-                        cy="11.9999"
-                        r="9"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></circle>
-                      <path
-                        d="M14 10.0001L10 14.0001"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="M10 10.0001L14 14.0001"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_429_11081">
-                        <rect width="24" height="24" fill="white"></rect>
-                      </clipPath>
-                    </defs>
-                  </g>
-                </svg>
-                <span>Comprovante não anexado</span>
-              </div>
-              }
+              <span>{{ vale.funcionarioNome }}</span>
+              <span class="text-[11px]">{{ vale.justificativa }}</span>
             </div>
           </div>
           <div class="flex flex-col items-end">
-            <span class="font-bold text-[#059669]"
-              >R$ {{ pix.valor | number : "1.2-2" }}</span
+            <span class="font-bold text-orange-500"
+              >R$ {{ vale.valor | number : "1.2-2" }}</span
             >
-            <span class="text-[11px]">{{ pix.data }}</span>
+            <span class="text-[11px]">{{ vale.data }}</span>
           </div>
         </div>
         }
@@ -537,4 +449,11 @@
     (salvar)="onAdicionarPix($event, savePixModal)"
     (cancelar)="savePixModal.close()"
   ></app-save-pix-modal>
+</dialog>
+
+<dialog #saveValeModal class="modal">
+  <app-save-vale-modal
+    (salvar)="onAdicionarVale($event, saveValeModal)"
+    (cancelar)="saveValeModal.close()"
+  ></app-save-vale-modal>
 </dialog>

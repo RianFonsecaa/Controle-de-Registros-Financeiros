@@ -11,12 +11,12 @@ export class FuncionarioService {
   private readonly BASE_URL = `${environment.apiUrl}/funcionarios`;
   private http = inject(HttpClient);
 
-  cobradores = signal<FuncionarioResponse[]>([]);
+  funcionarios = signal<FuncionarioResponse[]>([]);
 
   buscaFuncionarios() {
     this.http.get<FuncionarioResponse[]>(this.BASE_URL).subscribe({
-      next: (data) => this.cobradores.set(data),
-      error: () => this.cobradores.set([]),
+      next: (data) => this.funcionarios.set(data),
+      error: () => this.funcionarios.set([]),
     });
   }
 }

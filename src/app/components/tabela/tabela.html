@@ -273,7 +273,9 @@
           </td>
 
           <td class="p-2">
-            {{ cobranca.valorEspecie | currency : "BRL" : "symbol" : "1.2-2" }}
+            {{
+              cobranca.valorTotalEspecie | currency : "BRL" : "symbol" : "1.2-2"
+            }}
           </td>
 
           <td class="p-2">

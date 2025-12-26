@@ -1,6 +1,7 @@
 <div class="flex flex-col gap-2">
   <label class="text-[13px] text-gray-600" [htmlFor]="id">{{ label }}</label>
   <select
+    [compareWith]="compareById"
     [formControl]="control"
     [id]="id"
     class="select select-ghost text-md h-12 w-full border border-gray-300 rounded-xl outline-0 text-gray-700"
@@ -10,7 +11,7 @@
     </option>
     @for (option of options; track $index) {
     <option
-      [value]="option.id"
+      [ngValue]="option"
       class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
     >
       {{ option.nome }}
