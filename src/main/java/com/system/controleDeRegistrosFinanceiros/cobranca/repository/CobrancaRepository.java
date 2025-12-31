@@ -12,5 +12,5 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 @Repository
 public interface CobrancaRepository extends JpaRepository<Cobranca, Long> {
 
-     List<Cobranca> findAllByData(LocalDate data);
+    List<Cobranca> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
 }

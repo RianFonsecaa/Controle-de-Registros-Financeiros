@@ -37,7 +37,7 @@ public class RelatorioService {
         this.dadosRelatorioMapper = dadosRelatorioMapper;
     }
 
-    public byte[] gerarRelatorioDiarioDeCobranca() throws Exception {
+    public byte[] gerarRelatorioDeCobrancas(LocalDate dataInicio, LocalDate dataFim) throws Exception {
 
         User user = (User) SecurityContextHolder
                 .getContext()
@@ -49,7 +49,7 @@ public class RelatorioService {
         double totalEspecie = 0;
         double totalFinal = 0;
 
-        List<DadosRelatorio> dadosRelatorio = geraDadosDoRelatorio();
+        List<DadosRelatorio> dadosRelatorio = geraDadosDoRelatorio(dataInicio, dataFim);
 
         Resource resource = resourceLoader.getResource("classpath:reports/cobranca-report.jrxml");
         InputStream inputStream = resource.getInputStream();
@@ -61,6 +61,11 @@ public class RelatorioService {
             totalEspecie += dados.getValorEspecie();
             totalFinal   += dados.getValorTotal();
         }
+
+        totalPix     = Math.round(totalPix * 100.0) / 100.0;
+        totalVale    = Math.round(totalVale * 100.0) / 100.0;
+        totalEspecie = Math.round(totalEspecie * 100.0) / 100.0;
+        totalFinal   = Math.round(totalFinal * 100.0) / 100.0;
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("PERIODO", LocalDate.now());
@@ -82,9 +87,9 @@ public class RelatorioService {
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
-    public List<DadosRelatorio> geraDadosDoRelatorio() {
+    public List<DadosRelatorio> geraDadosDoRelatorio(LocalDate dataInicio, LocalDate dataFim) {
 
-        return cobrancaRepository.findAllByData(LocalDate.now())
+        return cobrancaRepository.findByDataBetween(dataInicio, dataFim)
                 .stream()
                 .map(dadosRelatorioMapper::toRelatorio)
                 .toList();
