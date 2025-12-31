@@ -336,9 +336,9 @@
             </div>
           </div>
           <div class="flex flex-col items-end">
-            <span class="font-bold text-[#059669]"
-              >R$ {{ pix.valor | number : "1.2-2" }}</span
-            >
+            <span class="font-bold text-[#059669]">{{
+              pix.valor | currency : "BRL" : "symbol" : "1.2-2"
+            }}</span>
             <span class="text-[11px]">{{ pix.data }}</span>
           </div>
         </div>
@@ -432,9 +432,9 @@
             </div>
           </div>
           <div class="flex flex-col items-end">
-            <span class="font-bold text-orange-500"
-              >R$ {{ vale.valor | number : "1.2-2" }}</span
-            >
+            <span class="font-bold text-orange-500">{{
+              vale.valor | currency : "BRL" : "symbol" : "1.2-2"
+            }}</span>
             <span class="text-[11px]">{{ vale.data }}</span>
           </div>
         </div>

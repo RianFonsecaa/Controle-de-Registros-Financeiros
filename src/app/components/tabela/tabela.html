@@ -110,8 +110,7 @@
       </button>
 
       <button
-        routerLink="/dashboard"
-        type="submit"
+        (click)="abrirModal(null, gerarRelatorioModal)"
         class="flex flex-row group items-center justify-center rounded-xl gap-2 h-12 w-36 bg-white font-medium text-sm text-[#6b0eff] border border-[#6b0eff] cursor-pointer transition-colors duration-200 hover:bg-[#6b0eff] hover:text-white"
       >
         <svg
@@ -313,7 +312,14 @@
 
 <dialog #saveCobrancaModal class="modal">
   <app-save-cobranca-modal
-    (deletar)="deletaCobranca(saveCobrancaModal)"
+    (salvar)="fecharModal(saveCobrancaModal)"
     (cancelar)="fecharModal(saveCobrancaModal)"
   ></app-save-cobranca-modal>
+</dialog>
+
+<dialog #gerarRelatorioModal class="modal">
+  <app-gerar-relatorio-modal
+    (gerar)="fecharModal(gerarRelatorioModal)"
+    (cancelar)="fecharModal(gerarRelatorioModal)"
+  ></app-gerar-relatorio-modal>
 </dialog>

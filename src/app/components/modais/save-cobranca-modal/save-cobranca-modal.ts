@@ -18,7 +18,7 @@ import { AddButton } from '../../buttons/add-button/add-button';
 import { SavePixModal } from '../save-pix-modal/save-pix-modal';
 import { ModalService } from '../../../services/modal.service';
 import { PixRequest } from '../../../model/requests/PixRequest';
-import { DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../model/requests/ValeRequest';
 import { SaveValeModal } from '../save-vale-modal/save-vale-modal';
@@ -29,6 +29,7 @@ import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';
 import { SelectOptions } from '../../../model/responses/SelectOptions';
 import { CobrancaService } from '../../../services/cobrancas.service';
 import { PixService } from '../../../services/pix.service';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 @Component({
   selector: 'app-save-cobranca-modal',
@@ -41,8 +42,8 @@ import { PixService } from '../../../services/pix.service';
     AddButton,
     SavePixModal,
     SaveValeModal,
-    DecimalPipe,
     SaveButton,
+    CurrencyPipe,
   ],
   templateUrl: './save-cobranca-modal.html',
   styleUrl: './save-cobranca-modal.css',
@@ -61,8 +62,8 @@ export class SaveCobrancaModal {
   pixs: PixRequest[] = [];
   vales: ValeRequest[] = [];
 
-  @Output() deletar = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
+  @Output() salvar = new EventEmitter<void>();
 
   ngOnInit() {
     this.cobrancaForm = new FormGroup({
@@ -159,6 +160,7 @@ export class SaveCobrancaModal {
         this.cobrancaForm.reset();
         this.pixs = [];
         this.vales = [];
+        this.salvar.emit();
       },
       error: () => console.error('Erro ao salvar cobrança'),
     });
@@ -169,9 +171,5 @@ export class SaveCobrancaModal {
     this.pixs = [];
     this.vales = [];
     this.cancelar.emit();
-  }
-
-  onDeletar() {
-    this.deletar.emit();
   }
 }

@@ -5,10 +5,17 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { DeleteModal } from '../modais/delete-modal/delete-modal';
 import { SaveCobrancaModal } from '../modais/save-cobranca-modal/save-cobranca-modal';
 import { ModalService } from '../../services/modal.service';
+import { GerarRelatorioModal } from '../modais/gerar-relatorio-modal/gerar-relatorio-modal';
 
 @Component({
   selector: 'app-tabela',
-  imports: [CurrencyPipe, DatePipe, DeleteModal, SaveCobrancaModal],
+  imports: [
+    CurrencyPipe,
+    DatePipe,
+    DeleteModal,
+    SaveCobrancaModal,
+    GerarRelatorioModal,
+  ],
   templateUrl: './tabela.html',
   styleUrl: './tabela.css',
 })
