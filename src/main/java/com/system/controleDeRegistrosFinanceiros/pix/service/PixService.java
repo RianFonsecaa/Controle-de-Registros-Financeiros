@@ -9,6 +9,10 @@ import java.util.UUID;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
 import com.system.controleDeRegistrosFinanceiros.cobranca.service.CobrancasService;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
@@ -65,14 +69,12 @@ public class PixService{
             try {
                 Files.createDirectories(Paths.get(DIRETORIO_PIX));
 
-                String nomeArquivo = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
-                Path caminho = Paths.get(DIRETORIO_PIX, nomeArquivo);
+                String nomeComprovante = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
+                Path caminho = Paths.get(DIRETORIO_PIX, nomeComprovante);
 
                 Files.write(caminho, arquivo.getBytes());
 
-                pix.setNomeArquivo(nomeArquivo);
-                pix.setTipoArquivo(arquivo.getContentType());
-                pix.setCaminhoArquivo(caminho.toString());
+                pix.setNomeComprovante(nomeComprovante);
 
                 salvo = pixRepository.save(pix);
 
@@ -82,6 +84,24 @@ public class PixService{
         }
 
         return pixMapper.toDTO(salvo);
+    }
+
+    public byte[] baixarComprovante (String nome){
+
+        try {
+            Path caminho = Paths.get(DIRETORIO_PIX).resolve(nome);
+
+            if (!Files.exists(caminho)) {
+                throw new ResourceNotFoundException("Comprovante", "Nome", nome);
+            }
+
+            byte[] comprovante = Files.readAllBytes(caminho);
+
+            return comprovante;
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao carregar comprovante", e);
+        }
+
     }
 
     public void excluir(Long id) {

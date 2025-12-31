@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -52,5 +53,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleJwtExceptions(Exception ex, WebRequest request) {
         String message = "Token inválido ou expirado.";
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, message);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<String> handleMaxSize(MaxUploadSizeExceededException e) {
+        return ResponseEntity
+                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+                .body("O comprovante excede o tamanho máximo permitido");
     }
 }

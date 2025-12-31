@@ -12,9 +12,7 @@ public interface PixMapper {
 
     @Mapping(target = "cidade", ignore = true)
     @Mapping(target = "cobranca", ignore = true)
-    @Mapping(target = "caminhoArquivo", ignore = true)
-    @Mapping(target = "nomeArquivo", ignore = true)
-    @Mapping(target = "tipoArquivo", ignore = true)
+    @Mapping(target = "nomeComprovante", ignore = true)
     Pix toEntity(PixDTO dto);
 
     @Mapping(source = "cidade.id", target = "cidadeId")

@@ -14,5 +14,6 @@ public interface DadosRelatorioMapper {
     @Mapping(source = "veiculo.modelo", target = "veiculo")
     @Mapping(source = "valorTotalPix", target = "valorPix")
     @Mapping(source = "valorTotalVale", target = "valorVale")
+    @Mapping(source = "valorTotalEspecie", target = "valorEspecie")
     DadosRelatorio toRelatorio(Cobranca cobranca);
 }

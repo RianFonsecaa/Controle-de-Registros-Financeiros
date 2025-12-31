@@ -19,6 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "pix")
@@ -44,18 +46,15 @@ public class Pix {
 
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Cobranca cobranca;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Cidade cidade;
 
     @Column
-    private String caminhoArquivo;
+    private String nomeComprovante;
 
-    @Column
-    private String nomeArquivo;
-
-    @Column
-    private String tipoArquivo;
 }
