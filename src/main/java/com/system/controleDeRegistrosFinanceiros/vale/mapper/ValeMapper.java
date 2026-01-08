@@ -14,6 +14,6 @@ public interface ValeMapper {
     Vale toEntity(ValeDTO dto);
 
     @Mapping(source = "funcionario.id", target = "funcionarioId")
-    @Mapping(source = "funcionario.nome", target = "funcionarioNome")
+    @Mapping(source = "cobranca.id", target = "cobrancaId")
     ValeDTO toDTO(Vale entity);
 }

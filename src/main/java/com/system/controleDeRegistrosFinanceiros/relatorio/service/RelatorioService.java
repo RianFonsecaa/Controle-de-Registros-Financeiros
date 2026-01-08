@@ -1,6 +1,8 @@
 package com.system.controleDeRegistrosFinanceiros.relatorio.service;
 import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.relatorio.mapper.DadosRelatorioMapper;
+import jakarta.persistence.EntityNotFoundException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.core.io.Resource;
@@ -89,8 +91,15 @@ public class RelatorioService {
 
     public List<DadosRelatorio> geraDadosDoRelatorio(LocalDate dataInicio, LocalDate dataFim) {
 
-        return cobrancaRepository.findByDataBetween(dataInicio, dataFim)
-                .stream()
+        List<Cobranca> cobrancas = cobrancaRepository.findByDataBetween(dataInicio, dataFim);
+
+        if (cobrancas.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "Não foi possível encontrar dados de cobrança dentro do período informado!"
+            );
+        }
+
+        return cobrancas.stream()
                 .map(dadosRelatorioMapper::toRelatorio)
                 .toList();
     }

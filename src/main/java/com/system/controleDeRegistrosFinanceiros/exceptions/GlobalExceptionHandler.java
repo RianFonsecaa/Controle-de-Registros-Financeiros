@@ -56,9 +56,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<String> handleMaxSize(MaxUploadSizeExceededException e) {
-        return ResponseEntity
-                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .body("O comprovante excede o tamanho máximo permitido");
+    public ResponseEntity<ErrorResponse> handleMaxSize(MaxUploadSizeExceededException e) {
+        return buildErrorResponse(
+                HttpStatus.PAYLOAD_TOO_LARGE,
+                "O comprovante excede o tamanho máximo permitido"
+        );
     }
 }

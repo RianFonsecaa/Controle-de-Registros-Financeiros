@@ -34,6 +34,5 @@ public class CobrancaDTO {
     private Double valorTotalPix;
     private Double valorTotalVale;
     private LocalDate data;
-    private List<ValeDTO> vales;
     private String observacoes;
 }

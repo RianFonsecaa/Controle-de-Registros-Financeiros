@@ -10,4 +10,8 @@ public class ResourceNotFoundException extends RuntimeException{
         super(String.format("Não foi possível encontrar um(a) %s com %s '%s'", resourceName, fieldName, fieldValue));
     }
 
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+
 }

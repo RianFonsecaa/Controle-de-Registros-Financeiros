@@ -1,6 +1,8 @@
 package com.system.controleDeRegistrosFinanceiros.vale.service;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
+import com.system.controleDeRegistrosFinanceiros.cobranca.service.CobrancasService;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
 import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
@@ -17,11 +19,13 @@ public class ValeService{
     private final ValeRepository valeRepository;
     private final ValeMapper valeMapper;
     private final FuncionarioService funcionarioService;
+    private final CobrancasService cobrancasService;
 
-    public ValeService(ValeRepository valeRepository, ValeMapper valeMapper, FuncionarioService funcionarioService){
+    public ValeService(ValeRepository valeRepository, ValeMapper valeMapper, FuncionarioService funcionarioService, CobrancasService cobrancasService){
         this.valeRepository = valeRepository;
         this.valeMapper = valeMapper;
         this.funcionarioService = funcionarioService;
+        this.cobrancasService = cobrancasService;
     }
 
     public List<ValeDTO> buscaTodos() {
@@ -40,6 +44,7 @@ public class ValeService{
     public ValeDTO salvar(ValeDTO valeDTO) {
         Vale vale = valeMapper.toEntity(valeDTO);
         vale.setFuncionario(funcionarioService.getById(valeDTO.getFuncionarioId()));
+        vale.setCobranca(cobrancasService.getById(valeDTO.getCobrancaId()));
         Vale salvo = valeRepository.save(vale);
         return valeMapper.toDTO(salvo);
     }

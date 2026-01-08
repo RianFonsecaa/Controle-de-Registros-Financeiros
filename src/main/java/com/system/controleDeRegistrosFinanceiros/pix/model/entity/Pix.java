@@ -51,7 +51,6 @@ public class Pix {
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Cidade cidade;
 
     @Column

@@ -44,6 +44,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/relatorios/periodo").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cobrancas").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pix").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/vales").permitAll()
             .requestMatchers("/cidades/**").hasRole("ADMIN")
             .requestMatchers("/funcionarios/**").hasRole("ADMIN")
             .anyRequest().authenticated()

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
+import com.system.controleDeRegistrosFinanceiros.cobranca.specifications.CobrancaSpec;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
 import com.system.controleDeRegistrosFinanceiros.veiculo.service.VeiculoService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +18,7 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.mapper.CobrancasMapper
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 import com.system.controleDeRegistrosFinanceiros.cobranca.repository.CobrancaRepository;
-import com.system.controleDeRegistrosFinanceiros.pix.mapper.PixMapper;
-import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
-import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
-import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
+
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -33,16 +33,12 @@ public class CobrancasService {
     private final FuncionarioService funcionarioService;
     private final VeiculoService veiculoService;
 
-    private final ValeMapper valeMapper;
-
     public CobrancasService(
             CobrancaRepository cobrancaRepository,
             CobrancasMapper cobrancasMapper,
             CidadeService cidadeService,
             FuncionarioService funcionarioService,
-            VeiculoService veiculoService,
-            PixMapper pixMapper,
-            ValeMapper valeMapper) {
+            VeiculoService veiculoService) {
 
         this.cobrancaRepository = cobrancaRepository;
         this.cobrancasMapper = cobrancasMapper;
@@ -50,8 +46,6 @@ public class CobrancasService {
         this.cidadeService = cidadeService;
         this.funcionarioService = funcionarioService;
         this.veiculoService = veiculoService;
-
-        this.valeMapper = valeMapper;
     }
 
     public List<CobrancaDTO> buscaTodos() {
@@ -59,6 +53,17 @@ public class CobrancasService {
                 .stream()
                 .map(cobrancasMapper::toDTO)
                 .toList();
+    }
+
+    public List<CobrancaDTO> buscaTodosPorFiltro(CobrancaQueryFilters filters) {
+        return cobrancaRepository.findAll(toEspecification(filters))
+                .stream()
+                .map(cobrancasMapper::toDTO)
+                .toList();
+    }
+
+    private Specification<Cobranca> toEspecification(CobrancaQueryFilters filters){
+        return CobrancaSpec.observacoesContains(filters.getObservacoes());
     }
 
     public Cobranca getById(Long id) {
@@ -89,8 +94,6 @@ public class CobrancasService {
 
         cobranca.setRegistroPor(user.getName());
 
-        cobranca.setVales(associarVales(cobrancaDTO, cobranca));
-
         cobranca.setValorTotalPix(cobrancaDTO.getValorTotalPix());
         cobranca.setValorTotalVale(cobrancaDTO.getValorTotalVale());
 
@@ -105,18 +108,6 @@ public class CobrancasService {
         return cobrancasMapper.toDTO(salvo);
     }
 
-
-    private List<Vale> associarVales(CobrancaDTO dto, Cobranca cobranca) {
-        List<Vale> novaListaDeVales = new ArrayList<>();
-        if (dto.getVales() != null && !dto.getVales().isEmpty()) {
-            for (ValeDTO valeDTO : dto.getVales()) {
-                Vale vale = valeMapper.toEntity(valeDTO);
-                vale.setCobranca(cobranca);
-                novaListaDeVales.add(vale);
-            }
-        }
-        return novaListaDeVales;
-    }
 
 
     public void excluir(Long id){

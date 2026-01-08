@@ -57,9 +57,6 @@ public class Cobranca {
     @Column(nullable = false)
     private LocalDate data;
 
-    @OneToMany(mappedBy = "cobranca", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vale> vales = new ArrayList<>();
-
 
     @Column(nullable = false, length = 500)
     private String observacoes;
