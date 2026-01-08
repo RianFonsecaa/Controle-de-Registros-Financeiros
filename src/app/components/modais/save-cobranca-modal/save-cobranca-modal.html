@@ -446,6 +446,8 @@
 
 <dialog #savePixModal class="modal">
   <app-save-pix-modal
+    [data]="getControl('data').getRawValue()"
+    [cidade]="getControl('cidade').getRawValue()"
     (salvar)="onAdicionarPix($event, savePixModal)"
     (cancelar)="savePixModal.close()"
   ></app-save-pix-modal>
@@ -453,6 +455,7 @@
 
 <dialog #saveValeModal class="modal">
   <app-save-vale-modal
+    [data]="getControl('data').getRawValue()"
     (salvar)="onAdicionarVale($event, saveValeModal)"
     (cancelar)="saveValeModal.close()"
   ></app-save-vale-modal>

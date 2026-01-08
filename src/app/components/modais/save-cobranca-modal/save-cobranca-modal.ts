@@ -30,6 +30,7 @@ import { SelectOptions } from '../../../model/responses/SelectOptions';
 import { CobrancaService } from '../../../services/cobrancas.service';
 import { PixService } from '../../../services/pix.service';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { ValeService } from '../../../services/vale.service';
 
 @Component({
   selector: 'app-save-cobranca-modal',
@@ -54,7 +55,7 @@ export class SaveCobrancaModal {
   veiculoService = inject(VeiculoService);
   cobrancaService = inject(CobrancaService);
   pixService = inject(PixService);
-
+  valeService = inject(ValeService);
   modalService = inject(ModalService);
 
   cobrancaForm!: FormGroup;
@@ -82,7 +83,7 @@ export class SaveCobrancaModal {
     this.veiculoService.buscaVeiculos();
 
     this.cobrancaForm.valueChanges.subscribe(() => {
-      this.calcularTotal();
+      this.calcularValoresTotais();
     });
   }
 
@@ -104,7 +105,7 @@ export class SaveCobrancaModal {
     modal.close();
   }
 
-  calcularTotal() {
+  calcularValoresTotais() {
     const especie = Number(this.getControl('valorEspecie').value) || 0;
     const pix = Number(this.getControl('valorPix').value) || 0;
     const vales = Number(this.getControl('valorVales').value) || 0;
@@ -130,39 +131,60 @@ export class SaveCobrancaModal {
       veiculoId: veiculo.id,
       data: this.getControl('data').value,
       observacoes: this.getControl('observacoes').value,
-
       valorTotalEspecie: Number(this.getControl('valorEspecie').value),
       valorTotalPix: Number(this.getControl('valorPix').value),
       valorTotalVale: Number(this.getControl('valorVales').value),
       valorTotal: Number(this.getControl('valorTotal').value),
-      vales: this.vales,
     };
 
     this.cobrancaService.salvaCobranca(cobrancaRequest).subscribe({
       next: (cobrancaSalva) => {
-        console.log('Cobrança salva com sucesso');
         const cobrancaId = cobrancaSalva.id;
 
-        this.pixs.forEach((pix) => {
-          const pixRequest: PixRequest = {
-            cliente: pix.cliente,
-            valor: pix.valor,
-            data: pix.data,
-            cobrancaId: cobrancaId,
-            cidadeId: pix.cidadeId,
-            comprovante: pix.comprovante,
-          };
+        this.salvarPixs(this.pixs, cobrancaId);
+        this.salvarVales(this.vales, cobrancaId);
 
-          console.log(pixRequest);
-          this.pixService.salvarPix(pixRequest, pix.comprovante).subscribe();
-        });
-
+        this.salvar.emit();
         this.cobrancaForm.reset();
         this.pixs = [];
         this.vales = [];
-        this.salvar.emit();
+        this.cobrancaService.buscaCobrancas();
       },
       error: () => console.error('Erro ao salvar cobrança'),
+    });
+  }
+
+  private salvarPixs(pixs: PixRequest[], cobrancaId: number) {
+    pixs.forEach((pix) => {
+      const pixRequest: PixRequest = {
+        cliente: pix.cliente,
+        valor: pix.valor,
+        data: pix.data,
+        cobrancaId: cobrancaId,
+        cidadeId: pix.cidadeId,
+        comprovante: pix.comprovante,
+      };
+
+      this.pixService.salvarPix(pixRequest, pix.comprovante).subscribe({
+        error: () => console.error('Erro ao salvar pix!'),
+      });
+    });
+  }
+
+  private salvarVales(vales: ValeRequest[], cobrancaId: number) {
+    vales.forEach((vale) => {
+      const valeRequest: ValeRequest = {
+        valor: vale.valor,
+        data: vale.data,
+        cobrancaId: cobrancaId,
+        funcionarioId: vale.funcionarioId,
+        funcionarioNome: vale.funcionarioNome,
+        justificativa: vale.justificativa,
+      };
+
+      this.valeService.salvarVale(valeRequest).subscribe({
+        error: () => console.error('Erro ao salvar vale!'),
+      });
     });
   }
 

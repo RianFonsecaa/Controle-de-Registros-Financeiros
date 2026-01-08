@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../model/requests/ValeRequest';
+import { CidadeResponse } from '../../../model/responses/CidadeResponse';
 
 @Component({
   selector: 'app-save-vale-modal',
@@ -30,6 +31,8 @@ export class SaveValeModal {
   funcionarioService = inject(FuncionarioService);
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<any>();
+  @Input() data!: String;
+  @Input() cidade!: CidadeResponse;
   valeForm!: FormGroup;
 
   ngOnInit() {
@@ -42,13 +45,19 @@ export class SaveValeModal {
     this.funcionarioService.buscaFuncionarios();
   }
 
+  ngOnChanges() {
+    if (!this.valeForm) return;
+    this.aplicarValorInicial();
+  }
+
   getControl(name: string): FormControl {
     return this.valeForm.get(name) as FormControl;
   }
 
   onCancelar() {
-    this.valeForm.reset();
     this.cancelar.emit();
+    this.valeForm.reset();
+    this.aplicarValorInicial();
   }
 
   onSalvar() {
@@ -56,18 +65,23 @@ export class SaveValeModal {
       this.valeForm.markAllAsTouched();
       return;
     }
-
     const formValue = this.valeForm.value;
-
     const vale: ValeRequest = {
       funcionarioId: formValue.funcionario.id,
       funcionarioNome: formValue.funcionario.nome,
+      cobrancaId: 0,
       justificativa: formValue.justificativa,
       valor: formValue.valor,
       data: formValue.data,
     };
-
     this.salvar.emit(vale);
     this.valeForm.reset();
+    this.aplicarValorInicial();
+  }
+
+  private aplicarValorInicial() {
+    this.valeForm.patchValue({
+      data: this.data ?? null,
+    });
   }
 }

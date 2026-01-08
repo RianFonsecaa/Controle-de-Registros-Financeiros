@@ -53,6 +53,11 @@ export class GerarRelatorioModal {
   }
 
   onGerar() {
+    if (this.relatorioForm.invalid) {
+      this.relatorioForm.markAllAsTouched();
+      return;
+    }
+
     const periodo = this.relatorioForm.value;
 
     this.modalService.abrirModal(this.loadingModal.nativeElement);
@@ -65,7 +70,18 @@ export class GerarRelatorioModal {
           window.open(url, '_blank');
           this.gerar.emit();
         },
-        error: () => {
+        error: (err) => {
+          if (err.error instanceof Blob) {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+              const error = JSON.parse(reader.result as string);
+              console.error(error.message);
+            };
+
+            reader.readAsText(err.error);
+          }
+
           this.modalService.fecharModal(this.loadingModal.nativeElement);
         },
         complete: () => {

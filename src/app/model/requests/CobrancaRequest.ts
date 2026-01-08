@@ -1,5 +1,3 @@
-import { ValeRequest } from './ValeRequest';
-
 export interface CobrancaRequest {
   cidadeId: number;
   cobradorId: number;
@@ -11,5 +9,4 @@ export interface CobrancaRequest {
   valorTotalPix: number;
   valorTotalVale: number;
   valorTotal: number;
-  vales: ValeRequest[];
 }

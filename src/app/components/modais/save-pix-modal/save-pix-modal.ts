@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   inject,
+  Input,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -21,6 +22,7 @@ import { AddButton } from '../../buttons/add-button/add-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { PixRequest } from '../../../model/requests/PixRequest';
+import { CidadeResponse } from '../../../model/responses/CidadeResponse';
 
 @Component({
   selector: 'app-save-pix-modal',
@@ -39,8 +41,10 @@ export class SavePixModal {
   cidadesService = inject(CidadesService);
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<any>();
-  pixForm!: FormGroup;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @Input() data!: String;
+  @Input() cidade!: CidadeResponse;
+  pixForm!: FormGroup;
 
   ngOnInit() {
     this.pixForm = new FormGroup({
@@ -54,14 +58,27 @@ export class SavePixModal {
     this.cidadesService.buscaCidades();
   }
 
+  ngOnChanges() {
+    if (!this.pixForm) return;
+    this.aplicarValoresIniciais();
+  }
+
+  private aplicarValoresIniciais() {
+    this.pixForm.patchValue({
+      cidade: this.cidade ?? null,
+      data: this.data ?? null,
+    });
+  }
+
   getControl(name: string): FormControl {
     return this.pixForm.get(name) as FormControl;
   }
 
   onCancelar() {
+    this.cancelar.emit();
     this.pixForm.reset();
     this.resetFileInput();
-    this.cancelar.emit();
+    this.aplicarValoresIniciais();
   }
 
   onSalvar() {
@@ -84,6 +101,7 @@ export class SavePixModal {
     this.salvar.emit(pix);
 
     this.pixForm.reset();
+    this.aplicarValoresIniciais();
     this.resetFileInput();
   }
 
