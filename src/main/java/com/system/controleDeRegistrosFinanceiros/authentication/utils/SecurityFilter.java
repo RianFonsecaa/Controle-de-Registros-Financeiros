@@ -1,6 +1,7 @@
 package com.system.controleDeRegistrosFinanceiros.authentication.utils;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.system.controleDeRegistrosFinanceiros.authentication.repository.UserRepository;
@@ -35,13 +37,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        var token = this.recoverToken(request);
+        String token = this.recoverToken(request);
 
         try {
             if (token != null) {
-                var login = tokenService.validateToken(token);
-                if (login != null && !login.isEmpty()) {
-                    UserDetails user = userRepository.findByLogin(login).orElseThrow(() -> new ResourceNotFoundException("Usuário", "login", login));
+                String sub = tokenService.validateToken(token);
+                UUID userId = UUID.fromString(sub);
+                if (!ObjectUtils.isEmpty(userId)) {
+                    UserDetails user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuário", "ID", sub));
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

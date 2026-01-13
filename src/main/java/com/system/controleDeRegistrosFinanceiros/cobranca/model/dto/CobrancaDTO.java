@@ -28,7 +28,8 @@ public class CobrancaDTO {
     private String cobradorNome;
     private Long veiculoId;
     private String veiculoModelo;
-    private String registroPor;
+    private String usuarioRegistranteId;
+    private String usuarioRegistranteName;
     private Double valorTotalEspecie;
     private Double valorTotal;
     private Double valorTotalPix;

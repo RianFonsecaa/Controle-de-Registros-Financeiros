@@ -22,6 +22,8 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.repository.CobrancaRep
 
 import jakarta.persistence.EntityNotFoundException;
 
+import static com.system.controleDeRegistrosFinanceiros.cobranca.specifications.CobrancaSpec.*;
+
 
 @Service
 public class CobrancasService {
@@ -56,14 +58,14 @@ public class CobrancasService {
     }
 
     public List<CobrancaDTO> buscaTodosPorFiltro(CobrancaQueryFilters filters) {
-        return cobrancaRepository.findAll(toEspecification(filters))
-                .stream()
-                .map(cobrancasMapper::toDTO)
-                .toList();
-    }
+        List<Cobranca> cobrancasFiltradas = cobrancaRepository.findAll(filters.toEspecification());
 
-    private Specification<Cobranca> toEspecification(CobrancaQueryFilters filters){
-        return CobrancaSpec.observacoesContains(filters.getObservacoes());
+        if (cobrancasFiltradas.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhuma cobrança com os filtros especificados!");
+        }
+
+        return cobrancasFiltradas.stream().map(cobrancasMapper :: toDTO).toList();
+
     }
 
     public Cobranca getById(Long id) {
@@ -72,12 +74,6 @@ public class CobrancasService {
     }
 
     public CobrancaDTO salvar(CobrancaDTO cobrancaDTO) {
-
-        User user = (User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-
         Cobranca cobranca = cobrancasMapper.toEntity(cobrancaDTO);
 
         cobranca.setCidade(
@@ -92,7 +88,10 @@ public class CobrancasService {
                 veiculoService.getById(cobrancaDTO.getVeiculoId())
         );
 
-        cobranca.setRegistroPor(user.getName());
+        cobranca.setUsuarioRegistrante((User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal());
 
         cobranca.setValorTotalPix(cobrancaDTO.getValorTotalPix());
         cobranca.setValorTotalVale(cobrancaDTO.getValorTotalVale());

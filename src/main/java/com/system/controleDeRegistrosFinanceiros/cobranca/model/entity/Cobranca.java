@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
@@ -39,20 +40,21 @@ public class Cobranca {
     @JoinColumn(nullable = false)
     private Veiculo veiculo;
 
-    @Column(nullable = false)
-    private String registroPor;
+    @ManyToOne(optional = false)
+    @JoinColumn( nullable = false)
+    private User usuarioRegistrante;
 
     @Column(nullable = false)
-    private double valorTotalEspecie;
+    private Double valorTotalEspecie;
 
     @Column(nullable = false)
-    private double valorTotalPix;
+    private Double valorTotalPix;
 
     @Column(nullable = false)
-    private double valorTotalVale;
+    private Double valorTotalVale;
     
     @Column(nullable = false)
-    private double valorTotal;
+    private Double valorTotal;
 
     @Column(nullable = false)
     private LocalDate data;

@@ -29,7 +29,6 @@ public class CobrancasController{
         return ResponseEntity.ok(cobrancasService.buscaTodosPorFiltro(filters));
     }
 
-
     @PostMapping
     public ResponseEntity<CobrancaDTO> salvar(@RequestBody CobrancaDTO cobranca) {
         return ResponseEntity.ok(cobrancasService.salvar(cobranca));
