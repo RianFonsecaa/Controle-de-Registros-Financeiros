@@ -6,7 +6,8 @@ export interface CobrancaResponse {
   cobradorNome: string;
   veiculoId: number;
   veiculoModelo: string;
-  registroPor: string;
+  usuarioRegistranteId: number;
+  usuarioRegistranteName: string;
   valorTotalEspecie: number;
   valorTotal: number;
   valorTotalPix: number;

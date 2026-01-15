@@ -1,6 +1,6 @@
 <section class="flex flex-col h-full gap-4 p-6">
   <div
-    class="flex flex-row w-full p-4 justify-between rounded-xl border border-[#dfdfdf] shadow-md"
+    class="flex flex-row w-full p-4 justify-between rounded-3xl border border-[#dfdfdf] shadow-md"
   >
     <div class="flex flex-row gap-2">
       <div
@@ -77,66 +77,11 @@
         />
       </div>
     </div>
-
-    <div class="flex flex-row items-end gap-2">
-      <button
-        (click)="abrirModal(null, saveCobrancaModal)"
-        type="submit"
-        class="flex flex-row items-center justify-center rounded-xl gap-2 h-12 w-36 bg-[#0051FF] font-medium text-sm text-white cursor-pointer transition-colors duration-200 hover:bg-[#0245d4]"
-      >
-        <svg
-          class="w-3 h-3 text-white"
-          viewBox="0 0 8 8"
-          id="meteor-icon-kit__regular-plus-xxs"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3 3V0.83333C3 0.3731 3.4477 0 4 0C4.5523 0 5 0.3731 5 0.83333V3H7.1667C7.6269 3 8 3.4477 8 4C8 4.5523 7.6269 5 7.1667 5H5V7.1667C5 7.6269 4.5523 8 4 8C3.4477 8 3 7.6269 3 7.1667V5H0.83333C0.3731 5 0 4.5523 0 4C0 3.4477 0.3731 3 0.83333 3H3z"
-              fill="currentColor"
-            ></path>
-          </g>
-        </svg>
-        Novo Registro
-      </button>
-
-      <button
-        (click)="abrirModal(null, gerarRelatorioModal)"
-        class="flex flex-row group items-center justify-center rounded-xl gap-2 h-12 w-36 bg-white font-medium text-sm text-[#6b0eff] border border-[#6b0eff] cursor-pointer transition-colors duration-200 hover:bg-[#6b0eff] hover:text-white"
-      >
-        <svg
-          class="w-4 h-4 text-[#6b0eff] transition-colors duration-200 group-hover:text-white"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              d="m20 8-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9 19H7v-9h2v9zm4 0h-2v-6h2v6zm4 0h-2v-3h2v3zM14 9h-1V4l5 5h-4z"
-            ></path>
-          </g>
-        </svg>
-        Gerar Relatório
-      </button>
-    </div>
   </div>
 
-  <div class="overflow-auto rounded-xl border border-gray-300 shadow-lg">
+  <div
+    class="flex overflow-auto w-full rounded-xl border border-gray-300 shadow-lg"
+  >
     <table class="min-w-max text-[12px] text-[#636363]">
       <thead>
         <tr>
@@ -288,7 +233,7 @@
           </td>
 
           <td class="p-2">
-            {{ cobranca.registroPor }}
+            {{ cobranca.usuarioRegistranteName }}
           </td>
 
           <td class="p-2 font-semibold text-gray-800">

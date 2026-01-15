@@ -16,13 +16,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { PrimaryInput } from '../../inputs/primary-input/primary-input';
-import { PrimarySelect } from '../../inputs/primary-select/primary-select';
 import { CidadesService } from '../../../services/cidades.service';
-import { AddButton } from '../../buttons/add-button/add-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { PixRequest } from '../../../model/requests/PixRequest';
 import { CidadeResponse } from '../../../model/responses/CidadeResponse';
+import { CidadeSelect } from '../../selects/cidade-select/cidade-select';
 
 @Component({
   selector: 'app-save-pix-modal',
@@ -30,9 +29,9 @@ import { CidadeResponse } from '../../../model/responses/CidadeResponse';
     CancelButton,
     ReactiveFormsModule,
     PrimaryInput,
-    PrimarySelect,
     SaveButton,
     MoneyInput,
+    CidadeSelect,
   ],
   templateUrl: './save-pix-modal.html',
   styleUrl: './save-pix-modal.css',
@@ -44,17 +43,15 @@ export class SavePixModal {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
-  pixForm!: FormGroup;
+  pixForm: FormGroup = new FormGroup({
+    cliente: new FormControl(null, [Validators.required]),
+    valor: new FormControl(0, [Validators.required]),
+    cidade: new FormControl(null, [Validators.required]),
+    data: new FormControl(null, [Validators.required]),
+    comprovante: new FormControl(),
+  });
 
   ngOnInit() {
-    this.pixForm = new FormGroup({
-      cliente: new FormControl(null, [Validators.required]),
-      valor: new FormControl(0, [Validators.required]),
-      cidade: new FormControl(null, [Validators.required]),
-      data: new FormControl(null, [Validators.required]),
-      comprovante: new FormControl(),
-    });
-
     this.cidadesService.buscaCidades();
   }
 

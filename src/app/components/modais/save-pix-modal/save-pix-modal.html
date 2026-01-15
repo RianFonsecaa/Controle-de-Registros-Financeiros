@@ -14,16 +14,14 @@
         [control]="getControl('cliente')"
       ></app-primary-input>
 
-      <app-primary-select
-        class="w-[50%]"
-        id="cidade"
-        [options]="cidadesService.cidades()"
+      <app-cidade-select
+        class="relative w-[50%]"
         [control]="getControl('cidade')"
-        label="Cidade"
-      ></app-primary-select>
+      >
+      </app-cidade-select>
     </div>
 
-    <div class="flex flex-row gap-4">
+    <div class="flex flex-row gap-2">
       <app-money-input
         class="w-[50%]"
         id="valor"

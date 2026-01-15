@@ -7,13 +7,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PrimarySelect } from '../../inputs/primary-select/primary-select';
 import { CidadesService } from '../../../services/cidades.service';
 import { FuncionarioService } from '../../../services/funcionario.service';
 import { VeiculoService } from '../../../services/veiculo.service';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
-import { DeleteButton } from '../../buttons/delete-button/delete-button';
 import { AddButton } from '../../buttons/add-button/add-button';
 import { SavePixModal } from '../save-pix-modal/save-pix-modal';
 import { ModalService } from '../../../services/modal.service';
@@ -26,18 +24,18 @@ import { CobrancaRequest } from '../../../model/requests/CobrancaRequest';
 import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
 import { CidadeResponse } from '../../../model/responses/CidadeResponse';
 import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';
-import { SelectOptions } from '../../../model/responses/SelectOptions';
 import { CobrancaService } from '../../../services/cobrancas.service';
 import { PixService } from '../../../services/pix.service';
-import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { ValeService } from '../../../services/vale.service';
+import { CidadeSelect } from '../../selects/cidade-select/cidade-select';
+import { CobradorSelect } from '../../selects/cobrador-select/cobrador-select';
+import { VeiculoSelect } from '../../selects/veiculo-select/veiculo-select';
 
 @Component({
   selector: 'app-save-cobranca-modal',
   imports: [
     PrimaryInput,
     ReactiveFormsModule,
-    PrimarySelect,
     MoneyInput,
     CancelButton,
     AddButton,
@@ -45,6 +43,9 @@ import { ValeService } from '../../../services/vale.service';
     SaveValeModal,
     SaveButton,
     CurrencyPipe,
+    CidadeSelect,
+    CobradorSelect,
+    VeiculoSelect,
   ],
   templateUrl: './save-cobranca-modal.html',
   styleUrl: './save-cobranca-modal.css',
@@ -58,7 +59,17 @@ export class SaveCobrancaModal {
   valeService = inject(ValeService);
   modalService = inject(ModalService);
 
-  cobrancaForm!: FormGroup;
+  cobrancaForm: FormGroup = new FormGroup({
+    cidade: new FormControl(null, [Validators.required]),
+    cobrador: new FormControl(null, [Validators.required]),
+    valorEspecie: new FormControl(0),
+    valorPix: new FormControl(0),
+    valorVales: new FormControl(0),
+    valorTotal: new FormControl(0, [Validators.required]),
+    data: new FormControl(null, [Validators.required]),
+    veiculo: new FormControl(null, [Validators.required]),
+    observacoes: new FormControl(null, [Validators.required]),
+  });
 
   pixs: PixRequest[] = [];
   vales: ValeRequest[] = [];
@@ -67,17 +78,6 @@ export class SaveCobrancaModal {
   @Output() salvar = new EventEmitter<void>();
 
   ngOnInit() {
-    this.cobrancaForm = new FormGroup({
-      cidade: new FormControl(null, [Validators.required]),
-      cobrador: new FormControl(null, [Validators.required]),
-      valorEspecie: new FormControl(0),
-      valorPix: new FormControl(0),
-      valorVales: new FormControl(0),
-      valorTotal: new FormControl(0, [Validators.required]),
-      data: new FormControl(null, [Validators.required]),
-      veiculo: new FormControl(null, [Validators.required]),
-      observacoes: new FormControl(null, [Validators.required]),
-    });
     this.cidadesService.buscaCidades();
     this.funcionarioService.buscaFuncionarios();
     this.veiculoService.buscaVeiculos();

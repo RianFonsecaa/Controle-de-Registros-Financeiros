@@ -1,6 +1,6 @@
-import { SelectOptions } from './SelectOptions';
-
-export interface FuncionarioResponse extends SelectOptions {
+export interface FuncionarioResponse {
+  id: number;
+  nome: string;
   telefone: string;
   email: string;
   dataNascimento: string;

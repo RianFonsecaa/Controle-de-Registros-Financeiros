@@ -5,13 +5,10 @@
   <h1 class="text-xl font-semibold">Novo Registro de Pix</h1>
 
   <form class="flex flex-col flex-1 gap-4" [formGroup]="valeForm">
-    <app-primary-select
-      class="w-full"
-      id="funcionario"
-      [options]="funcionarioService.funcionarios()"
+    <app-cobrador-select
+      class="relative w-full"
       [control]="getControl('funcionario')"
-      label="Funcionario"
-    ></app-primary-select>
+    ></app-cobrador-select>
 
     <div class="flex flex-row gap-4">
       <app-money-input

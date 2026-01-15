@@ -1,9 +1,8 @@
 export interface TokenPayloadResponse {
-  iss: string;
   sub: string;
   role: string;
   name: string;
+  email: string;
   type: 'access' | string;
   exp: number;
-  iat: number;
 }

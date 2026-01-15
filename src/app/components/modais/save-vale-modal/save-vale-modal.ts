@@ -7,22 +7,22 @@ import {
 } from '@angular/forms';
 import { FuncionarioService } from '../../../services/funcionario.service';
 import { PrimaryInput } from '../../inputs/primary-input/primary-input';
-import { PrimarySelect } from '../../inputs/primary-select/primary-select';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../model/requests/ValeRequest';
 import { CidadeResponse } from '../../../model/responses/CidadeResponse';
+import { CobradorSelect } from '../../selects/cobrador-select/cobrador-select';
 
 @Component({
   selector: 'app-save-vale-modal',
   imports: [
     PrimaryInput,
-    PrimarySelect,
     MoneyInput,
     CancelButton,
     SaveButton,
     ReactiveFormsModule,
+    CobradorSelect,
   ],
   templateUrl: './save-vale-modal.html',
   styleUrl: './save-vale-modal.css',
@@ -33,15 +33,15 @@ export class SaveValeModal {
   @Output() salvar = new EventEmitter<any>();
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
-  valeForm!: FormGroup;
+
+  valeForm: FormGroup = new FormGroup({
+    funcionario: new FormControl(null, [Validators.required]),
+    justificativa: new FormControl(null, [Validators.required]),
+    valor: new FormControl(0, [Validators.required]),
+    data: new FormControl(null, [Validators.required]),
+  });
 
   ngOnInit() {
-    this.valeForm = new FormGroup({
-      funcionario: new FormControl(null, [Validators.required]),
-      justificativa: new FormControl(null, [Validators.required]),
-      valor: new FormControl(0, [Validators.required]),
-      data: new FormControl(null, [Validators.required]),
-    });
     this.funcionarioService.buscaFuncionarios();
   }
 
@@ -65,7 +65,9 @@ export class SaveValeModal {
       this.valeForm.markAllAsTouched();
       return;
     }
+
     const formValue = this.valeForm.value;
+
     const vale: ValeRequest = {
       funcionarioId: formValue.funcionario.id,
       funcionarioNome: formValue.funcionario.nome,

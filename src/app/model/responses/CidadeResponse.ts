@@ -1,3 +1,4 @@
-import { SelectOptions } from './SelectOptions';
-
-export interface CidadeResponse extends SelectOptions {}
+export interface CidadeResponse {
+  id: number;
+  nome: string;
+}

@@ -4,7 +4,6 @@ export interface CobrancaRequest {
   veiculoId: number;
   data: string | Date;
   observacoes: string;
-
   valorTotalEspecie: number;
   valorTotalPix: number;
   valorTotalVale: number;

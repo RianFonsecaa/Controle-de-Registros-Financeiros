@@ -40,13 +40,11 @@
     </div>
     <form class="flex flex-col gap-4" [formGroup]="cobrancaForm">
       <div class="flex flex-row relative w-full gap-2">
-        <app-primary-select
+        <app-cidade-select
           class="relative w-[60%]"
-          id="cidade"
-          [options]="cidadesService.cidades()"
           [control]="getControl('cidade')"
-          label="Cidade"
-        ></app-primary-select>
+        >
+        </app-cidade-select>
 
         <app-primary-input
           class="relative w-[40%]"
@@ -58,21 +56,16 @@
         ></app-primary-input>
       </div>
       <div class="flex flex-row relative w-full gap-2">
-        <app-primary-select
+        <app-cobrador-select
           class="relative w-[50%]"
-          id="cobrador"
-          [options]="funcionarioService.funcionarios()"
           [control]="getControl('cobrador')"
-          label="Cobrador"
-        ></app-primary-select>
+        ></app-cobrador-select>
 
-        <app-primary-select
+        <app-veiculo-select
           class="relative w-[50%]"
-          id="veiculo"
-          [options]="veiculoService.veiculos()"
           [control]="getControl('veiculo')"
-          label="Veículo"
-        ></app-primary-select>
+        >
+        </app-veiculo-select>
       </div>
 
       <div class="flex flex-row relative w-full gap-1">

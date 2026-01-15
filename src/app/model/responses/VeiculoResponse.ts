@@ -1,5 +1,6 @@
-import { SelectOptions } from './SelectOptions';
-
-export interface VeiculoResponse extends SelectOptions {
+export interface VeiculoResponse {
+  id: number;
+  nome: string;
   placa: string;
+  modelo: string;
 }
