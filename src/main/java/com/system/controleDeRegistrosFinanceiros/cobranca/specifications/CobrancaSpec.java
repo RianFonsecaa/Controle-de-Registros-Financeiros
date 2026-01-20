@@ -17,7 +17,7 @@ public class CobrancaSpec {
         };
     }
 
-    public static Specification<Cobranca> porCidade(Double cidadeId) {
+    public static Specification<Cobranca> porCidade(Long cidadeId) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(cidadeId)){
                 return null;
@@ -26,7 +26,7 @@ public class CobrancaSpec {
         };
     }
 
-    public static Specification<Cobranca> porCobrador(Double funcionarioId) {
+    public static Specification<Cobranca> porCobrador(Long funcionarioId) {
         return (root, query, builder) -> {
             if (ObjectUtils.isEmpty(funcionarioId)){
                 return null;
@@ -35,12 +35,12 @@ public class CobrancaSpec {
         };
     }
 
-    public static Specification<Cobranca> registradoPor(String usuarioRegistranteId) {
+    public static Specification<Cobranca> porRegistrante(String usuarioRegistrante) {
         return (root, query, builder) -> {
-            if (ObjectUtils.isEmpty(usuarioRegistranteId)){
+            if (ObjectUtils.isEmpty(usuarioRegistrante)){
                 return null;
             }
-            return builder.equal(root.get("usuarioRegistranteId"), usuarioRegistranteId);
+            return builder.like(root.get("usuarioRegistranteId"), "%" + usuarioRegistrante + "%");
         };
     }
 
@@ -50,10 +50,10 @@ public class CobrancaSpec {
                 return null;
             }
             if (ObjectUtils.isEmpty(dataInicio)) {
-                return builder.greaterThanOrEqualTo(root.get("data"), dataInicio );
+                return builder.lessThanOrEqualTo(root.get("data"), dataFim);
             }
             if (ObjectUtils.isEmpty(dataFim)) {
-                return builder.lessThanOrEqualTo(root.get("data"), dataFim);
+                return builder.greaterThanOrEqualTo(root.get("data"), dataInicio );
             }
             return builder.between(root.get("data"), dataInicio, dataFim);
         };
@@ -65,10 +65,10 @@ public class CobrancaSpec {
                 return null;
             }
             if (ObjectUtils.isEmpty(valorInicio)) {
-                return builder.greaterThanOrEqualTo(root.get("valorTotal"), valorInicio );
+                return builder.lessThanOrEqualTo(root.get("valorTotal"), valorFim);
             }
             if (ObjectUtils.isEmpty(valorFim)) {
-                return builder.lessThanOrEqualTo(root.get("valorTotal"), valorFim);
+                return builder.greaterThanOrEqualTo(root.get("valorTotal"), valorInicio );
             }
             return builder.between(root.get("valorTotal"), valorInicio, valorFim);
         };
