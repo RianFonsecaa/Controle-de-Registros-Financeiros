@@ -10,18 +10,18 @@
       Selecione
     </option>
     @for (cidade of cidadesService.cidades(); track $index) {
-    <option
-      [ngValue]="cidade"
-      class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
-    >
-      {{ cidade.nome }}
-    </option>
+      <option
+        [ngValue]="cidade"
+        class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+      >
+        {{ cidade.nome }}
+      </option>
     }
   </select>
 
-  @if (control.invalid && control.touched){
-  <small class="text-red-500">
-    {{ getMensagemErro(control) }}
-  </small>
+  @if (control.invalid && control.touched) {
+    <small class="text-red-500">
+      {{ getMensagemErro(control) }}
+    </small>
   }
 </div>

@@ -43,6 +43,7 @@ export class SavePixModal {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
+
   pixForm: FormGroup = new FormGroup({
     cliente: new FormControl(null, [Validators.required]),
     valor: new FormControl(0, [Validators.required]),

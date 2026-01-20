@@ -6,6 +6,10 @@ import { DeleteModal } from '../modais/delete-modal/delete-modal';
 import { SaveCobrancaModal } from '../modais/save-cobranca-modal/save-cobranca-modal';
 import { ModalService } from '../../services/modal.service';
 import { GerarRelatorioModal } from '../modais/gerar-relatorio-modal/gerar-relatorio-modal';
+import { RelatorioButton } from '../buttons/relatorio-button/relatorio-button';
+import { ContainerFiltros } from '../container-filtros/container-filtros';
+import { PrimaryAddButton } from '../buttons/primary-add-button/primary-add-button';
+import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
 
 @Component({
   selector: 'app-tabela',
@@ -15,6 +19,10 @@ import { GerarRelatorioModal } from '../modais/gerar-relatorio-modal/gerar-relat
     DeleteModal,
     SaveCobrancaModal,
     GerarRelatorioModal,
+    PrimaryAddButton,
+    RelatorioButton,
+    ContainerFiltros,
+    ContainerFiltros,
   ],
   templateUrl: './tabela.html',
   styleUrl: './tabela.css',
@@ -51,5 +59,9 @@ export class Tabela {
   fecharModal(modal: HTMLDialogElement) {
     this.cobrancaSelecionada = null;
     this.modalService.fecharModal(modal);
+  }
+
+  filtrarRegistros(filtros: CobrancaQueryFilters) {
+    this.cobrancaService.buscaCobrancasPorFiltro(filtros);
   }
 }

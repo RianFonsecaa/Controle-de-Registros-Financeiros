@@ -12,7 +12,7 @@ import { FuncionarioService } from '../../../services/funcionario.service';
 import { VeiculoService } from '../../../services/veiculo.service';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
-import { AddButton } from '../../buttons/add-button/add-button';
+import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
 import { SavePixModal } from '../save-pix-modal/save-pix-modal';
 import { ModalService } from '../../../services/modal.service';
 import { PixRequest } from '../../../model/requests/PixRequest';
@@ -38,7 +38,7 @@ import { VeiculoSelect } from '../../selects/veiculo-select/veiculo-select';
     ReactiveFormsModule,
     MoneyInput,
     CancelButton,
-    AddButton,
+    PrimaryAddButton,
     SavePixModal,
     SaveValeModal,
     SaveButton,
@@ -121,20 +121,18 @@ export class SaveCobrancaModal {
       return;
     }
 
-    const cidade: CidadeResponse = this.getControl('cidade').value;
-    const cobrador: FuncionarioResponse = this.getControl('cobrador').value;
-    const veiculo: VeiculoResponse = this.getControl('veiculo').value;
+    const formValue = this.cobrancaForm.value;
 
     const cobrancaRequest: CobrancaRequest = {
-      cidadeId: cidade.id,
-      cobradorId: cobrador.id,
-      veiculoId: veiculo.id,
-      data: this.getControl('data').value,
-      observacoes: this.getControl('observacoes').value,
-      valorTotalEspecie: Number(this.getControl('valorEspecie').value),
-      valorTotalPix: Number(this.getControl('valorPix').value),
-      valorTotalVale: Number(this.getControl('valorVales').value),
-      valorTotal: Number(this.getControl('valorTotal').value),
+      cidadeId: formValue.cidade.id,
+      cobradorId: formValue.cobrador.id,
+      veiculoId: formValue.veiculo.id,
+      data: formValue.data,
+      observacoes: formValue.observacoes,
+      valorTotalEspecie: formValue.valorEspecie,
+      valorTotalPix: formValue.valorPix,
+      valorTotalVale: formValue.valorVales,
+      valorTotal: formValue.valorTotal,
     };
 
     this.cobrancaService.salvaCobranca(cobrancaRequest).subscribe({

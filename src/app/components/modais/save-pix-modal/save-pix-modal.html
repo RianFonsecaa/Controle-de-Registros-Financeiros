@@ -49,10 +49,10 @@
         (change)="onFileChange(fileInput)"
       />
 
-      @if (getControl('comprovante').value) {
-      <span class="text-xs text-gray-500 mt-1">
-        {{ (getControl("comprovante").value.size / 1024).toFixed(2) }} KB
-      </span>
+      @if (getControl("comprovante").value) {
+        <span class="text-xs text-gray-500 mt-1">
+          {{ (getControl("comprovante").value.size / 1024).toFixed(2) }} KB
+        </span>
       }
     </fieldset>
   </form>

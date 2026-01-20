@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../enviroments/enviroments';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CobrancaResponse } from '../model/responses/CobrancaResponse';
 import { CobrancaRequest } from '../model/requests/CobrancaRequest';
 import { TokenStorageService } from './token-storage.service';
+import { CobrancaQueryFilters } from '../model/requests/CobrancaQueryFilters';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,23 @@ export class CobrancaService {
       next: (data) => this.cobrancas.set(data),
       error: () => this.cobrancas.set([]),
     });
+  }
+
+  buscaCobrancasPorFiltro(filtros: CobrancaQueryFilters) {
+    let params = new HttpParams();
+
+    Object.entries(filtros).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        params = params.set(key, value as any);
+      }
+    });
+
+    this.http
+      .get<CobrancaResponse[]>(`${this.BASE_URL}/buscaPorFiltro`, { params })
+      .subscribe({
+        next: (data) => this.cobrancas.set(data),
+        error: () => this.cobrancas.set([]),
+      });
   }
 
   deletaCobranca(id: number) {

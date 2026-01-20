@@ -2,18 +2,16 @@ import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-add-button',
-  imports: [NgClass],
-  templateUrl: './add-button.html',
-  styleUrl: './add-button.css',
+  selector: 'app-primary-add-button',
+  imports: [],
+  templateUrl: './primary-add-button.html',
+  styleUrl: './primary-add-button.css',
 })
-export class AddButton {
+export class PrimaryAddButton {
   @Output() abrir = new EventEmitter<void>();
   @Input() nome: string = '';
-  @Input() textColor: string = '';
-  @Input() background: string = '';
 
-  abrirModal() {
+  onAbrir() {
     this.abrir.emit();
   }
 }
