@@ -12,4 +12,22 @@ export class ValorTotalFiltro {
   @Input() form!: FormGroup;
   @Input() onRemover!: () => void;
   @Input() onPreencherValor!: () => void;
+
+  ngOnInit() {
+    this.form.get('valorInicioFiltro')?.valueChanges.subscribe((valor) => {
+      if (this.temValor(valor)) {
+        this.onPreencherValor();
+      }
+    });
+
+    this.form.get('valorFimFiltro')?.valueChanges.subscribe((valor) => {
+      if (this.temValor(valor)) {
+        this.onPreencherValor();
+      }
+    });
+  }
+
+  private temValor(valor: any): boolean {
+    return valor !== null && valor !== undefined && valor !== '';
+  }
 }
