@@ -10,6 +10,7 @@ import { RelatorioButton } from '../buttons/relatorio-button/relatorio-button';
 import { ContainerFiltros } from '../container-filtros/container-filtros';
 import { PrimaryAddButton } from '../buttons/primary-add-button/primary-add-button';
 import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
+import { SearchButton } from '../buttons/search-button/search-button';
 
 @Component({
   selector: 'app-tabela',
@@ -23,11 +24,13 @@ import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters'
     RelatorioButton,
     ContainerFiltros,
     ContainerFiltros,
+    SearchButton,
   ],
   templateUrl: './tabela.html',
   styleUrl: './tabela.css',
 })
 export class Tabela {
+  @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
   private modalService = inject(ModalService);
   private cobrancaService = inject(CobrancaService);
   cobrancas = this.cobrancaService.cobrancas;
@@ -36,6 +39,10 @@ export class Tabela {
 
   ngOnInit() {
     this.cobrancaService.buscaCobrancas();
+  }
+
+  atualizaRegistros() {
+    this.containerFiltros.removerTodosFiltros();
   }
 
   deletaCobranca(modal: HTMLDialogElement) {

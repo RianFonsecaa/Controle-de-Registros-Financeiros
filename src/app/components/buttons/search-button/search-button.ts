@@ -7,9 +7,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './search-button.css',
 })
 export class SearchButton {
-  @Output() filtrar = new EventEmitter<void>();
+  @Output() atualizar = new EventEmitter<void>();
 
-  onFiltrar() {
-    this.filtrar.emit();
+  onAtualizar() {
+    this.atualizar.emit();
   }
 }
