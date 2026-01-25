@@ -16,7 +16,7 @@ export class PixService {
 
     formData.append(
       'pix',
-      new Blob([JSON.stringify(pix)], { type: 'application/json' })
+      new Blob([JSON.stringify(pix)], { type: 'application/json' }),
     );
 
     if (arquivo) {
@@ -24,5 +24,11 @@ export class PixService {
     }
 
     return this.http.post<PixResponse>(this.BASE_URL, formData);
+  }
+
+  buscaPorCobranca(cobrancaId: Number) {
+    return this.http.get<PixResponse[]>(
+      `${this.BASE_URL}/porCobranca/${cobrancaId}`,
+    );
   }
 }

@@ -16,20 +16,19 @@ import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-b
 import { SavePixModal } from '../save-pix-modal/save-pix-modal';
 import { ModalService } from '../../../services/modal.service';
 import { PixRequest } from '../../../model/requests/PixRequest';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { CurrencyPipe, NgClass } from '@angular/common';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../model/requests/ValeRequest';
 import { SaveValeModal } from '../save-vale-modal/save-vale-modal';
 import { CobrancaRequest } from '../../../model/requests/CobrancaRequest';
-import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
-import { CidadeResponse } from '../../../model/responses/CidadeResponse';
-import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';
 import { CobrancaService } from '../../../services/cobrancas.service';
 import { PixService } from '../../../services/pix.service';
 import { ValeService } from '../../../services/vale.service';
 import { CidadeSelect } from '../../selects/cidade-select/cidade-select';
 import { CobradorSelect } from '../../selects/cobrador-select/cobrador-select';
 import { VeiculoSelect } from '../../selects/veiculo-select/veiculo-select';
+import { CobrancaResponse } from '../../../model/responses/CobrancaResponse';
+import { PixResponse } from '../../../model/responses/PixResponse';
 
 @Component({
   selector: 'app-save-cobranca-modal',
@@ -63,8 +62,8 @@ export class SaveCobrancaModal {
     cidade: new FormControl(null, [Validators.required]),
     cobrador: new FormControl(null, [Validators.required]),
     valorEspecie: new FormControl(0),
-    valorPix: new FormControl(0),
-    valorVales: new FormControl(0),
+    valorTotalPix: new FormControl(0),
+    valorTotalVale: new FormControl(0),
     valorTotal: new FormControl(0, [Validators.required]),
     data: new FormControl(null, [Validators.required]),
     veiculo: new FormControl(null, [Validators.required]),
@@ -94,21 +93,21 @@ export class SaveCobrancaModal {
   onAdicionarPix(pix: PixRequest, modal: HTMLDialogElement) {
     this.pixs.push(pix);
     const totalPix = this.pixs.reduce((acc, p) => acc + Number(p.valor), 0);
-    this.getControl('valorPix').setValue(totalPix);
+    this.getControl('valorTotalPix').setValue(totalPix);
     modal.close();
   }
 
   onAdicionarVale(vale: ValeRequest, modal: HTMLDialogElement) {
     this.vales.push(vale);
-    const totalVale = this.vales.reduce((acc, p) => acc + Number(p.valor), 0);
-    this.getControl('valorVales').setValue(totalVale);
+    const totalVale = this.vales.reduce((acc, v) => acc + Number(v.valor), 0);
+    this.getControl('valorTotalVale').setValue(totalVale);
     modal.close();
   }
 
   calcularValoresTotais() {
     const especie = Number(this.getControl('valorEspecie').value) || 0;
-    const pix = Number(this.getControl('valorPix').value) || 0;
-    const vales = Number(this.getControl('valorVales').value) || 0;
+    const pix = Number(this.getControl('valorTotalPix').value) || 0;
+    const vales = Number(this.getControl('valorTotalVale').value) || 0;
 
     this.getControl('valorTotal').setValue(especie + pix + vales, {
       emitEvent: false,
@@ -124,15 +123,16 @@ export class SaveCobrancaModal {
     const formValue = this.cobrancaForm.value;
 
     const cobrancaRequest: CobrancaRequest = {
+      id: null,
       cidadeId: formValue.cidade.id,
       cobradorId: formValue.cobrador.id,
       veiculoId: formValue.veiculo.id,
       data: formValue.data,
       observacoes: formValue.observacoes,
-      valorTotalEspecie: formValue.valorEspecie,
-      valorTotalPix: formValue.valorPix,
-      valorTotalVale: formValue.valorVales,
-      valorTotal: formValue.valorTotal,
+      valorEspecie: Number(formValue.valorEspecie) || 0,
+      valorTotalPix: Number(formValue.valorTotalPix) || 0,
+      valorTotalVale: Number(formValue.valorTotalVale) || 0,
+      valorTotal: Number(formValue.valorTotal) || 0,
     };
 
     this.cobrancaService.salvaCobranca(cobrancaRequest).subscribe({
@@ -143,9 +143,7 @@ export class SaveCobrancaModal {
         this.salvarVales(this.vales, cobrancaId);
 
         this.salvar.emit();
-        this.cobrancaForm.reset();
-        this.pixs = [];
-        this.vales = [];
+        this.resetarFormulario();
         this.cobrancaService.buscaCobrancas();
       },
       error: () => console.error('Erro ao salvar cobrança'),
@@ -154,42 +152,30 @@ export class SaveCobrancaModal {
 
   private salvarPixs(pixs: PixRequest[], cobrancaId: number) {
     pixs.forEach((pix) => {
-      const pixRequest: PixRequest = {
-        cliente: pix.cliente,
-        valor: pix.valor,
-        data: pix.data,
-        cobrancaId: cobrancaId,
-        cidadeId: pix.cidadeId,
-        comprovante: pix.comprovante,
-      };
-
-      this.pixService.salvarPix(pixRequest, pix.comprovante).subscribe({
-        error: () => console.error('Erro ao salvar pix!'),
-      });
+      this.pixService
+        .salvarPix({ ...pix, cobrancaId }, pix.comprovante)
+        .subscribe({
+          error: () => console.error('Erro ao salvar pix!'),
+        });
     });
   }
 
   private salvarVales(vales: ValeRequest[], cobrancaId: number) {
     vales.forEach((vale) => {
-      const valeRequest: ValeRequest = {
-        valor: vale.valor,
-        data: vale.data,
-        cobrancaId: cobrancaId,
-        funcionarioId: vale.funcionarioId,
-        funcionarioNome: vale.funcionarioNome,
-        justificativa: vale.justificativa,
-      };
-
-      this.valeService.salvarVale(valeRequest).subscribe({
+      this.valeService.salvarVale({ ...vale, cobrancaId }).subscribe({
         error: () => console.error('Erro ao salvar vale!'),
       });
     });
   }
 
   onCancelar() {
+    this.cancelar.emit();
+    this.resetarFormulario();
+  }
+
+  private resetarFormulario() {
     this.cobrancaForm.reset();
     this.pixs = [];
     this.vales = [];
-    this.cancelar.emit();
   }
 }

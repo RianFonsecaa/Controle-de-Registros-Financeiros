@@ -30,6 +30,18 @@ export class CobrancaService {
     });
   }
 
+  editaCobranca(cobranca: CobrancaRequest) {
+    const token = this.tokenStorageService.getAccessToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.put<CobrancaResponse>(this.BASE_URL, cobranca, {
+      headers,
+    });
+  }
+
   buscaCobrancas() {
     this.http.get<CobrancaResponse[]>(this.BASE_URL).subscribe({
       next: (data) => this.cobrancas.set(data),

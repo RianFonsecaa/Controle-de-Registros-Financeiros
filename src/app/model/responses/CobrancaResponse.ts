@@ -8,7 +8,7 @@ export interface CobrancaResponse {
   veiculoModelo: string;
   usuarioRegistranteId: number;
   usuarioRegistranteName: string;
-  valorTotalEspecie: number;
+  valorEspecie: number;
   valorTotal: number;
   valorTotalPix: number;
   valorTotalVale: number;

@@ -1,5 +1,5 @@
 <div
-  class="modal-box max-w-none flex flex-row w-[1000px] min-h-[700px] gap-4 rounded-xl"
+  class="modal-box flex flex-row min-w-[1000px] min-h-[700px] gap-4 rounded-xl"
 >
   <section
     class="flex flex-col w-1/2 h-full justify-between gap-6"
@@ -79,7 +79,7 @@
         <app-money-input
           id="valorPix"
           [readonly]="true"
-          [control]="getControl('valorPix')"
+          [control]="getControl('valorTotalPix')"
           placeholder="R$ 0,00"
           label="Valor Pix"
         ></app-money-input>
@@ -87,7 +87,7 @@
         <app-money-input
           id="valorVale"
           [readonly]="true"
-          [control]="getControl('valorVales')"
+          [control]="getControl('valorTotalVale')"
           placeholder="R$ 0,00"
           label="Valor Vales"
         ></app-money-input>
@@ -132,7 +132,7 @@
     </div>
   </section>
 
-  <section class="flex flex-col w-1/2 min-h-full justify-between">
+  <section class="flex flex-col min-h-full w-1/2 justify-between">
     <div class="flex flex-col justify-between h-1/2 gap-2 pb-2">
       <div class="flex flex-row w-full justify-between">
         <div class="flex flex-row items-center gap-2">
@@ -185,156 +185,194 @@
       </div>
 
       <div
-        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-xl p-2"
+        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-2xl p-2"
       >
-        @for (pix of pixs; track $index) {
-          <div
-            class="flex flex-row rounded-xl justify-between bg-[#059669]/3 border border-[#059669]/10 p-3"
-          >
-            <div class="flex flex-row gap-4">
-              <div class="flex items-center bg-white rounded-xl shadow-sm p-2">
-                <svg
-                  class="w-6 h-6 text-[#51BCAD]"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
+        @if (pixs.length > 0) {
+          @for (pix of pixs; track $index) {
+            <div
+              class="flex flex-row rounded-xl justify-between bg-[#059669]/3 border border-[#059669]/10 p-3"
+            >
+              <div class="flex flex-row gap-4">
+                <div
+                  class="flex items-center bg-white rounded-xl shadow-sm p-2"
                 >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"
-                    ></path>
-                    <path
-                      d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"
-                    ></path>
-                  </g>
-                </svg>
-              </div>
-              <div class="flex flex-col">
-                <span>{{ pix.cliente }}</span>
-                @if (pix.comprovante) {
-                  <div
-                    class="flex flex-row gap-1 text-[11px] font-semibold text-[#5cc1a1]"
+                  <svg
+                    class="w-6 h-6 text-[#51BCAD]"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <svg
-                      class="w-4 h-4"
-                      viewBox="0 0 24 24"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      fill="#000000"
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"
+                      ></path>
+                      <path
+                        d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <span>{{ pix.cliente }}</span>
+                  @if (pix.comprovante) {
+                    <div
+                      class="flex flex-row gap-1 text-[11px] font-semibold text-[#5cc1a1]"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <title>Check</title>
+                      <svg
+                        class="w-4 h-4"
+                        viewBox="0 0 24 24"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        fill="#000000"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g
-                          id="Page-1"
-                          stroke="none"
-                          stroke-width="1"
-                          fill="none"
-                          fill-rule="evenodd"
-                        >
-                          <g id="Check">
-                            <rect
-                              id="Rectangle"
-                              fill-rule="nonzero"
-                              x="0"
-                              y="0"
-                              width="24"
-                              height="24"
-                            ></rect>
-                            <circle
-                              id="Oval"
-                              stroke="currentColor"
-                              stroke-width="2.6"
-                              stroke-linecap="round"
-                              cx="12"
-                              cy="12"
-                              r="9"
-                            ></circle>
-                            <path
-                              d="M8.5,12.5 L10.151,14.5638 C10.3372,14.7965 10.6843,14.8157 10.895,14.605 L15.5,10"
-                              id="Path"
-                              stroke="currentColor"
-                              stroke-width="2.6"
-                              stroke-linecap="round"
-                            ></path>
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <title>Check</title>
+                          <g
+                            id="Page-1"
+                            stroke="none"
+                            stroke-width="1"
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <g id="Check">
+                              <rect
+                                id="Rectangle"
+                                fill-rule="nonzero"
+                                x="0"
+                                y="0"
+                                width="24"
+                                height="24"
+                              ></rect>
+                              <circle
+                                id="Oval"
+                                stroke="currentColor"
+                                stroke-width="2.6"
+                                stroke-linecap="round"
+                                cx="12"
+                                cy="12"
+                                r="9"
+                              ></circle>
+                              <path
+                                d="M8.5,12.5 L10.151,14.5638 C10.3372,14.7965 10.6843,14.8157 10.895,14.605 L15.5,10"
+                                id="Path"
+                                stroke="currentColor"
+                                stroke-width="2.6"
+                                stroke-linecap="round"
+                              ></path>
+                            </g>
                           </g>
                         </g>
-                      </g>
-                    </svg>
-                    <span>Comprovante anexado</span>
-                  </div>
-                } @else {
-                  <div
-                    class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
-                  >
-                    <svg
-                      class="w-4 h-4"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      </svg>
+                      <span>Comprovante anexado</span>
+                    </div>
+                  } @else {
+                    <div
+                      class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
                     >
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <g clip-path="url(#clip0_429_11081)">
-                          <circle
-                            cx="12"
-                            cy="11.9999"
-                            r="9"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          ></circle>
-                          <path
-                            d="M14 10.0001L10 14.0001"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          ></path>
-                          <path
-                            d="M10 10.0001L14 14.0001"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          ></path>
+                      <svg
+                        class="w-4 h-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <g clip-path="url(#clip0_429_11081)">
+                            <circle
+                              cx="12"
+                              cy="11.9999"
+                              r="9"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></circle>
+                            <path
+                              d="M14 10.0001L10 14.0001"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M10 10.0001L14 14.0001"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_429_11081">
+                              <rect width="24" height="24" fill="white"></rect>
+                            </clipPath>
+                          </defs>
                         </g>
-                        <defs>
-                          <clipPath id="clip0_429_11081">
-                            <rect width="24" height="24" fill="white"></rect>
-                          </clipPath>
-                        </defs>
-                      </g>
-                    </svg>
-                    <span>Comprovante não anexado</span>
-                  </div>
-                }
+                      </svg>
+                      <span>Comprovante não anexado</span>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="flex flex-col items-end">
+                <span class="font-bold text-[#059669]">{{
+                  pix.valor | currency: "BRL" : "symbol" : "1.2-2"
+                }}</span>
+                <span class="text-[11px]">{{ pix.data }}</span>
               </div>
             </div>
-            <div class="flex flex-col items-end">
-              <span class="font-bold text-[#059669]">{{
-                pix.valor | currency: "BRL" : "symbol" : "1.2-2"
-              }}</span>
-              <span class="text-[11px]">{{ pix.data }}</span>
+          }
+        } @else {
+          <div
+            class="flex flex-col gap-2 h-full items-center justify-center bg-[#f0f0f8] rounded-2xl p-12"
+          >
+            <div class="bg-[#e3e3fb] p-4 rounded-full">
+              <svg
+                class="text-[#5a5add] w-8 h-8"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M2.25 6C2.25 5.58579 2.58579 5.25 3 5.25H21C21.4142 5.25 21.75 5.58579 21.75 6C21.75 6.41421 21.4142 6.75 21 6.75H3C2.58579 6.75 2.25 6.41421 2.25 6ZM2.25 10C2.25 9.58579 2.58579 9.25 3 9.25H21C21.4142 9.25 21.75 9.58579 21.75 10C21.75 10.4142 21.4142 10.75 21 10.75H3C2.58579 10.75 2.25 10.4142 2.25 10ZM14.4697 12.9697C14.7626 12.6768 15.2374 12.6768 15.5303 12.9697L17.5 14.9393L19.4697 12.9697C19.7626 12.6768 20.2374 12.6768 20.5303 12.9697C20.8232 13.2626 20.8232 13.7374 20.5303 14.0303L18.5607 16L20.5303 17.9697C20.8232 18.2626 20.8232 18.7374 20.5303 19.0303C20.2374 19.3232 19.7626 19.3232 19.4697 19.0303L17.5 17.0607L15.5303 19.0303C15.2374 19.3232 14.7626 19.3232 14.4697 19.0303C14.1768 18.7374 14.1768 18.2626 14.4697 17.9697L16.4393 16L14.4697 14.0303C14.1768 13.7374 14.1768 13.2626 14.4697 12.9697ZM2.25 14C2.25 13.5858 2.58579 13.25 3 13.25H11C11.4142 13.25 11.75 13.5858 11.75 14C11.75 14.4142 11.4142 14.75 11 14.75H3C2.58579 14.75 2.25 14.4142 2.25 14ZM2.25 18C2.25 17.5858 2.58579 17.25 3 17.25H11C11.4142 17.25 11.75 17.5858 11.75 18C11.75 18.4142 11.4142 18.75 11 18.75H3C2.58579 18.75 2.25 18.4142 2.25 18Z"
+                    fill="currentColor"
+                  ></path>
+                </g>
+              </svg>
             </div>
+            <h3 class="text-xl font-bold text-[#475569]">
+              Nenhum Pix adicionado!
+            </h3>
+            <p class="text-gray-400 font-semibold text-center max-w-xs">
+              Adicione um Pix para vinculá-lo à cobrança
+            </p>
           </div>
         }
       </div>
@@ -392,45 +430,83 @@
       </div>
 
       <div
-        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-xl p-2"
+        class="flex flex-col flex-1 overflow-y-auto gap-2 border border-gray-300 rounded-2xl p-2"
       >
-        @for (vale of vales; track $index) {
-          <div
-            class="flex flex-row rounded-xl justify-between bg-orange-500/3 border border-orange-500/10 p-3"
-          >
-            <div class="flex flex-row gap-4">
-              <div class="flex items-center bg-white rounded-xl shadow-sm p-2">
-                <svg
-                  class="w-6 h-6 text-orange-500"
-                  viewBox="0 0 1024 1024"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
+        @if (vales.length > 0) {
+          @for (vale of vales; track $index) {
+            <div
+              class="flex flex-row rounded-xl justify-between bg-orange-500/3 border border-orange-500/10 p-3"
+            >
+              <div class="flex flex-row gap-4">
+                <div
+                  class="flex items-center bg-white rounded-xl shadow-sm p-2"
                 >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      fill="currentColor"
-                      d="M640 832H64V640a128 128 0 1 0 0-256V192h576v160h64V192h256v192a128 128 0 1 0 0 256v192H704V672h-64v160zm0-416v192h64V416h-64z"
-                    ></path>
-                  </g>
-                </svg>
+                  <svg
+                    class="w-6 h-6 text-orange-500"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        fill="currentColor"
+                        d="M640 832H64V640a128 128 0 1 0 0-256V192h576v160h64V192h256v192a128 128 0 1 0 0 256v192H704V672h-64v160zm0-416v192h64V416h-64z"
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <span>{{ vale.funcionarioNome }}</span>
+                  <span class="text-[11px]">{{ vale.justificativa }}</span>
+                </div>
               </div>
-              <div class="flex flex-col">
-                <span>{{ vale.funcionarioNome }}</span>
-                <span class="text-[11px]">{{ vale.justificativa }}</span>
+              <div class="flex flex-col items-end">
+                <span class="font-bold text-orange-500">{{
+                  vale.valor | currency: "BRL" : "symbol" : "1.2-2"
+                }}</span>
+                <span class="text-[11px]">{{ vale.data }}</span>
               </div>
             </div>
-            <div class="flex flex-col items-end">
-              <span class="font-bold text-orange-500">{{
-                vale.valor | currency: "BRL" : "symbol" : "1.2-2"
-              }}</span>
-              <span class="text-[11px]">{{ vale.data }}</span>
+          }
+        } @else {
+          <div
+            class="flex flex-col gap-2 h-full items-center justify-center bg-[#f0f0f8] rounded-2xl p-12"
+          >
+            <div class="bg-[#e3e3fb] p-4 rounded-full">
+              <svg
+                class="text-[#5a5add] w-8 h-8"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M2.25 6C2.25 5.58579 2.58579 5.25 3 5.25H21C21.4142 5.25 21.75 5.58579 21.75 6C21.75 6.41421 21.4142 6.75 21 6.75H3C2.58579 6.75 2.25 6.41421 2.25 6ZM2.25 10C2.25 9.58579 2.58579 9.25 3 9.25H21C21.4142 9.25 21.75 9.58579 21.75 10C21.75 10.4142 21.4142 10.75 21 10.75H3C2.58579 10.75 2.25 10.4142 2.25 10ZM14.4697 12.9697C14.7626 12.6768 15.2374 12.6768 15.5303 12.9697L17.5 14.9393L19.4697 12.9697C19.7626 12.6768 20.2374 12.6768 20.5303 12.9697C20.8232 13.2626 20.8232 13.7374 20.5303 14.0303L18.5607 16L20.5303 17.9697C20.8232 18.2626 20.8232 18.7374 20.5303 19.0303C20.2374 19.3232 19.7626 19.3232 19.4697 19.0303L17.5 17.0607L15.5303 19.0303C15.2374 19.3232 14.7626 19.3232 14.4697 19.0303C14.1768 18.7374 14.1768 18.2626 14.4697 17.9697L16.4393 16L14.4697 14.0303C14.1768 13.7374 14.1768 13.2626 14.4697 12.9697ZM2.25 14C2.25 13.5858 2.58579 13.25 3 13.25H11C11.4142 13.25 11.75 13.5858 11.75 14C11.75 14.4142 11.4142 14.75 11 14.75H3C2.58579 14.75 2.25 14.4142 2.25 14ZM2.25 18C2.25 17.5858 2.58579 17.25 3 17.25H11C11.4142 17.25 11.75 17.5858 11.75 18C11.75 18.4142 11.4142 18.75 11 18.75H3C2.58579 18.75 2.25 18.4142 2.25 18Z"
+                    fill="currentColor"
+                  ></path>
+                </g>
+              </svg>
             </div>
+            <h3 class="text-xl font-bold text-[#475569]">
+              Nenhum Vale adicionado!
+            </h3>
+            <p class="text-gray-400 font-semibold text-center max-w-xs">
+              Adicione um Vale para vinculá-lo à cobrança
+            </p>
           </div>
         }
       </div>

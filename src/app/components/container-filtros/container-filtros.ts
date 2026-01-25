@@ -10,7 +10,6 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { SearchButton } from '../buttons/search-button/search-button';
 import { CobradorFiltro } from './filtros/cobrador-filtro/cobrador-filtro';
 import { ObservacoesFiltro } from './filtros/observacoes-filtro/observacoes-filtro';
 import { ValorTotalFiltro } from './filtros/valor-total-filtro/valor-total-filtro';

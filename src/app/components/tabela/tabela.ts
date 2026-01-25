@@ -10,7 +10,8 @@ import { RelatorioButton } from '../buttons/relatorio-button/relatorio-button';
 import { ContainerFiltros } from '../container-filtros/container-filtros';
 import { PrimaryAddButton } from '../buttons/primary-add-button/primary-add-button';
 import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
-import { SearchButton } from '../buttons/search-button/search-button';
+import { UpdateButton } from '../buttons/update-button/update-button';
+import { UpdateModal } from '../modais/update-modal/update-modal';
 
 @Component({
   selector: 'app-tabela',
@@ -24,13 +25,15 @@ import { SearchButton } from '../buttons/search-button/search-button';
     RelatorioButton,
     ContainerFiltros,
     ContainerFiltros,
-    SearchButton,
+    UpdateButton,
+    UpdateModal,
   ],
   templateUrl: './tabela.html',
   styleUrl: './tabela.css',
 })
 export class Tabela {
   @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
+  @ViewChild(SaveCobrancaModal) saveCobrancaModal!: SaveCobrancaModal;
   private modalService = inject(ModalService);
   private cobrancaService = inject(CobrancaService);
   cobrancas = this.cobrancaService.cobrancas;
@@ -60,12 +63,13 @@ export class Tabela {
     if (cobranca) {
       this.cobrancaSelecionada = cobranca;
     }
+
     this.modalService.abrirModal(modal);
   }
 
   fecharModal(modal: HTMLDialogElement) {
-    this.cobrancaSelecionada = null;
     this.modalService.fecharModal(modal);
+    this.cobrancaSelecionada = null;
   }
 
   filtrarRegistros(filtros: CobrancaQueryFilters) {
