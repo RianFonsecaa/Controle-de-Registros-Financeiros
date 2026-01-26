@@ -79,5 +79,10 @@ public class PixController{
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/porCobranca/{cobrancaId}")
+    public ResponseEntity<List<PixDTO>> buscaPorCobranca(@PathVariable Long cobrancaId){
+        return ResponseEntity.ok(pixService.buscarPorCobranca(cobrancaId));
+    }
+
 
 }

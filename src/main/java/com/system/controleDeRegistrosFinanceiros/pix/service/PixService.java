@@ -56,6 +56,16 @@ public class PixService{
         return pixMapper.toDTO(pix);
     }
 
+    public List<PixDTO> buscarPorCobranca(Long cobrancaId) {
+        Cobranca cobranca = cobrancasService.getById(cobrancaId);
+
+        return pixRepository
+                .findByCobranca(cobranca)
+                .stream()
+                .map(pixMapper::toDTO)
+                .toList();
+    }
+
 
     public PixDTO salvar(PixDTO pixDTO, MultipartFile arquivo) {
 

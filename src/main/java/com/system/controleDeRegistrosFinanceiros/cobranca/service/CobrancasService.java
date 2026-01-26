@@ -2,6 +2,7 @@ package com.system.controleDeRegistrosFinanceiros.cobranca.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
@@ -96,11 +97,12 @@ public class CobrancasService {
         cobranca.setValorTotalPix(cobrancaDTO.getValorTotalPix());
         cobranca.setValorTotalVale(cobrancaDTO.getValorTotalVale());
 
-        cobranca.setValorTotal(
-                cobranca.getValorTotalEspecie()
-                        + cobranca.getValorTotalPix()
-                        + cobranca.getValorTotalVale()
-        );
+        double total =
+                Optional.ofNullable(cobranca.getValorEspecie()).orElse(0.0)
+                        + Optional.ofNullable(cobranca.getValorTotalPix()).orElse(0.0)
+                        + Optional.ofNullable(cobranca.getValorTotalVale()).orElse(0.0);
+
+        cobranca.setValorTotal(total);
 
         Cobranca salvo = cobrancaRepository.save(cobranca);
 

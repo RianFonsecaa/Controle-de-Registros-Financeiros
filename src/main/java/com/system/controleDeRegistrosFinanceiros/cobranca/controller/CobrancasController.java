@@ -26,7 +26,6 @@ public class CobrancasController{
 
     @GetMapping("/buscaPorFiltro")
     public ResponseEntity<List<CobrancaDTO>> buscaTodosPorFiltro(CobrancaQueryFilters filters) {
-        System.out.println(filters);
         return ResponseEntity.ok(cobrancasService.buscaTodosPorFiltro(filters));
     }
 

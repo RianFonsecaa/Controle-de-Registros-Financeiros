@@ -1,6 +1,7 @@
 package com.system.controleDeRegistrosFinanceiros.relatorio.controller;
 
 
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class RelatorioController {
     }
     
 
-    @GetMapping("/periodo")
-    public ResponseEntity<byte[]> gerarRelatorioDiarioDeCobrancas(@RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) throws Exception{
-        byte[] relatorioPdf = relatorioService.gerarRelatorioDeCobrancas(dataInicio, dataFim);
+    @GetMapping()
+    public ResponseEntity<byte[]> gerarRelatorioDeCobrancas(CobrancaQueryFilters filters) throws Exception{
+        byte[] relatorioPdf = relatorioService.gerarRelatorioDeCobrancas(filters);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "Relatório Diário de Cobranças de" + dataInicio + " a" + dataFim + ".pdf");
+        headers.setContentDispositionFormData("attachment", "Relatório de Cobranças de"+ ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

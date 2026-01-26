@@ -1,5 +1,6 @@
 package com.system.controleDeRegistrosFinanceiros.relatorio.service;
 import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.relatorio.mapper.DadosRelatorioMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,7 +40,7 @@ public class RelatorioService {
         this.dadosRelatorioMapper = dadosRelatorioMapper;
     }
 
-    public byte[] gerarRelatorioDeCobrancas(LocalDate dataInicio, LocalDate dataFim) throws Exception {
+    public byte[] gerarRelatorioDeCobrancas(CobrancaQueryFilters filters) throws Exception {
 
         User user = (User) SecurityContextHolder
                 .getContext()
@@ -51,7 +52,7 @@ public class RelatorioService {
         double totalEspecie = 0;
         double totalFinal = 0;
 
-        List<DadosRelatorio> dadosRelatorio = geraDadosDoRelatorio(dataInicio, dataFim);
+        List<DadosRelatorio> dadosRelatorio = geraDadosDoRelatorio(filters);
 
         Resource resource = resourceLoader.getResource("classpath:reports/cobranca-report.jrxml");
         InputStream inputStream = resource.getInputStream();
@@ -89,17 +90,17 @@ public class RelatorioService {
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
-    public List<DadosRelatorio> geraDadosDoRelatorio(LocalDate dataInicio, LocalDate dataFim) {
+    public List<DadosRelatorio> geraDadosDoRelatorio(CobrancaQueryFilters filters) {
 
-        List<Cobranca> cobrancas = cobrancaRepository.findByDataBetween(dataInicio, dataFim);
+        List<Cobranca> cobrancasFiltradas = cobrancaRepository.findAll(filters.toEspecification());
 
-        if (cobrancas.isEmpty()) {
+        if (cobrancasFiltradas.isEmpty()) {
             throw new ResourceNotFoundException(
                     "Não foi possível encontrar dados de cobrança dentro do período informado!"
             );
         }
 
-        return cobrancas.stream()
+        return cobrancasFiltradas.stream()
                 .map(dadosRelatorioMapper::toRelatorio)
                 .toList();
     }

@@ -42,9 +42,11 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/cidades").permitAll()
                         .requestMatchers(HttpMethod.GET, "/funcionarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/veiculos").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/relatorios/periodo").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/relatorios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/pix/porCobranca/{cobrancaId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cobrancas").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pix").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/vales").permitAll()
             .requestMatchers("/cidades/**").hasRole("ADMIN")
             .requestMatchers("/funcionarios/**").hasRole("ADMIN")

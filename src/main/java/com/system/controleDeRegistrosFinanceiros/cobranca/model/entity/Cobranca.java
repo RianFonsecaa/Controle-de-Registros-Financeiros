@@ -1,17 +1,11 @@
 package com.system.controleDeRegistrosFinanceiros.cobranca.model.entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
-import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
-import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
-import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
-import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
-import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
+
 
 import com.system.controleDeRegistrosFinanceiros.veiculo.model.entity.Veiculo;
 import jakarta.persistence.*;
@@ -45,12 +39,12 @@ public class Cobranca {
     private User usuarioRegistrante;
 
     @Column(nullable = false)
-    private Double valorTotalEspecie;
+    private Double valorEspecie;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double valorTotalPix;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double valorTotalVale;
     
     @Column(nullable = false)
