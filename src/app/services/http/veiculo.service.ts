@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { VeiculoResponse } from '../model/responses/VeiculoResponse';
+import { VeiculoResponse } from '../../model/responses/VeiculoResponse';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../enviroments/enviroments';
+import { environment } from '../../../enviroments/enviroments';
 
 @Injectable({
   providedIn: 'root',

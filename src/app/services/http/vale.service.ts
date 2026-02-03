@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../enviroments/enviroments';
-import { PixRequest } from '../model/requests/PixRequest';
-import { PixResponse } from '../model/responses/PixResponse';
-import { ValeRequest } from '../model/requests/ValeRequest';
+import { environment } from '../../../enviroments/enviroments';
+import { PixRequest } from '../../model/requests/PixRequest';
+import { PixResponse } from '../../model/responses/PixResponse';
+import { ValeRequest } from '../../model/requests/ValeRequest';
 
 @Injectable({
   providedIn: 'root',

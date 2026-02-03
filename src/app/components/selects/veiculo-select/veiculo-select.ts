@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { VeiculoService } from '../../../services/veiculo.service';
+import { VeiculoService } from '../../../services/http/veiculo.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CidadeResponse } from '../../../model/responses/CidadeResponse';
 import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';

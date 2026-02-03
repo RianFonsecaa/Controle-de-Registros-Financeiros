@@ -16,7 +16,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PrimaryInput } from '../../inputs/primary-input/primary-input';
-import { CidadesService } from '../../../services/cidades.service';
+import { CidadesService } from '../../../services/http/cidades.service';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { PixRequest } from '../../../model/requests/PixRequest';
@@ -46,7 +46,7 @@ export class SavePixModal {
 
   pixForm: FormGroup = new FormGroup({
     cliente: new FormControl(null, [Validators.required]),
-    valor: new FormControl(0, [Validators.required]),
+    valor: new FormControl(null, [Validators.required]),
     cidade: new FormControl(null, [Validators.required]),
     data: new FormControl(null, [Validators.required]),
     comprovante: new FormControl(),

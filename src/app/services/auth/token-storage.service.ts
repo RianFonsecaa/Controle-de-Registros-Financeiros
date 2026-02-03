@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoginResponse } from '../model/responses/LoginResponse';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs';
-import { TokenPayloadResponse } from '../model/responses/TokenPayloadResponse';
+import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
+import { LoginResponse } from '../../model/responses/LoginResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,7 @@ export class TokenStorageService {
   private cachedPayload: TokenPayloadResponse | null = null;
 
   setTokens(tokens: LoginResponse) {
+    console.log(tokens.accessToken);
     window.localStorage.setItem(this.accessTokenKey, tokens.accessToken);
     window.localStorage.setItem(this.refreshTokenKey, tokens.refreshToken);
   }

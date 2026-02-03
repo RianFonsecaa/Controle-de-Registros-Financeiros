@@ -7,28 +7,27 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CidadesService } from '../../../services/cidades.service';
-import { FuncionarioService } from '../../../services/funcionario.service';
-import { VeiculoService } from '../../../services/veiculo.service';
+import { CidadesService } from '../../../services/http/cidades.service';
+import { FuncionarioService } from '../../../services/http/funcionario.service';
+import { VeiculoService } from '../../../services/http/veiculo.service';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
 import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
 import { SavePixModal } from '../save-pix-modal/save-pix-modal';
-import { ModalService } from '../../../services/modal.service';
+import { ModalService } from '../../../services/ui/modal.service';
 import { PixRequest } from '../../../model/requests/PixRequest';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { SaveButton } from '../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../model/requests/ValeRequest';
 import { SaveValeModal } from '../save-vale-modal/save-vale-modal';
 import { CobrancaRequest } from '../../../model/requests/CobrancaRequest';
-import { CobrancaService } from '../../../services/cobrancas.service';
-import { PixService } from '../../../services/pix.service';
-import { ValeService } from '../../../services/vale.service';
+import { CobrancaService } from '../../../services/http/cobrancas.service';
+import { PixService } from '../../../services/http/pix.service';
+import { ValeService } from '../../../services/http/vale.service';
 import { CidadeSelect } from '../../selects/cidade-select/cidade-select';
 import { CobradorSelect } from '../../selects/cobrador-select/cobrador-select';
 import { VeiculoSelect } from '../../selects/veiculo-select/veiculo-select';
-import { CobrancaResponse } from '../../../model/responses/CobrancaResponse';
-import { PixResponse } from '../../../model/responses/PixResponse';
+import { ToastService } from '../../../services/ui/toast.service';
 
 @Component({
   selector: 'app-save-cobranca-modal',
@@ -57,11 +56,12 @@ export class SaveCobrancaModal {
   pixService = inject(PixService);
   valeService = inject(ValeService);
   modalService = inject(ModalService);
+  toastService = inject(ToastService);
 
   cobrancaForm: FormGroup = new FormGroup({
     cidade: new FormControl(null, [Validators.required]),
     cobrador: new FormControl(null, [Validators.required]),
-    valorEspecie: new FormControl(0),
+    valorEspecie: new FormControl(null, [Validators.required]),
     valorTotalPix: new FormControl(0),
     valorTotalVale: new FormControl(0),
     valorTotal: new FormControl(0, [Validators.required]),
@@ -75,6 +75,9 @@ export class SaveCobrancaModal {
 
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<void>();
+
+  exibirSuccessToast: boolean = false;
+  mensagemToast: string = '';
 
   ngOnInit() {
     this.cidadesService.buscaCidades();
@@ -129,10 +132,10 @@ export class SaveCobrancaModal {
       veiculoId: formValue.veiculo.id,
       data: formValue.data,
       observacoes: formValue.observacoes,
-      valorEspecie: Number(formValue.valorEspecie) || 0,
+      valorEspecie: Number(formValue.valorEspecie),
       valorTotalPix: Number(formValue.valorTotalPix) || 0,
       valorTotalVale: Number(formValue.valorTotalVale) || 0,
-      valorTotal: Number(formValue.valorTotal) || 0,
+      valorTotal: Number(formValue.valorTotal),
     };
 
     this.cobrancaService.salvaCobranca(cobrancaRequest).subscribe({
@@ -145,6 +148,10 @@ export class SaveCobrancaModal {
         this.salvar.emit();
         this.resetarFormulario();
         this.cobrancaService.buscaCobrancas();
+        this.toastService.open(
+          'success',
+          'Registro de cobrança foi salvo com sucesso!',
+        );
       },
       error: () => console.error('Erro ao salvar cobrança'),
     });

@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FuncionarioService } from '../../../services/funcionario.service';
+import { FuncionarioService } from '../../../services/http/funcionario.service';
 import { PrimaryInput } from '../../inputs/primary-input/primary-input';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
@@ -37,7 +37,7 @@ export class SaveValeModal {
   valeForm: FormGroup = new FormGroup({
     funcionario: new FormControl(null, [Validators.required]),
     justificativa: new FormControl(null, [Validators.required]),
-    valor: new FormControl(0, [Validators.required]),
+    valor: new FormControl(null, [Validators.required]),
     data: new FormControl(null, [Validators.required]),
   });
 

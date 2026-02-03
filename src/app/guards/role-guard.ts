@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
+import { TokenStorageService } from '../services/auth/token-storage.service';
 
 export const roleGuard: CanActivateFn = (route) => {
   const tokenStorage = inject(TokenStorageService);
@@ -14,8 +14,6 @@ export const roleGuard: CanActivateFn = (route) => {
   }
 
   if (!allowedRoles || !allowedRoles.includes(payload.role)) {
-    console.log(payload.role);
-    console.log(allowedRoles);
     return router.createUrlTree(['/dashboard']);
   }
 

@@ -14,10 +14,10 @@ import {
 } from '@angular/forms';
 import { CobrancaRequest } from '../../../model/requests/CobrancaRequest';
 import { CobrancaResponse } from '../../../model/responses/CobrancaResponse';
-import { CidadesService } from '../../../services/cidades.service';
-import { CobrancaService } from '../../../services/cobrancas.service';
-import { FuncionarioService } from '../../../services/funcionario.service';
-import { VeiculoService } from '../../../services/veiculo.service';
+import { CidadesService } from '../../../services/http/cidades.service';
+import { CobrancaService } from '../../../services/http/cobrancas.service';
+import { FuncionarioService } from '../../../services/http/funcionario.service';
+import { VeiculoService } from '../../../services/http/veiculo.service';
 import { VeiculoSelect } from '../../selects/veiculo-select/veiculo-select';
 import { MoneyInput } from '../../inputs/money-input/money-input';
 import { CidadeSelect } from '../../selects/cidade-select/cidade-select';
@@ -25,6 +25,7 @@ import { PrimaryInput } from '../../inputs/primary-input/primary-input';
 import { CobradorSelect } from '../../selects/cobrador-select/cobrador-select';
 import { CancelButton } from '../../buttons/cancel-button/cancel-button';
 import { SaveButton } from '../../buttons/save-button/save-button';
+import { ToastService } from '../../../services/ui/toast.service';
 
 @Component({
   selector: 'app-update-modal',
@@ -51,6 +52,7 @@ export class UpdateModal implements OnChanges {
   funcionarioService = inject(FuncionarioService);
   veiculoService = inject(VeiculoService);
   cobrancaService = inject(CobrancaService);
+  toastService = inject(ToastService);
 
   cobrancaForm: FormGroup = new FormGroup({
     cidade: new FormControl(null, Validators.required),
@@ -147,6 +149,10 @@ export class UpdateModal implements OnChanges {
         this.salvar.emit();
         this.cobrancaForm.reset();
         this.cobrancaService.buscaCobrancas();
+        this.toastService.open(
+          'success',
+          'Registro de cobrança foi atualizado com sucesso!',
+        );
       },
       error: () => console.error('Erro ao atualizar cobrança'),
     });

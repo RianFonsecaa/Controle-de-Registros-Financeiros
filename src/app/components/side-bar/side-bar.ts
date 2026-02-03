@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { TokenStorageService } from '../../services/token-storage.service';
 import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
-import { AuthService } from '../../services/auth.service';
+import { TokenStorageService } from '../../services/auth/token-storage.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-side-bar',

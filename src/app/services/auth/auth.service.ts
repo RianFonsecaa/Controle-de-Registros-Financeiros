@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { LoginResponse } from '../model/responses/LoginResponse';
-import { LoginRequest } from '../model/requests/LoginRequest';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/enviroments';
+import { map, Observable, tap } from 'rxjs';
+
 import { TokenStorageService } from './token-storage.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../enviroments/enviroments';
+import { LoginResponse } from '../../model/responses/LoginResponse';
+import { LoginRequest } from '../../model/requests/LoginRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,13 @@ export class AuthService {
   private http = inject(HttpClient);
   private tokenStorageService = inject(TokenStorageService);
 
-  login(credenciais: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
-      `${this.BASE_URL}/auth/login`,
-      credenciais
-    );
+  login(credenciais: LoginRequest): Observable<void> {
+    return this.http
+      .post<LoginResponse>(`${this.BASE_URL}/auth/login`, credenciais)
+      .pipe(
+        tap((response) => this.tokenStorageService.setTokens(response)),
+        map(() => void 0),
+      );
   }
 
   isLoggedIn(): Observable<boolean> {

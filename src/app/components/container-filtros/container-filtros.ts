@@ -16,7 +16,7 @@ import { ValorTotalFiltro } from './filtros/valor-total-filtro/valor-total-filtr
 import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
 import { CidadeResponse } from '../../model/responses/CidadeResponse';
 import { FuncionarioResponse } from '../../model/responses/FuncionarioResponse';
-import { CobrancaService } from '../../services/cobrancas.service';
+import { CobrancaService } from '../../services/http/cobrancas.service';
 
 type FiltroKey = keyof ContainerFiltros['filtrosVisiveis'];
 
@@ -73,8 +73,6 @@ export class ContainerFiltros {
         valorInicio: formValue.valorInicioFiltro,
         valorFim: formValue.valorFimFiltro,
       };
-
-      console.log(filtros);
       this.filtrar.emit(filtros);
     };
   }
@@ -121,7 +119,8 @@ export class ContainerFiltros {
       this.filtrosVisiveis[key as FiltroKey] = false;
       this.filtroForm.get(key)?.reset();
     }
-    this.cobrancaService.buscaCobrancas();
+
+    this.onFiltrar()();
   }
 
   get possuiFiltrosAtivos(): boolean {

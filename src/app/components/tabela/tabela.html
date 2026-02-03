@@ -17,9 +17,7 @@
           (abrir)="abrirModal(null, saveCobrancaModal)"
           nome="Cobrança"
         ></app-primary-add-button>
-        <app-relatorio-button
-          (click)="abrirModal(null, gerarRelatorioModal)"
-        ></app-relatorio-button>
+        <app-relatorio-button (click)="geraRelatorio()"></app-relatorio-button>
       </div>
     </div>
 
@@ -262,9 +260,6 @@
   </app-update-modal>
 </dialog>
 
-<dialog #gerarRelatorioModal class="modal">
-  <app-gerar-relatorio-modal
-    (gerar)="fecharModal(gerarRelatorioModal)"
-    (cancelar)="fecharModal(gerarRelatorioModal)"
-  ></app-gerar-relatorio-modal>
+<dialog #loadingModal class="modal">
+  <app-loading-modal></app-loading-modal>
 </dialog>

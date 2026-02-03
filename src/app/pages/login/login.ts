@@ -12,9 +12,10 @@ import {
 } from '@angular/forms';
 import { LoginResponse } from '../../model/responses/LoginResponse';
 import { LoginRequest } from '../../model/requests/LoginRequest';
-import { AuthService } from '../../services/auth.service';
-import { TokenStorageService } from '../../services/token-storage.service';
 import { Router } from '@angular/router';
+import { TokenStorageService } from '../../services/auth/token-storage.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { ToastService } from '../../services/ui/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,12 @@ import { Router } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-  mensagemErro: string = '';
-  exibirToast = signal(false);
+  mensagemErroLogin: string = '';
+
   authService = inject(AuthService);
   tokenStorageService = inject(TokenStorageService);
   router = inject(Router);
+  toastService = inject(ToastService);
 
   loginForm = new FormGroup({
     login: new FormControl('', [Validators.required, Validators.email]),
@@ -59,23 +61,13 @@ export class Login {
     const loginRequest = this.loginForm.value as LoginRequest;
 
     this.authService.login(loginRequest).subscribe({
-      next: (response: LoginResponse) => {
-        this.tokenStorageService.setTokens(response);
+      next: () => {
         this.router.navigate(['dashboard']);
       },
       error: (error: HttpErrorResponse) => {
-        this.mensagemErro = error.error.message || 'Erro inesperado!';
-        console.log(this.mensagemErro);
-        this.abreErrorToast();
+        this.mensagemErroLogin = error.error.message || 'Erro inesperado!';
+        this.toastService.open('error', this.mensagemErroLogin);
       },
     });
-  }
-
-  abreErrorToast() {
-    this.exibirToast.set(true);
-
-    setTimeout(() => {
-      this.exibirToast.set(false);
-    }, 4000);
   }
 }

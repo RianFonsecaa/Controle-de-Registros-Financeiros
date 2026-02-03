@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../enviroments/enviroments';
+import { environment } from '../../../enviroments/enviroments';
 import { HttpClient } from '@angular/common/http';
-import { PixRequest } from '../model/requests/PixRequest';
-import { PixResponse } from '../model/responses/PixResponse';
+import { PixRequest } from '../../model/requests/PixRequest';
+import { PixResponse } from '../../model/responses/PixResponse';
 
 @Injectable({
   providedIn: 'root',

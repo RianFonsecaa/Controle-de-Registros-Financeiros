@@ -8,7 +8,7 @@
       thousands: '.',
       decimal: ',',
       align: 'left',
-      allowNegative: false
+      allowNegative: false,
     }"
     type="text"
     [id]="id"
@@ -17,8 +17,14 @@
     [placeholder]="placeholder"
     [ngClass]="{
       'border-gray-300 text-gray-700': !readonly,
-      'border-gray-200 bg-gray-200 text-gray-600': readonly
+      'border-gray-200 bg-gray-200 text-gray-600': readonly,
     }"
     class="h-12 w-full text-md p-4 rounded-xl border"
   />
+
+  @if (control.invalid && control.touched) {
+    <small class="text-red-500">
+      {{ getMensagemErro(control) }}
+    </small>
+  }
 </div>

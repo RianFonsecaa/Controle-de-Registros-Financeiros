@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FuncionarioService } from '../../../services/funcionario.service';
+import { FuncionarioService } from '../../../services/http/funcionario.service';
 import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
 
 @Component({
