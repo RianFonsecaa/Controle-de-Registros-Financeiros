@@ -37,7 +37,7 @@
     <field name="valorTotal" class="java.lang.Double"/>
     <field name="data" class="java.time.LocalDate"/>
     <field name="observacoes" class="java.lang.String"/>
-    <field name="registroPor" class="java.lang.String"/>
+    <field name="usuarioRegistrante" class="java.lang.String"/>
     <pageHeader height="225">
         <element kind="staticText" uuid="fb0ee362-5a33-48bc-b75f-e4fe08653f40" x="20" y="10" width="280" height="20" fontName="Arial Black" fontSize="11.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[RELATÓRIO FINANCEIRO DE COBRANÇAS]]></text>
@@ -222,7 +222,7 @@
                 </box>
             </element>
             <element kind="textField" uuid="6a06196b-66cc-4a81-9c28-f2a61b06ee80" mode="Transparent" x="275" y="27" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle" style="ZebraRowStyle">
-                <expression><![CDATA[$F{registroPor}]]></expression>
+                <expression><![CDATA[$F{usuarioRegistrante}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0" style="ZebraRowStyle">
                     <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

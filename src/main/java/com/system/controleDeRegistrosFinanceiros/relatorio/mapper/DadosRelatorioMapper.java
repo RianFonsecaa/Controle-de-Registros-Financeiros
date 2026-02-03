@@ -15,5 +15,6 @@ public interface DadosRelatorioMapper {
     @Mapping(source = "valorTotalPix", target = "valorPix")
     @Mapping(source = "valorTotalVale", target = "valorVale")
     @Mapping(source = "valorEspecie", target = "valorEspecie")
+    @Mapping(source = "usuarioRegistrante.name", target = "usuarioRegistrante")
     DadosRelatorio toRelatorio(Cobranca cobranca);
 }

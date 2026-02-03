@@ -11,7 +11,7 @@ public class DadosRelatorio {
     private Long id;
     private String nomeCidade;
     private String nomeCobrador;
-    private String registroPor;
+    private String usuarioRegistrante;
     private Double valorEspecie;
     private Double valorPix;
     private Double valorVale;
