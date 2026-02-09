@@ -149,7 +149,7 @@ export class UpdateModal implements OnChanges {
         this.salvar.emit();
         this.cobrancaForm.reset();
         this.cobrancaService.buscaCobrancas();
-        this.toastService.open(
+        this.toastService.abrir(
           'success',
           'Registro de cobrança foi atualizado com sucesso!',
         );

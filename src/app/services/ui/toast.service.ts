@@ -3,18 +3,19 @@ import { Toast, tipoToast } from '../../model/ui/Toast';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private _toast = signal<Toast | null>(null);
-  toast = this._toast.asReadonly();
+  private readonly _toast = signal<Toast | null>(null);
+  readonly toast = this._toast.asReadonly();
 
-  open(tipo: tipoToast, mensagem: string, duration = 5000) {
+  abrir(tipo: tipoToast, mensagem: string, duration = 6000) {
+    this.fechar();
     this._toast.set({ tipo, mensagem });
 
     setTimeout(() => {
-      this.close();
+      this.fechar();
     }, duration);
   }
 
-  close() {
+  fechar() {
     this._toast.set(null);
   }
 }

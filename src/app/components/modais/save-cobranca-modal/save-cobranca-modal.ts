@@ -148,7 +148,7 @@ export class SaveCobrancaModal {
         this.salvar.emit();
         this.resetarFormulario();
         this.cobrancaService.buscaCobrancas();
-        this.toastService.open(
+        this.toastService.abrir(
           'success',
           'Registro de cobrança foi salvo com sucesso!',
         );

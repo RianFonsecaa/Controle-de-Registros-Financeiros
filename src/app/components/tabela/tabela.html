@@ -2,7 +2,6 @@
   <app-container-filtros
     (filtrar)="filtrarRegistros($event)"
   ></app-container-filtros>
-
   <div
     class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl border border-gray-300 shadow-lg"
   >
@@ -239,7 +238,8 @@
 
 <dialog #deleteModal class="modal">
   <app-delete-modal
-    (deletar)="deletaCobranca(deleteModal)"
+    [cobranca]="cobrancaSelecionada"
+    (deletar)="fecharModal(deleteModal)"
     (cancelar)="fecharModal(deleteModal)"
   ></app-delete-modal>
 </dialog>

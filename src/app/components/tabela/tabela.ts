@@ -59,21 +59,6 @@ export class Tabela {
     this.containerFiltros.removerTodosFiltros();
   }
 
-  deletaCobranca(modal: HTMLDialogElement) {
-    if (!this.cobrancaSelecionada) return;
-
-    this.cobrancaService.deletaCobranca(this.cobrancaSelecionada.id).subscribe({
-      next: () => {
-        this.cobrancaService.buscaCobrancas();
-        this.fecharModal(modal);
-        this.toastService.open(
-          'success',
-          'Registro de cobrança foi apagado com sucesso!',
-        );
-      },
-    });
-  }
-
   abrirModal(cobranca: CobrancaResponse | null, modal: HTMLDialogElement) {
     if (cobranca) {
       this.cobrancaSelecionada = cobranca;
@@ -94,7 +79,7 @@ export class Tabela {
 
   geraRelatorio() {
     if (!this.possuiFiltros() || this.cobrancas().length === 0) {
-      this.toastService.open(
+      this.toastService.abrir(
         'error',
         'Nenhum filtro foi preenchido ou a tabela está vazia',
       );

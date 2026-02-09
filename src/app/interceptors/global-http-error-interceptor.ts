@@ -13,7 +13,7 @@ export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
         if ([500, 404, 401].includes(error.status)) {
           router.navigate(['/login']);
         }
-        toastService.open('error', error.error.message);
+        toastService.abrir('error', error.error.message);
       },
     }),
   );
