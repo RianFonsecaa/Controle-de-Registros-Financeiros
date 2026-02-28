@@ -40,7 +40,7 @@ public class CobrancaSpec {
             if (ObjectUtils.isEmpty(usuarioRegistrante)){
                 return null;
             }
-            return builder.like(root.get("usuarioRegistranteId"), "%" + usuarioRegistrante + "%");
+            return builder.like(root.get("usuarioRegistrante").get("name"), "%" + usuarioRegistrante + "%");
         };
     }
 
