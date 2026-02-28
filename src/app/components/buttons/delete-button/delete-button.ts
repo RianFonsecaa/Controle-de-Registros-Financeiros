@@ -8,8 +8,4 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class DeleteButton {
   @Output() deletar = new EventEmitter<void>();
-
-  onDeletar() {
-    this.deletar.emit();
-  }
 }

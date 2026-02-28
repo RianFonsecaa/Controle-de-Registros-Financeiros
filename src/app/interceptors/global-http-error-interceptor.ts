@@ -3,15 +3,16 @@ import { inject } from '@angular/core';
 import { ToastService } from '../services/ui/toast.service';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const toastService = inject(ToastService);
-  const router = inject(Router);
+  const authService = inject(AuthService);
   return next(req).pipe(
     tap({
       error: (error: HttpErrorResponse) => {
         if ([500, 404, 401].includes(error.status)) {
-          router.navigate(['/login']);
+          authService.logout();
         }
         toastService.abrir('error', error.error.message);
       },

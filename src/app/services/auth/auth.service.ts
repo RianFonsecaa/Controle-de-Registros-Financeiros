@@ -26,7 +26,7 @@ export class AuthService {
       );
   }
 
-  isLoggedIn(): Observable<boolean> {
+  isLoggedIn(): boolean {
     return this.tokenStorageService.isLoggedIn();
   }
 

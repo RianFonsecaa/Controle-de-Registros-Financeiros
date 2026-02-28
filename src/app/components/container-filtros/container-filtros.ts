@@ -14,8 +14,6 @@ import { CobradorFiltro } from './filtros/cobrador-filtro/cobrador-filtro';
 import { ObservacoesFiltro } from './filtros/observacoes-filtro/observacoes-filtro';
 import { ValorTotalFiltro } from './filtros/valor-total-filtro/valor-total-filtro';
 import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
-import { CidadeResponse } from '../../model/responses/CidadeResponse';
-import { FuncionarioResponse } from '../../model/responses/FuncionarioResponse';
 import { CobrancaService } from '../../services/http/cobrancas.service';
 
 type FiltroKey = keyof ContainerFiltros['filtrosVisiveis'];

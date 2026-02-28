@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
 import { TokenStorageService } from '../../services/auth/token-storage.service';
 import { AuthService } from '../../services/auth/auth.service';

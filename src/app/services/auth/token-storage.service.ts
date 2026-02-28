@@ -54,16 +54,16 @@ export class TokenStorageService {
     return Date.now() > expiration;
   }
 
-  isLoggedIn(): Observable<boolean> {
+  isLoggedIn(): boolean {
     const token = this.getAccessToken();
 
-    if (!token) return of(false);
+    if (!token) return false;
 
     if (this.isTokenExpired(token)) {
       this.deleteTokens();
-      return of(false);
+      return false;
     }
 
-    return of(true);
+    return true;
   }
 }

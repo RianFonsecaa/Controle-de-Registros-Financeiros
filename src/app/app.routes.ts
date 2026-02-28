@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
 import { roleGuard } from './guards/role-guard';
+import { loginGuard } from './guards/login-guard';
+import { Dashboard } from './pages/dashboard/dashboard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
   {
     path: 'login',
+    canActivate: [loginGuard],
     loadComponent: () => import('./pages/login/login').then((m) => m.Login),
   },
 
   {
     path: '',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/main-layout/main-layout').then((m) => m.MainLayout),
-    canActivateChild: [authGuard],
     children: [
       {
         path: 'dashboard',
@@ -25,33 +25,16 @@ export const routes: Routes = [
           import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
-        path: 'cobrancas',
+        path: 'registros',
         loadComponent: () =>
-          import('./pages/registros/cobrancas/cobrancas').then(
-            (m) => m.Cobrancas
-          ),
-      },
-      {
-        path: 'pix',
-        loadComponent: () =>
-          import('./pages/registros/pix/pix').then((m) => m.Pix),
-      },
-      {
-        path: 'vales',
-        loadComponent: () =>
-          import('./pages/registros/vales/vales').then((m) => m.Vales),
-      },
-      {
-        path: 'relatorios',
-        loadComponent: () =>
-          import('./pages/relatorios/relatorios').then((m) => m.Relatorios),
+          import('./pages/registros/registros').then((m) => m.Registros),
       },
       {
         path: 'cadastros',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
         loadComponent: () =>
           import('./pages/cadastros/cadastros').then((m) => m.Cadastros),
-        data: { roles: ['ADMIN'] },
-        canActivate: [roleGuard],
       },
     ],
   },

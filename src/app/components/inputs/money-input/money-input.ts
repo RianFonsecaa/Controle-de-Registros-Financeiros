@@ -17,18 +17,10 @@ export class MoneyInput {
   @Input() label: string = '';
 
   getMensagemErro(formControl: FormControl): string {
-    if (formControl.hasError('required')) {
-      return 'Este campo é obrigatório.';
-    }
+    if (!formControl || !formControl.errors) return '';
 
-    if (formControl.hasError('email')) {
-      return 'Formato de E-mail inválido.';
-    }
+    if (formControl.hasError('required')) return 'Campo obrigatório';
 
-    if (formControl.hasError('pattern')) {
-      return 'Formato inválido.';
-    }
-
-    return '';
+    return 'Campo inválido';
   }
 }

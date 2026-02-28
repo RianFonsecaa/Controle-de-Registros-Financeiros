@@ -9,7 +9,7 @@
     <option [ngValue]="null" disabled class="text-gray-800 font-semibold">
       Selecione
     </option>
-    @for (cidade of cidadesService.cidades(); track $index) {
+    @for (cidade of cidadesService.cidadesAtivas(); track $index) {
       <option
         [ngValue]="cidade"
         class="text-gray-500 font-medium active:bg-blue-600 active:text-white"

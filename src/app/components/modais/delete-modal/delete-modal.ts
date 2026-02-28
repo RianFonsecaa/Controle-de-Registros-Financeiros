@@ -15,27 +15,6 @@ export class DeleteModal {
   @Output() deletar = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
-  @Input() cobranca!: CobrancaResponse | null;
-
-  toastService = inject(ToastService);
-  cobrancaService = inject(CobrancaService);
-
-  onDeletar() {
-    if (!this.cobranca) return;
-
-    this.cobrancaService.deletaCobranca(this.cobranca.id).subscribe({
-      next: () => {
-        this.cobrancaService.buscaCobrancas();
-        this.toastService.abrir(
-          'success',
-          'Registro de cobrança foi apagado com sucesso!',
-        );
-      },
-    });
-    this.deletar.emit();
-  }
-
-  onCancelar() {
-    this.cancelar.emit();
-  }
+  @Input() titulo!: string;
+  @Input() conteudo!: string;
 }

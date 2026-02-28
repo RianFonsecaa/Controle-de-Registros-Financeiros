@@ -13,6 +13,7 @@ import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID } from '@angular/core';
 import { authInterceptor } from './interceptors/auth-interceptor';
 import { globalHttpErrorInterceptor } from './interceptors/global-http-error-interceptor';
+import { provideNgxMask } from 'ngx-mask';
 
 registerLocaleData(localePt);
 
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authInterceptor, globalHttpErrorInterceptor]),
     ),
+    provideNgxMask(),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),

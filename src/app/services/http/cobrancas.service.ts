@@ -10,8 +10,7 @@ import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters'
 })
 export class CobrancaService {
   private readonly BASE_URL = `${environment.apiUrl}/cobrancas`;
-
-  cobrancas = signal<CobrancaResponse[]>([]);
+  readonly cobrancas = signal<CobrancaResponse[]>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +18,7 @@ export class CobrancaService {
     return this.http.post<CobrancaResponse>(this.BASE_URL, cobranca);
   }
 
-  editaCobranca(cobranca: CobrancaRequest) {
+  atualizaCobranca(cobranca: CobrancaRequest) {
     return this.http.put<CobrancaResponse>(this.BASE_URL, cobranca);
   }
 

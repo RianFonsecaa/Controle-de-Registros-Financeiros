@@ -1,0 +1,16 @@
+<section class="flex flex-col w-full px-4 gap-2 pb-0 border-b border-[#C3C3C3]">
+  <div role="tablist" class="tabs tabs-border">
+    @for (aba of listaAbas; track aba.label) {
+      <a
+        role="tab"
+        class="tab"
+        [ngClass]="{
+          'tab-active': abaAtiva == aba.label,
+        }"
+        (click)="trocaAbas(aba.label)"
+      >
+        {{ aba.label }}
+      </a>
+    }
+  </div>
+</section>

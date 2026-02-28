@@ -53,11 +53,11 @@
   <div class="flex flex-row gap-2 justify-center w-full">
     <app-cancel-button
       class="w-full"
-      (cancelar)="onCancelar()"
+      (cancelar)="cancelar.emit()"
     ></app-cancel-button>
     <app-delete-button
       class="w-full"
-      (deletar)="onDeletar()"
+      (deletar)="deletar.emit()"
     ></app-delete-button>
   </div>
 </div>
