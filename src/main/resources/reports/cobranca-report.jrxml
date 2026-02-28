@@ -38,77 +38,88 @@
     <field name="data" class="java.time.LocalDate"/>
     <field name="observacoes" class="java.lang.String"/>
     <field name="usuarioRegistrante" class="java.lang.String"/>
-    <pageHeader height="225">
+    <pageHeader height="120">
+        <element kind="rectangle" uuid="06dd8cdb-e187-461c-b2bb-832a5a8acdc9" x="20" y="100" width="525" height="20" backcolor="#0B1A55">
+            <printWhenExpression><![CDATA[$V{PAGE_NUMBER} != 1]]></printWhenExpression>
+        </element>
         <element kind="staticText" uuid="fb0ee362-5a33-48bc-b75f-e4fe08653f40" x="20" y="10" width="280" height="20" fontName="Arial Black" fontSize="11.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[RELATÓRIO FINANCEIRO DE COBRANÇAS]]></text>
         </element>
         <element kind="staticText" uuid="15f32f49-6404-436a-9c90-dabde4091f27" x="20" y="30" width="234" height="30" fontName="Arial" fontSize="10.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[Valores totais relativos à cobrança de cada funcionário.]]></text>
         </element>
-        <element kind="staticText" uuid="cf5f9f0b-3924-4adc-ac6e-f28186600a49" x="20" y="90" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+        <element kind="staticText" uuid="cf5f9f0b-3924-4adc-ac6e-f28186600a49" x="20" y="69" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[Período coberto]]></text>
         </element>
-        <element kind="staticText" uuid="b8ca2167-c972-4065-9963-730c02cc08d3" x="130" y="90" width="100" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+        <element kind="staticText" uuid="b8ca2167-c972-4065-9963-730c02cc08d3" x="130" y="69" width="100" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[Data de emissão]]></text>
         </element>
-        <element kind="staticText" uuid="d02c84d5-ef84-4909-af77-0d13d7e497ef" x="261" y="90" width="128" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+        <element kind="staticText" uuid="d02c84d5-ef84-4909-af77-0d13d7e497ef" x="261" y="69" width="128" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
             <text><![CDATA[Usuário emitente]]></text>
         </element>
-        <element kind="image" uuid="f082b52d-7ee5-4396-a120-630f7cd30a90" x="390" y="0" width="154" height="130">
+        <element kind="image" uuid="f082b52d-7ee5-4396-a120-630f7cd30a90" x="390" y="0" width="130" height="99">
             <expression><![CDATA[$P{LOGO}]]></expression>
         </element>
-        <element kind="textField" uuid="cd9436f0-29b6-42b6-99f1-eaed1f4bb841" x="20" y="101" width="80" height="19" fontSize="9.0" bold="true">
+        <element kind="textField" uuid="cd9436f0-29b6-42b6-99f1-eaed1f4bb841" x="20" y="80" width="80" height="19" fontSize="9.0" bold="true">
             <expression><![CDATA[$P{PERIODO}]]></expression>
         </element>
-        <element kind="textField" uuid="31a1c10d-163a-48d9-91fb-d8eeffe96cad" x="130" y="101" width="100" height="19" fontSize="9.0" bold="true">
+        <element kind="textField" uuid="31a1c10d-163a-48d9-91fb-d8eeffe96cad" x="130" y="80" width="100" height="19" fontSize="9.0" bold="true">
             <expression><![CDATA[$P{DATA_EMISSAO}]]></expression>
         </element>
-        <element kind="textField"  uuid="540ff5ef-64ee-496c-81bc-c28513e5ac4e" x="261" y="101" width="129" height="19" fontSize="9.0" bold="true">
+        <element kind="textField" uuid="540ff5ef-64ee-496c-81bc-c28513e5ac4e" x="261" y="80" width="129" height="19" fontSize="9.0" bold="true">
             <expression><![CDATA[$P{USUARIO_EMITENTE}]]></expression>
         </element>
-        <element pattern="¤ #,##0.00;¤-#,##0.00" kind="textField" uuid="802296a5-4e06-4499-8cf3-ba1b57df031b" x="440" y="168" width="110" height="32" fontSize="14.0" bold="true">
-            <expression><![CDATA[$P{TOTAL_ESPECIE}]]></expression>
-            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-        </element>
-        <element pattern="¤ #,##0.00;¤-#,##0.00" kind="textField" uuid="1204fc09-f099-40e0-bcd1-542c2b8a5ead" x="300" y="168" width="110" height="32" fontSize="14.0" bold="true">
-            <expression><![CDATA[$P{TOTAL_VALE}]]></expression>
-            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-        </element>
-        <element kind="staticText" uuid="46a0ed65-ae4d-4448-947f-d86f84e2a2b8" x="20" y="157" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
-            <text><![CDATA[Total final]]></text>
-        </element>
-        <element pattern="¤ #,##0.00;¤-#,##0.00" kind="textField" uuid="24dba86d-dea8-4a17-9d91-a45e3158c608" x="160" y="168" width="110" height="32" fontSize="14.0" bold="true">
-            <expression><![CDATA[$P{TOTAL_PIX}]]></expression>
-            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-        </element>
-        <element pattern="¤ #,##0.00;¤-#,##0.00" kind="textField" uuid="19b1664b-2544-48ba-ab44-ae1cf9e2b41b" x="20" y="168" width="110" height="32" fontSize="14.0" bold="true">
-            <expression><![CDATA[$P{TOTAL_FINAL}]]></expression>
-            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-        </element>
-        <element  kind="staticText" uuid="5ebc38dd-6a64-4a84-81e7-c1d7decf9110" x="160" y="157" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
-            <text><![CDATA[Total pix]]></text>
-        </element>
-        <element kind="staticText" uuid="0ebdc48e-73bc-450a-8208-6ed4b216cb31" x="440" y="157" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
-            <text><![CDATA[Total espécie]]></text>
-        </element>
-        <element kind="staticText" uuid="79b8cb9c-9c75-4460-bfbb-e8abbb48ff34" x="300" y="157" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
-            <text><![CDATA[Total vale]]></text>
-        </element>
-        <element kind="staticText" uuid="7173d06e-118d-4690-a297-025254ad04dc" x="228" y="129" width="113" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
-            <text><![CDATA[SOMATÓRIOS TOTAIS]]></text>
-        </element>
-        <element kind="rectangle" uuid="0fbddb3b-5b74-49ac-9e3f-97bf345cbaed" x="20" y="200" width="525" height="20" backcolor="#0B1A55"/>
-        <element kind="rectangle" uuid="c93bff38-ae75-4f23-b8bf-23b8d6659286" x="20" y="129" width="525" height="20" backcolor="#0B1A55"/>
-        <element kind="staticText" uuid="cf73436a-26fe-4228-91f9-8e797457e6f0" x="222" y="200" width="132" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
-            <text><![CDATA[REGISTROS DO PERÍODO]]></text>
-        </element>
-        <element kind="staticText" uuid="2aa73976-7681-40c8-8da6-67756605ec6b" x="227" y="129" width="110" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
-            <text><![CDATA[SOMATÓRIOS TOTAIS]]></text>
+        <element kind="staticText" uuid="a09a3d0e-4dde-4390-91c6-99d5d1bfb558" x="220" y="100" width="142" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
+            <printWhenExpression><![CDATA[$V{PAGE_NUMBER} != 1]]></printWhenExpression>
+            <text><![CDATA[REGISTROS DE COBRANÇA]]></text>
         </element>
     </pageHeader>
+    <columnHeader height="95">
+        <printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1
+]]></printWhenExpression>
+        <element kind="textField" uuid="ec808cd5-6a39-4dac-afc8-c33d0bb2b55d" x="440" y="41" width="110" height="32" fontSize="14.0" bold="true">
+            <expression><![CDATA["R$ " + $P{TOTAL_ESPECIE}]]></expression>
+            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+        </element>
+        <element kind="textField" uuid="2aa46bb8-3c4b-42a3-83a2-89a2c34c9561" x="300" y="41" width="110" height="32" fontSize="14.0" bold="true">
+            <expression><![CDATA["R$ " + $P{TOTAL_VALE}]]></expression>
+            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+        </element>
+        <element kind="staticText" uuid="52404de1-cc8b-44e1-b113-fe7842be32a0" x="20" y="30" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+            <text><![CDATA[Total final]]></text>
+        </element>
+        <element kind="textField" uuid="0e812003-e616-4edc-aee3-318bab520979" x="160" y="41" width="110" height="32" fontSize="14.0" bold="true">
+            <expression><![CDATA["R$ " + $P{TOTAL_PIX}]]></expression>
+            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+        </element>
+        <element kind="textField" uuid="45d8d7a5-3ca6-460a-b171-c38957ecbfd2" x="20" y="41" width="110" height="32" fontSize="14.0" bold="true">
+            <expression><![CDATA["R$ " + $P{TOTAL_FINAL}]]></expression>
+            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+        </element>
+        <element kind="staticText" uuid="a7932a73-83ac-4f07-b162-b9fb22d5d659" x="160" y="30" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+            <text><![CDATA[Total pix]]></text>
+        </element>
+        <element kind="staticText" uuid="23bbbf1f-fbe7-4319-bbd6-56d4c5f67e94" x="440" y="30" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+            <text><![CDATA[Total espécie]]></text>
+        </element>
+        <element kind="staticText" uuid="01f9f138-c360-434a-9e5c-784aa882592b" x="300" y="30" width="80" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="8.0" bold="false" vTextAlign="Middle">
+            <text><![CDATA[Total vale]]></text>
+        </element>
+        <element kind="staticText" uuid="dd4811a8-8507-473e-8609-aefb8884535f" x="228" y="2" width="113" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
+            <text><![CDATA[SOMATÓRIOS TOTAIS]]></text>
+        </element>
+        <element kind="rectangle" uuid="d7586c76-9e5d-4861-9d4c-6bc16b22928f" x="20" y="2" width="525" height="20" backcolor="#0B1A55"/>
+        <element kind="staticText" uuid="f320b78a-b65e-4144-a962-f898e4355406" x="227" y="2" width="110" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
+            <text><![CDATA[SOMATÓRIOS TOTAIS]]></text>
+        </element>
+        <element kind="rectangle" uuid="689ac269-cfb7-4856-8500-c4e225645fe9" x="20" y="75" width="525" height="20" backcolor="#0B1A55"/>
+        <element kind="staticText" uuid="a322275a-3ce5-437c-9056-27707bf79c88" x="220" y="75" width="142" height="20" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true" vTextAlign="Middle">
+            <text><![CDATA[REGISTROS DE COBRANÇA]]></text>
+        </element>
+    </columnHeader>
     <detail>
-        <band height="108">
-            <element kind="textField" uuid="7e1b5225-30c4-4e40-b339-057c51b09355" mode="Transparent" x="185" y="27" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" vTextAlign="Middle">
+        <band height="118">
+            <element kind="textField" uuid="7e1b5225-30c4-4e40-b339-057c51b09355" mode="Transparent" x="185" y="34" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" vTextAlign="Middle">
                 <expression><![CDATA[$F{nomeCobrador}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -119,11 +130,11 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="e65968d3-df31-4bd4-8c54-6f5ee8cb381b" x="185" y="17" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="e65968d3-df31-4bd4-8c54-6f5ee8cb381b" x="185" y="24" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Cobrador]]></text>
                 <box leftPadding="0"/>
             </element>
-            <element kind="textField" uuid="04a8d9b8-60cd-4de0-aa45-ddcf8f5d3f26" mode="Transparent" x="365" y="27" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" vTextAlign="Middle">
+            <element kind="textField" uuid="04a8d9b8-60cd-4de0-aa45-ddcf8f5d3f26" mode="Transparent" x="365" y="34" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" vTextAlign="Middle">
                 <expression><![CDATA[$F{veiculo}]]></expression>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <box leftPadding="0">
@@ -133,11 +144,11 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="d131c5ec-26e0-4588-be9b-27a7ba18246d" x="365" y="17" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="d131c5ec-26e0-4588-be9b-27a7ba18246d" x="365" y="24" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Veículo]]></text>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
             </element>
-            <element kind="textField" uuid="5ccc52b5-16fb-4cb5-ae9a-94097423c392" mode="Transparent" x="185" y="60" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤ #,##0.00;¤-#,##0.00" bold="true" vTextAlign="Middle">
+            <element kind="textField" uuid="5ccc52b5-16fb-4cb5-ae9a-94097423c392" mode="Transparent" x="185" y="67" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" vTextAlign="Middle">
                 <expression><![CDATA[$F{valorPix}]]></expression>
                 <box leftPadding="0">
                     <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -146,12 +157,12 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="9fbd1e83-4252-4735-89d5-d4a177f080ba" x="185" y="50" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="9fbd1e83-4252-4735-89d5-d4a177f080ba" x="185" y="57" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Valor pix]]></text>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
             </element>
-            <element kind="textField" uuid="aff6a1c8-fbb8-4267-b8fd-354492e9bb3a" mode="Transparent" x="275" y="60" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤ #,##0.00;¤-#,##0.00" bold="true" vTextAlign="Middle">
+            <element kind="textField" uuid="aff6a1c8-fbb8-4267-b8fd-354492e9bb3a" mode="Transparent" x="275" y="67" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" vTextAlign="Middle">
                 <expression><![CDATA[$F{valorVale}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0">
@@ -161,12 +172,12 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="7c8bed11-78fb-4c08-8929-8df3451c51bf" x="275" y="50" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="7c8bed11-78fb-4c08-8929-8df3451c51bf" x="275" y="57" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Valor vale]]></text>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
             </element>
-            <element kind="textField" uuid="910ef62e-cc60-48e4-997a-00a1fb97bed4" mode="Transparent" x="365" y="60" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤ #,##0.00;¤-#,##0.00" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="textField" uuid="910ef62e-cc60-48e4-997a-00a1fb97bed4" mode="Transparent" x="365" y="67" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" hTextAlign="Left" vTextAlign="Middle">
                 <expression><![CDATA[$F{valorEspecie}]]></expression>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <box leftPadding="0">
@@ -176,18 +187,18 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="00741b01-861d-4db6-bf84-88e83f63915e" x="365" y="50" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="staticText" uuid="00741b01-861d-4db6-bf84-88e83f63915e" x="365" y="57" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
                 <text><![CDATA[Valor espécie]]></text>
                 <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
             </element>
-            <element kind="staticText" uuid="153f7360-62f7-46ab-a4f9-c34fea467847" x="455" y="50" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="staticText" uuid="153f7360-62f7-46ab-a4f9-c34fea467847" x="455" y="57" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
                 <text><![CDATA[Valor total]]></text>
                 <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
             </element>
-            <element kind="textField" uuid="81e3baa5-3a58-43e3-818a-b0b134464684" mode="Transparent" x="20" y="63" width="163" height="38" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true">
+            <element kind="textField" uuid="81e3baa5-3a58-43e3-818a-b0b134464684" mode="Transparent" x="20" y="70" width="163" height="38" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true">
                 <expression><![CDATA[$F{observacoes}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -200,17 +211,17 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="2e420459-b03e-4c77-a8bd-2cdf62becffb" x="20" y="50" width="163" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="2e420459-b03e-4c77-a8bd-2cdf62becffb" x="20" y="57" width="163" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Observacoes]]></text>
                 <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0"/>
             </element>
-            <element kind="staticText" uuid="d72010b0-aeba-4b09-ab04-cba64e92bfea" x="275" y="17" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="d72010b0-aeba-4b09-ab04-cba64e92bfea" x="275" y="24" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Registro por]]></text>
                 <box leftPadding="0"/>
             </element>
-            <element kind="textField" uuid="6acfa17c-c456-4769-b0d2-1d025327c893" mode="Transparent" x="20" y="27" width="165" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="textField" uuid="6acfa17c-c456-4769-b0d2-1d025327c893" mode="Transparent" x="20" y="34" width="165" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                 <expression><![CDATA[$F{nomeCidade}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -221,7 +232,7 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="textField" uuid="6a06196b-66cc-4a81-9c28-f2a61b06ee80" mode="Transparent" x="275" y="27" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle" style="ZebraRowStyle">
+            <element kind="textField" uuid="6a06196b-66cc-4a81-9c28-f2a61b06ee80" mode="Transparent" x="275" y="34" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle" style="ZebraRowStyle">
                 <expression><![CDATA[$F{usuarioRegistrante}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0" style="ZebraRowStyle">
@@ -231,7 +242,7 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="textField" uuid="88eaeaf7-3fef-4742-b05e-ef5366aab884" mode="Transparent" x="455" y="60" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤ #,##0.00;¤-#,##0.00" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="textField" uuid="88eaeaf7-3fef-4742-b05e-ef5366aab884" mode="Transparent" x="455" y="67" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" pattern="¤#,##0.##;¤-#,##0.##" bold="true" hTextAlign="Left" vTextAlign="Middle">
                 <expression><![CDATA[$F{valorTotal}]]></expression>
                 <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -244,7 +255,7 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="textField" uuid="5160072a-d340-4a47-8f60-0b4ba373ce30" mode="Transparent" x="455" y="27" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" textAdjust="ScaleFont" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <element kind="textField" uuid="5160072a-d340-4a47-8f60-0b4ba373ce30" mode="Transparent" x="455" y="34" width="90" height="15" forecolor="#030303" backcolor="#E6F2FF" fontName="Arial" fontSize="9.0" textAdjust="ScaleFont" bold="true" hTextAlign="Left" vTextAlign="Middle">
                 <expression><![CDATA[$F{data}]]></expression>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0">
@@ -255,11 +266,11 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="staticText" uuid="8a0b4874-2908-4e3e-b3f1-0d4038a89e35" x="455" y="17" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="staticText" uuid="8a0b4874-2908-4e3e-b3f1-0d4038a89e35" x="455" y="24" width="90" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Data]]></text>
             </element>
-            <element kind="rectangle" uuid="a5f27d27-d878-4b3c-a171-d74e64a10655" x="20" y="102" width="525" height="5" forecolor="#D9D9D9" backcolor="#D9D9D9"/>
-            <element kind="staticText" uuid="4c436ed2-60cf-4d6f-99a8-a0ac23e37c16" x="20" y="17" width="165" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
+            <element kind="rectangle" uuid="a5f27d27-d878-4b3c-a171-d74e64a10655" x="20" y="109" width="525" height="5" forecolor="#D9D9D9" backcolor="#D9D9D9"/>
+            <element kind="staticText" uuid="4c436ed2-60cf-4d6f-99a8-a0ac23e37c16" x="20" y="24" width="165" height="10" forecolor="#3B3B3B" fontName="Arial" fontSize="7.0" bold="false" vTextAlign="Middle">
                 <text><![CDATA[Cidade]]></text>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box leftPadding="0"/>
