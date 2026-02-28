@@ -1,127 +1,94 @@
-import { NgComponentOutlet } from '@angular/common';
-import { Component, EventEmitter, inject, Output, Type } from '@angular/core';
-import { CidadeFiltro } from './filtros/cidade-filtro/cidade-filtro';
-import { RegistranteFiltro } from './filtros/registrante-filtro/registrante-filtro';
-import { PeriodoFiltro } from './filtros/periodo-filtro/periodo-filtro';
+import { NgComponentOutlet, UpperCasePipe } from '@angular/common';
 import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CobradorFiltro } from './filtros/cobrador-filtro/cobrador-filtro';
-import { ObservacoesFiltro } from './filtros/observacoes-filtro/observacoes-filtro';
-import { ValorTotalFiltro } from './filtros/valor-total-filtro/valor-total-filtro';
-import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
-import { CobrancaService } from '../../services/http/cobrancas.service';
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  Type,
+  OnInit,
+  Input,
+} from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-type FiltroKey = keyof ContainerFiltros['filtrosVisiveis'];
+export type FiltroKey =
+  | 'cidadeFiltro'
+  | 'registranteFiltro'
+  | 'periodoFiltro'
+  | 'cobradorFiltro'
+  | 'observacoesFiltro'
+  | 'valorTotalFiltro';
+
+export interface FiltroConfig {
+  key: FiltroKey;
+  visivel: boolean;
+  componente: Type<any>;
+  label: string;
+  controlsParaResetar?: string[];
+}
 
 @Component({
   selector: 'app-container-filtros',
-  imports: [NgComponentOutlet, FormsModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [NgComponentOutlet, FormsModule, ReactiveFormsModule, UpperCasePipe],
   templateUrl: './container-filtros.html',
   styleUrl: './container-filtros.css',
 })
 export class ContainerFiltros {
-  @Output() filtrar = new EventEmitter<CobrancaQueryFilters>();
-  cobrancaService = inject(CobrancaService);
+  @Input() titulo: string = 'FILTRAGEM';
+  @Input() filtroForm!: FormGroup;
+  @Input() configuracaoFiltros: FiltroConfig[] = [];
 
-  filtroForm: FormGroup = new FormGroup({
-    cidadeFiltro: new FormControl(null),
-    cobradorFiltro: new FormControl(null),
-    observacoesFiltro: new FormControl(null),
-    registranteFiltro: new FormControl(null),
-    valorInicioFiltro: new FormControl(null),
-    valorFimFiltro: new FormControl(null),
-    dataInicioFiltro: new FormControl(null),
-    dataFimFiltro: new FormControl(null),
-  });
+  @Output() filtrar = new EventEmitter<any>();
 
-  filtrosVisiveis = {
-    cidadeFiltro: false,
-    registranteFiltro: false,
-    periodoFiltro: false,
-    cobradorFiltro: false,
-    observacoesFiltro: false,
-    valorTotalFiltro: false,
-  };
-
-  componentes: { key: FiltroKey; component: Type<any> }[] = [
-    { key: 'cidadeFiltro', component: CidadeFiltro },
-    { key: 'registranteFiltro', component: RegistranteFiltro },
-    { key: 'periodoFiltro', component: PeriodoFiltro },
-    { key: 'cobradorFiltro', component: CobradorFiltro },
-    { key: 'observacoesFiltro', component: ObservacoesFiltro },
-    { key: 'valorTotalFiltro', component: ValorTotalFiltro },
-  ];
-
-  onFiltrar(): () => void {
-    return () => {
-      const formValue = this.filtroForm.value;
-
-      const filtros: CobrancaQueryFilters = {
-        cidadeId: formValue.cidadeFiltro?.id ?? null,
-        cobradorId: formValue.cobradorFiltro?.id ?? null,
-        observacoes: formValue.observacoesFiltro,
-        usuarioRegistrante: formValue.registranteFiltro,
-        dataInicio: formValue.dataInicioFiltro,
-        dataFim: formValue.dataFimFiltro,
-        valorInicio: formValue.valorInicioFiltro,
-        valorFim: formValue.valorFimFiltro,
-      };
-      this.filtrar.emit(filtros);
-    };
-  }
-
-  getControl(name: string): FormControl {
-    return this.filtroForm.get(name) as FormControl;
+  onFiltrar(): void {
+    this.filtrar.emit(this.filtroForm.value);
   }
 
   adicionarFiltro(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.filtrosVisiveis[select.value as FiltroKey] = true;
+    const key = select.value;
+
+    const filtro = this.configuracaoFiltros.find((f) => f.key === key);
+    if (filtro) {
+      filtro.visivel = true;
+    }
     select.value = '';
   }
 
-  removerFiltro(key: FiltroKey): () => void {
-    return () => {
-      const controlsParaResetar =
-        key === 'valorTotalFiltro'
-          ? ['valorInicioFiltro', 'valorFimFiltro']
-          : key === 'periodoFiltro'
-            ? ['dataInicioFiltro', 'dataFimFiltro']
-            : [key];
+  removerFiltro(key: string) {
+    const filtro = this.configuracaoFiltros.find((f) => f.key === key);
+    if (!filtro) return;
 
-      const precisaRecarregar = controlsParaResetar.some((name) =>
-        this.temValor(this.filtroForm.get(name)?.value),
-      );
+    const controls = filtro.controlsParaResetar || [key];
 
-      controlsParaResetar.forEach((name) => this.filtroForm.get(name)?.reset());
+    const precisaRecarregar = controls.some((name: any) =>
+      this.temValor(this.filtroForm.get(name)?.value),
+    );
 
-      this.filtrosVisiveis[key] = false;
+    controls.forEach((name: any) => this.filtroForm.get(name)?.reset());
+    filtro.visivel = false;
 
-      if (precisaRecarregar) {
-        this.onFiltrar()();
+    if (precisaRecarregar) {
+      this.onFiltrar();
+    }
+  }
+
+  removerTodosFiltros() {
+    this.configuracaoFiltros.forEach((filtro) => {
+      if (filtro.visivel) {
+        const controls = filtro.controlsParaResetar || [filtro.key];
+        controls.forEach((name: any) => this.filtroForm.get(name)?.reset());
+        filtro.visivel = false;
       }
-    };
+    });
+    this.onFiltrar();
   }
 
   private temValor(valor: any): boolean {
     return valor !== null && valor !== undefined && valor !== '';
   }
 
-  removerTodosFiltros() {
-    for (const key in this.filtrosVisiveis) {
-      this.filtrosVisiveis[key as FiltroKey] = false;
-      this.filtroForm.get(key)?.reset();
-    }
-
-    this.onFiltrar()();
-  }
-
   get possuiFiltrosAtivos(): boolean {
-    return Object.values(this.filtrosVisiveis).some((v) => v);
+    return this.configuracaoFiltros.some((f) => f.visivel);
   }
 }

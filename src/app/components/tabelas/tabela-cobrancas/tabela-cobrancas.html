@@ -1,5 +1,8 @@
 <section class="flex flex-col h-full gap-4 min-w-0">
   <app-container-filtros
+    titulo="Filtragem de Cobranças"
+    [filtroForm]="filtroForm"
+    [configuracaoFiltros]="configuracaoFiltros"
     (filtrar)="filtrarRegistros($event)"
   ></app-container-filtros>
   <div
