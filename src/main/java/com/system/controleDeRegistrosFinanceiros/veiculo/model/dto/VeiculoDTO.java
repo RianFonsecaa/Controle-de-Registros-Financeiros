@@ -16,4 +16,6 @@ public class VeiculoDTO {
 
     private String placa;
 
+    private Boolean ativo;
+
 }

@@ -23,4 +23,5 @@ public class FuncionarioDTO {
     private String telefone;
     private String email;
     private LocalDate dataNascimento;
+    private Boolean ativo;
 }

@@ -1,5 +1,6 @@
 package com.system.controleDeRegistrosFinanceiros.veiculo.controller;
 
+import com.system.controleDeRegistrosFinanceiros.cidade.model.dto.CidadeDTO;
 import com.system.controleDeRegistrosFinanceiros.veiculo.model.dto.VeiculoDTO;
 import com.system.controleDeRegistrosFinanceiros.veiculo.service.VeiculoService;
 
@@ -28,9 +29,14 @@ public class VeiculosController {
         return ResponseEntity.ok(veiculosService.buscaTodos());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable Long id) {
-        veiculosService.excluir(id);
+    @PutMapping
+    public ResponseEntity<VeiculoDTO> editar(@RequestBody VeiculoDTO veiculo) {
+        return ResponseEntity.ok(veiculosService.editar(veiculo));
+    }
+
+    @PatchMapping("/{id}/toggle")
+    public ResponseEntity<Void> toggleStatus(@PathVariable Long id) {
+        veiculosService.toggleStatus(id);
         return ResponseEntity.noContent().build();
     }
 }

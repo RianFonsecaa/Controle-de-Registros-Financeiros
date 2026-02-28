@@ -20,7 +20,7 @@ public interface CobrancasMapper {
     @Mapping(source = "veiculo.modelo", target = "veiculoModelo")
     @Mapping(source = "usuarioRegistrante.id", target = "usuarioRegistranteId")
     @Mapping(source = "usuarioRegistrante.name", target = "usuarioRegistranteName")
-    CobrancaDTO toDTO(Cobranca entity);
+    CobrancaDTO toDTO(Cobranca entidade);
 
     @Mapping(target = "cidade", ignore = true)
     @Mapping(target = "cobrador", ignore = true)

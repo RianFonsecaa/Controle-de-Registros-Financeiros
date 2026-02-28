@@ -39,4 +39,7 @@ public class Funcionario {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
 }

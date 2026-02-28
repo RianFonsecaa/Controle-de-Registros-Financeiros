@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CidadeRepository extends JpaRepository<Cidade, Long> {
     boolean existsByNome(String cidadeNome);
 
+    boolean existsByNomeAndIdNot(String nome, Long id);
+
 }

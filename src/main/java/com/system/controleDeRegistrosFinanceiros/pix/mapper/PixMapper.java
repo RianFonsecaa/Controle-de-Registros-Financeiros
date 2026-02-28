@@ -18,5 +18,5 @@ public interface PixMapper {
     @Mapping(source = "cidade.id", target = "cidadeId")
     @Mapping(source = "cidade.nome", target = "cidadeNome")
     @Mapping(source = "cobranca.id", target = "cobrancaId")
-    PixDTO toDTO(Pix entity);
+    PixDTO toDTO(Pix entidade);
 }

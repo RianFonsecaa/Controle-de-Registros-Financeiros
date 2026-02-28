@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CidadeDTO {
     private Long id;
     private String nome;
+    private Boolean ativo;
 }
 

@@ -23,16 +23,22 @@ public class CidadesController {
     @PostMapping
     public ResponseEntity<CidadeDTO> criar(@RequestBody CidadeDTO cidade){
         return ResponseEntity.ok(cidadeService.criar(cidade));
-    };
+    }
 
     @GetMapping
     public ResponseEntity<List<CidadeDTO>> buscaTodos() {
         return ResponseEntity.ok(cidadeService.buscaTodos());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable Long id) {
-        cidadeService.excluir(id);
+    @PutMapping
+    public ResponseEntity<CidadeDTO> editar(@RequestBody CidadeDTO cidade) {
+        System.out.println(cidade.getAtivo());
+        return ResponseEntity.ok(cidadeService.editar(cidade));
+    }
+
+    @PatchMapping("/{id}/toggle")
+    public ResponseEntity<Void> toggleStatus(@PathVariable Long id) {
+        cidadeService.toggleStatus(id);
         return ResponseEntity.noContent().build();
     }
     

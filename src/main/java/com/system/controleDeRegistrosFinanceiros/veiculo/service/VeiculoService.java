@@ -1,5 +1,6 @@
 package com.system.controleDeRegistrosFinanceiros.veiculo.service;
 
+
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.veiculo.mapper.VeiculoMapper;
@@ -34,15 +35,27 @@ public class VeiculoService {
         return veiculoRepository.findAll().stream().map(veiculoMapper::toDTO).toList();
     }
 
-    public void excluir(Long id){
-        if (!veiculoRepository.existsById(id)){
-            throw new ResourceNotFoundException("veiculo", "Id", id);
-        };
-        veiculoRepository.deleteById(id);
-    }
-
     public Veiculo getById(Long id){
         return veiculoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("veiculo", "Modelo", id));
+    }
+
+    public void toggleStatus(Long veiculoId){
+        Veiculo veiculo = veiculoRepository.findById(veiculoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Veiculo", "ID",veiculoId));
+        veiculo.setAtivo(!veiculo.getAtivo());
+        veiculoRepository.save(veiculo);
+    }
+
+    public VeiculoDTO editar(VeiculoDTO veiculoDTO) {
+        Veiculo veiculo = veiculoRepository.findById(veiculoDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Veiculo", "ID", veiculoDTO.getId()));
+
+        if (veiculoRepository.existsByPlacaAndIdNot(veiculoDTO.getPlaca(), veiculoDTO.getId())) {
+            throw new ResourceAlreadyExistsException("Veiculo", "Placa", veiculoDTO.getPlaca());
+        }
+
+        veiculoMapper.updateEntityFromDto(veiculoDTO, veiculo);
+        return veiculoMapper.toDTO(veiculoRepository.save(veiculo));
     }
 }

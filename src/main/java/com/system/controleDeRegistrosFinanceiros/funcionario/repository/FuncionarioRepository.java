@@ -12,5 +12,7 @@ import java.util.Optional;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {   
     
     boolean existsByNome(String funcionarioNome);
+
+    boolean existsByNomeAndIdNot(String nome, Long id);
     
 }

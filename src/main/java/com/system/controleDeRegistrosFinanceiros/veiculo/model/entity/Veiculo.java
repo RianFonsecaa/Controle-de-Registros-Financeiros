@@ -21,4 +21,7 @@ public class Veiculo {
 
     @Column(nullable = false, unique = true, length = 7)
     private String placa;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
 }
