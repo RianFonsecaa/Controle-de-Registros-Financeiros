@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
+import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
 import com.system.controleDeRegistrosFinanceiros.cobranca.service.CobrancasService;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +74,12 @@ public class PixService{
 
         Pix pix = pixMapper.toEntity(pixDTO);
         pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
-        pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
+
+        if (pixDTO.getCobrancaId() != null) {
+            pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
+        } else {
+            pix.setCobranca(null);
+        }
 
         Pix salvo = pixRepository.save(pix);
 
@@ -96,21 +104,48 @@ public class PixService{
         return pixMapper.toDTO(salvo);
     }
 
-    public byte[] baixarComprovante (String nome){
 
-        try {
-            Path caminho = Paths.get(DIRETORIO_PIX).resolve(nome);
+    public PixDTO editar(PixDTO dto, MultipartFile arquivo) {
+        Pix pix = pixRepository.findById(dto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pix", "id", dto.getId()));
 
-            if (!Files.exists(caminho)) {
-                throw new ResourceNotFoundException("Comprovante", "Nome", nome);
-            }
+        pixMapper.updateEntityFromDto(dto, pix);
+        pix.setCidade(cidadeService.getById(dto.getCidadeId()));
 
-            byte[] comprovante = Files.readAllBytes(caminho);
-
-            return comprovante;
-        } catch (IOException e) {
-            throw new RuntimeException("Erro ao carregar comprovante", e);
+        if (dto.getCobrancaId() != null) {
+            pix.setCobranca(cobrancasService.getById(dto.getCobrancaId()));
+        } else {
+            pix.setCobranca(null);
         }
+
+        if (arquivo != null && !arquivo.isEmpty()) {
+            try {
+                if (pix.getNomeComprovante() != null) {
+                    Files.deleteIfExists(Paths.get(DIRETORIO_PIX, pix.getNomeComprovante()));
+                }
+
+                String novoNome = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
+                Path caminho = Paths.get(DIRETORIO_PIX, novoNome);
+                Files.write(caminho, arquivo.getBytes());
+
+                pix.setNomeComprovante(novoNome);
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao atualizar arquivo do Pix", e);
+            }
+        }
+
+        Pix salvo = pixRepository.save(pix);
+        return pixMapper.toDTO(salvo);
+    }
+
+    public List<PixDTO> buscaTodosPorFiltro(PixQueryFilters filters) {
+        List<Pix> pixFiltrados = pixRepository.findAll(filters.toEspecification());
+
+        if (pixFiltrados.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");
+        }
+
+        return pixFiltrados.stream().map(pixMapper :: toDTO).toList();
 
     }
 
