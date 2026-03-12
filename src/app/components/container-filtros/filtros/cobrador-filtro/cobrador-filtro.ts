@@ -14,6 +14,7 @@ export class CobradorFiltro {
   @Input() onRemover!: () => void;
   @Input() onPreencherValor!: () => void;
   funcionarioService = inject(FuncionarioService);
+  funcionarios = this.funcionarioService.funcionariosAtivos();
 
   ngOnInit() {
     this.funcionarioService.buscaFuncionarios();

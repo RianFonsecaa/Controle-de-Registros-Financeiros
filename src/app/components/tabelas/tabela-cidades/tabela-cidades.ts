@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
 import { CidadesService } from '../../../services/http/cidades.service';
 import { ModalService } from '../../../services/ui/modal.service';
@@ -20,9 +20,14 @@ export class TabelaCidades {
   private cidadesService = inject(CidadesService);
   private toastService = inject(ToastService);
 
-  cidades = this.cidadesService.cidades;
   cidadeSelecionada: CidadeResponse | null = null;
-  mostrarAtivos = true;
+  mostrarAtivos = signal(true);
+
+  listaExibida = computed(() => {
+    return this.cidadesService
+      .cidades()
+      .filter((f) => f.ativo === this.mostrarAtivos());
+  });
 
   ngOnInit() {
     this.cidadesService.buscaCidades();
@@ -56,12 +61,6 @@ export class TabelaCidades {
   }
 
   toggleStatusLista() {
-    this.mostrarAtivos = !this.mostrarAtivos;
-  }
-
-  filtraCidades(): CidadeResponse[] {
-    return this.cidades().filter(
-      (cidade) => cidade.ativo === this.mostrarAtivos,
-    );
+    this.mostrarAtivos.update((status) => !status);
   }
 }

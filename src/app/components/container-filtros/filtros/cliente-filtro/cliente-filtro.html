@@ -4,27 +4,18 @@
 >
   <label
     class="flex items-center rounded-l-xl text-[13px] font-semibold text-[#94A3B8] bg-[#eff3f8] p-2"
-    >Cobrador</label
+    >Cliente</label
   >
 
   <div class="flex flex-row p-1">
-    <select
+    <input
       (change)="onPreencherValor()"
-      formControlName="cobradorFiltro"
-      [compareWith]="compareById"
-      class="select select-ghost border-0 text-mdw-full rounded-xl outline-0 font-medium text-[#94A3B8] bg-[#f2f6fc]"
-    >
-      <option [ngValue]="null" disabled>Selecione</option>
-
-      @for (cobrador of funcionarios; track $index) {
-        <option
-          class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
-          [ngValue]="cobrador"
-        >
-          {{ cobrador.nome }}
-        </option>
-      }
-    </select>
+      class="w-40 text-[#94A3B8] bg-[#f2f6fc] rounded-xl p-2 placeholder:text-[#94A3B8]"
+      formControlName="clienteFiltro"
+      type="text"
+      maxlength="30"
+      placeholder="Nome"
+    />
 
     <button
       (click)="onRemover()"

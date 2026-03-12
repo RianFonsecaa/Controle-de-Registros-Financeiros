@@ -9,19 +9,19 @@
     <option [ngValue]="null" disabled class="text-gray-800 font-semibold">
       Selecione
     </option>
-    @for (veiculo of veiculoService.veiculos(); track $index) {
-    <option
-      [ngValue]="veiculo"
-      class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
-    >
-      {{ veiculo.modelo }}
-    </option>
+    @for (veiculo of veiculos(); track $index) {
+      <option
+        [ngValue]="veiculo"
+        class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+      >
+        {{ veiculo.modelo }}
+      </option>
     }
   </select>
 
-  @if (control.invalid && control.touched){
-  <small class="text-red-500">
-    {{ getMensagemErro(control) }}
-  </small>
+  @if (control.invalid && control.touched) {
+    <small class="text-red-500">
+      {{ getMensagemErro(control) }}
+    </small>
   }
 </div>

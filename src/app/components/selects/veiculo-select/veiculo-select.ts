@@ -12,7 +12,7 @@ import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';
 })
 export class VeiculoSelect {
   veiculoService = inject(VeiculoService);
-
+  veiculos = this.veiculoService.veiculosAtivos;
   @Input() control!: FormControl;
 
   ngOnInit() {

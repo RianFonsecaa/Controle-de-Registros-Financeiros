@@ -59,7 +59,6 @@ export class SaveCidadeModal {
       id: this.cidade?.id || null,
     };
 
-    console.log(request);
     const operacao$ = request.id
       ? this.cidadeService.atualizaCidade(request)
       : this.cidadeService.salvaCidade(request);

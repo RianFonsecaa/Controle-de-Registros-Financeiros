@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-2">
-  <label class="text-[13px] text-gray-600" htmlFor="cidade">Cidades</label>
+  <label class="text-[13px] text-gray-600" htmlFor="cidade">Cidade</label>
   <select
     [compareWith]="compareById"
     [formControl]="control"
@@ -9,7 +9,7 @@
     <option [ngValue]="null" disabled class="text-gray-800 font-semibold">
       Selecione
     </option>
-    @for (cidade of cidadesService.cidadesAtivas(); track $index) {
+    @for (cidade of cidades(); track $index) {
       <option
         [ngValue]="cidade"
         class="text-gray-500 font-medium active:bg-blue-600 active:text-white"

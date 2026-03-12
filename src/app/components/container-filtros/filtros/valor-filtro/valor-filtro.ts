@@ -3,12 +3,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 @Component({
-  selector: 'app-valor-total-filtro',
+  selector: 'app-valor-filtro',
   imports: [CurrencyMaskModule, ReactiveFormsModule],
-  templateUrl: './valor-total-filtro.html',
-  styleUrl: './valor-total-filtro.css',
+  templateUrl: './valor-filtro.html',
+  styleUrl: './valor-filtro.css',
 })
-export class ValorTotalFiltro {
+export class ValorFiltro {
   @Input() form!: FormGroup;
   @Input() onRemover!: () => void;
   @Input() onPreencherValor!: () => void;

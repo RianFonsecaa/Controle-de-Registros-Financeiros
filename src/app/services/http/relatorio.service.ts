@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../enviroments/enviroments';
-import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
+import { CobrancaQueryFilters } from '../../model/query-filters/CobrancaQueryFilters';
 
 @Injectable({
   providedIn: 'root',

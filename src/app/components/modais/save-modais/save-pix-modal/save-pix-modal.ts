@@ -22,6 +22,7 @@ import { MoneyInput } from '../../../inputs/money-input/money-input';
 import { PixRequest } from '../../../../model/requests/PixRequest';
 import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
 import { CidadeSelect } from '../../../selects/cidade-select/cidade-select';
+import { PixResponse } from '../../../../model/responses/PixResponse';
 
 @Component({
   selector: 'app-save-pix-modal',
@@ -40,9 +41,12 @@ export class SavePixModal {
   cidadesService = inject(CidadesService);
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<any>();
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
+  @Input() pix: PixResponse | null = null; // Objeto para edição
 
   pixForm: FormGroup = new FormGroup({
     cliente: new FormControl(null, [Validators.required]),
@@ -58,7 +62,12 @@ export class SavePixModal {
 
   ngOnChanges() {
     if (!this.pixForm) return;
-    this.aplicarValoresIniciais();
+
+    if (this.pix) {
+      this.preencherFormulario();
+    } else {
+      this.resetarParaCriacao();
+    }
   }
 
   private aplicarValoresIniciais() {
@@ -79,6 +88,21 @@ export class SavePixModal {
     this.aplicarValoresIniciais();
   }
 
+  private preencherFormulario() {
+    const cidade = this.cidadesService
+      .cidades()
+      .find((c) => c.id === this.pix!.cidadeId);
+
+    this.pixForm.patchValue({
+      id: this.pix?.id,
+      cliente: this.pix?.cliente,
+      valor: this.pix?.valor,
+      cidade: cidade,
+      data: this.pix?.data,
+      comprovante: null,
+    });
+  }
+
   onSalvar() {
     if (this.pixForm.invalid) {
       this.pixForm.markAllAsTouched();
@@ -87,20 +111,30 @@ export class SavePixModal {
 
     const formValue = this.pixForm.value;
 
+    // Monta a request mantendo o ID se for edição, ou null se for novo
     const pix: PixRequest = {
+      id: formValue.id || null,
       cliente: formValue.cliente,
       valor: formValue.valor,
       cidadeId: formValue.cidade.id,
       data: formValue.data,
       comprovante: formValue.comprovante,
-      cobrancaId: null,
+      cobrancaId: this.pix?.cobrancaId || null,
     };
 
     this.salvar.emit(pix);
 
+    // Após emitir, limpa o estado
+    this.resetarParaCriacao();
+  }
+
+  private resetarParaCriacao() {
     this.pixForm.reset();
-    this.aplicarValoresIniciais();
     this.resetFileInput();
+    this.pixForm.patchValue({
+      cidade: this.cidade ?? null,
+      data: this.data ?? null,
+    });
   }
 
   private resetFileInput() {

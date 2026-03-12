@@ -11,7 +11,7 @@ export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     tap({
       error: (error: HttpErrorResponse) => {
-        if ([500].includes(error.status)) {
+        if ([401].includes(error.status)) {
           authService.logout();
         }
         toastService.abrir('error', error.error.message);

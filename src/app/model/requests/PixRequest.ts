@@ -1,4 +1,5 @@
 export interface PixRequest {
+  id: number | null;
   cliente: string;
   valor: number;
   cidadeId: number;

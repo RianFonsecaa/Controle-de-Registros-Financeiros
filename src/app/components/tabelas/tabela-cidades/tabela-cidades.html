@@ -10,16 +10,16 @@
         <div class="flex flex-row items-center gap-2 font-semibold text-sm p-3">
           <input
             type="checkbox"
-            [checked]="mostrarAtivos"
+            [checked]="mostrarAtivos()"
             (change)="toggleStatusLista()"
             [ngClass]="{
-              'border-[#23C78D] text-[#23C78D]': mostrarAtivos,
-              'border-gray-400 text-gray-400': !mostrarAtivos,
+              'border-[#23C78D] text-[#23C78D]': mostrarAtivos(),
+              'border-gray-400 text-gray-400': !mostrarAtivos(),
             }"
             class="toggle border-2"
           />
 
-          @if (mostrarAtivos) {
+          @if (mostrarAtivos()) {
             <span class="text-[#23C78D] font-bold">Ativos</span>
           } @else {
             <span class="text-gray-400">Inativos</span>
@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    @if (cidades().length > 0) {
+    @if (listaExibida().length > 0) {
       <div class="relative w-full h-full overflow-auto">
         <table class="w-full text-[12px] text-[#636363]">
           <thead>
@@ -68,7 +68,7 @@
           </thead>
 
           <tbody>
-            @for (cidade of filtraCidades(); track cidade.id) {
+            @for (cidade of listaExibida(); track cidade.id) {
               <tr
                 class="border-t h-16 border w-full border-gray-200 hover:bg-gray-100 transition-colors"
               >
@@ -107,8 +107,8 @@
                       class="flex justify-center items-center rounded-md p-0 h-6 w-6 cursor-pointer shadow-md transition duration-200 hover:scale-110"
                       (click)="abrirModal(cidade, toggleStatusModal)"
                       [ngClass]="{
-                        'bg-[#23C78D]': mostrarAtivos,
-                        'bg-red-500': !mostrarAtivos,
+                        'bg-[#23C78D]': mostrarAtivos(),
+                        'bg-red-500': !mostrarAtivos(),
                       }"
                     >
                       <svg
@@ -194,7 +194,7 @@
     (confirmar)="toggleStatusCadastro(toggleStatusModal)"
     (cancelar)="fecharModal(toggleStatusModal)"
     tipoCadastro="Cidade"
-    [toggleStatus]="mostrarAtivos"
+    [toggleStatus]="mostrarAtivos()"
   ></app-toggle-status-modal>
 </dialog>
 

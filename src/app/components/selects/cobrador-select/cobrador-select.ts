@@ -11,6 +11,7 @@ import { FuncionarioResponse } from '../../../model/responses/FuncionarioRespons
 })
 export class CobradorSelect {
   funcionarioService = inject(FuncionarioService);
+  funcionarios = this.funcionarioService.funcionariosAtivos;
   @Input() control!: FormControl;
 
   getMensagemErro(formControl: FormControl): string {

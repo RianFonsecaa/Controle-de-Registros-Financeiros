@@ -11,6 +11,7 @@ import { CidadesService } from '../../../services/http/cidades.service';
 })
 export class CidadeSelect {
   cidadesService = inject(CidadesService);
+  cidades = this.cidadesService.cidadesAtivas;
   @Input() control!: FormControl;
 
   ngOnInit() {

@@ -1,76 +1,43 @@
 <section class="flex flex-col h-full gap-4 min-w-0">
   <app-container-filtros
-    titulo="Filtragem de Cobranças"
+    titulo="Filtragem de Recebimentos Pix"
     [filtroForm]="filtroForm"
     [configuracaoFiltros]="configuracaoFiltros"
     (filtrar)="filtrarRegistros($event)"
   ></app-container-filtros>
+
   <div
     class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl overflow-hidden border border-gray-300 shadow-lg"
   >
     <div class="flex flex-row min-w-0 justify-between p-6 items-center">
       <span
         class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
-        ><div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
-        <span> LISTAGEM DE COBRANÇAS </span>
+      >
+        <div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
+        <span> LISTAGEM DE RECEBIMENTOS PIX </span>
       </span>
       <div class="flex flex-row items-end gap-2 min-w-0">
         <app-primary-add-button
-          (abrir)="abrirModal(null, saveCobrancaModal)"
-          nome="Cobrança"
+          (abrir)="abrirModal(null, savePixModal)"
+          nome="Pix"
         ></app-primary-add-button>
-        <app-relatorio-button (click)="geraRelatorio()"></app-relatorio-button>
       </div>
     </div>
 
-    @if (cobrancas().length > 0) {
+    @if (recebimentosPix().length > 0) {
       <div class="relative w-full h-full overflow-auto">
         <table class="min-w-full text-[12px] text-[#636363]">
           <thead>
             <tr>
               <th
-                class="sticky top-0 bg-white min-w-[20px] px-6 py-3 text-left"
+                class="sticky top-0 bg-white min-w-[20px] px-6 py-3 text-left italic"
               >
-                <svg
-                  class="text-gray-500 h-4 w-4"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      fill="currentColor"
-                      fill-rule="evenodd"
-                      d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"
-                    ></path>
-                  </g>
-                </svg>
+                Ações
               </th>
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
               >
-                COBRADOR
-              </th>
-              <th
-                class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
-              >
-                ID
-              </th>
-              <th
-                class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
-              >
-                CIDADE
-              </th>
-              <th
-                class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
-              >
-                VEÍCULO
+                CLIENTE
               </th>
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
@@ -80,45 +47,35 @@
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
               >
-                V. ESPÉCIE
+                CIDADE
               </th>
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
               >
-                V. PIX
+                VALOR
               </th>
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
               >
-                V. VALE
+                COMPROVANTE
               </th>
               <th
                 class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
               >
-                REGISTRO POR
-              </th>
-              <th
-                class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
-              >
-                TOTAL
-              </th>
-              <th
-                class="sticky top-0 bg-white min-w-[160px] px-2 py-3 text-left"
-              >
-                OBSERVAÇÕES
+                ID COBRANÇA
               </th>
             </tr>
           </thead>
 
           <tbody>
-            @for (cobranca of cobrancas(); track cobranca.id) {
+            @for (pix of recebimentosPix(); track pix.id) {
               <tr
                 class="border-t h-16 border border-gray-200 hover:bg-gray-100 transition-colors"
               >
                 <td class="py-2 px-6">
                   <div class="flex flex-row gap-1">
                     <button
-                      (click)="abrirModal(cobranca, updateCobrancaModal)"
+                      (click)="abrirModal(pix, savePixModal)"
                       class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-blue-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
                     >
                       <svg
@@ -148,7 +105,7 @@
 
                     <button
                       class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-red-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
-                      (click)="abrirModal(cobranca, deleteModal)"
+                      (click)="abrirModal(pix, deleteModal)"
                     >
                       <svg
                         class="text-white w-4 h-4"
@@ -171,55 +128,98 @@
                     </button>
                   </div>
                 </td>
-                <td class="p-2">
-                  {{ cobranca.cobradorNome }}
-                </td>
-                <td class="italic p-2 text-gray-400"># {{ cobranca.id }}</td>
-
-                <td class="p-2">
-                  {{ cobranca.cidadeNome }}
-                </td>
-
-                <td class="p-2">
-                  {{ cobranca.veiculoModelo }}
-                </td>
-
-                <td class="p-2">
-                  {{ cobranca.data | date: "dd/MM/yyyy" }}
-                </td>
-
-                <td class="p-2">
-                  {{
-                    cobranca.valorEspecie | currency: "BRL" : "symbol" : "1.2-2"
-                  }}
-                </td>
-
-                <td class="p-2">
-                  {{
-                    cobranca.valorTotalPix
-                      | currency: "BRL" : "symbol" : "1.2-2"
-                  }}
-                </td>
-
-                <td class="p-2">
-                  {{
-                    cobranca.valorTotalVale
-                      | currency: "BRL" : "symbol" : "1.2-2"
-                  }}
-                </td>
-
-                <td class="p-2">
-                  {{ cobranca.usuarioRegistranteName }}
-                </td>
-
+                <td class="p-2">{{ pix.cliente }}</td>
+                <td class="p-2">{{ pix.cidadeNome }}</td>
+                <td class="p-2">{{ pix.data | date: "dd/MM/yyyy" }}</td>
                 <td class="p-2 font-semibold text-gray-800">
-                  {{
-                    cobranca.valorTotal | currency: "BRL" : "symbol" : "1.2-2"
-                  }}
+                  {{ pix.valor | currency: "BRL" : "symbol" : "1.2-2" }}
                 </td>
-
-                <td class="p-2 text-gray-400 italic">
-                  {{ cobranca.observacoes }}
+                <td class="p-2">
+                  @if (pix.nomeComprovante) {
+                    <button
+                      (click)="visualizarComprovante(pix)"
+                      class="text-blue-600 hover:underline flex items-center gap-1"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      Ver anexo
+                    </button>
+                  } @else {
+                    <div
+                      class="flex flex-row gap-1 text-[11px] font-semibold text-[#f97676]"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <g clip-path="url(#clip0_429_11081)">
+                            <circle
+                              cx="12"
+                              cy="11.9999"
+                              r="9"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></circle>
+                            <path
+                              d="M14 10.0001L10 14.0001"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M10 10.0001L14 14.0001"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_429_11081">
+                              <rect width="24" height="24" fill="white"></rect>
+                            </clipPath>
+                          </defs>
+                        </g>
+                      </svg>
+                      <span>Não anexado</span>
+                    </div>
+                  }
+                </td>
+                <td class="italic p-2 text-gray-400">
+                  @if (pix.cobrancaId) {
+                    <span># {{ pix.cobrancaId }}</span>
+                  } @else {
+                    <span>NÃO VINCULADO</span>
+                  }
                 </td>
               </tr>
             }
@@ -252,12 +252,10 @@
             </g>
           </svg>
         </div>
-        <h3 class="text-xl font-bold text-[#475569]">
-          Nenhuma cobrança encontrada
-        </h3>
+        <h3 class="text-xl font-bold text-[#475569]">Nenhum Pix encontrado</h3>
         <p class="text-gray-500 text-center max-w-xs">
-          Não há nenhum registro de cobrança para os filtros selecionados ou a
-          lista está vazia.
+          Não há nenhum registro de Pix para os filtros selecionados ou a lista
+          está vazia.
         </p>
         <app-update-button
           (atualizar)="atualizaRegistros()"
@@ -269,30 +267,17 @@
 
 <dialog #deleteModal class="modal">
   <app-delete-modal
-    (deletar)="deletarCobranca(deleteModal)"
+    (deletar)="deletarPix(deleteModal)"
     (cancelar)="fecharModal(deleteModal)"
-    titulo="Excluir registro de cobrança"
-    conteudo="Tem certeza que deseja remover este registro de cobrança? Esta ação é
-      irreversível."
+    titulo="Excluir Registro de Pix"
+    conteudo="Tem certeza que deseja remover este recebimento? O comprovante também será excluído."
   ></app-delete-modal>
 </dialog>
 
-<dialog #saveCobrancaModal class="modal">
-  <app-save-cobranca-modal
-    (salvar)="fecharModal(saveCobrancaModal)"
-    (cancelar)="fecharModal(saveCobrancaModal)"
-  ></app-save-cobranca-modal>
-</dialog>
-
-<dialog #updateCobrancaModal class="modal">
-  <app-update-cobranca-modal
-    [cobranca]="cobrancaSelecionada"
-    (salvar)="fecharModal(updateCobrancaModal)"
-    (cancelar)="fecharModal(updateCobrancaModal)"
-  >
-  </app-update-cobranca-modal>
-</dialog>
-
-<dialog #loadingModal class="modal">
-  <app-loading-modal></app-loading-modal>
+<dialog #savePixModal class="modal">
+  <app-save-pix-modal
+    [pix]="pixSelecionado"
+    (salvar)="salvarPix($event, savePixModal)"
+    (cancelar)="fecharModal(savePixModal)"
+  ></app-save-pix-modal>
 </dialog>

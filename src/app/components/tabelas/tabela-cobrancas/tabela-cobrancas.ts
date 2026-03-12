@@ -10,7 +10,6 @@ import {
   FiltroConfig,
 } from '../../container-filtros/container-filtros';
 import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
-import { CobrancaQueryFilters } from '../../../model/requests/CobrancaQueryFilters';
 import { UpdateButton } from '../../buttons/update-button/update-button';
 import { LoadingModal } from '../../modais/loading-modal/loading-modal';
 import { RelatorioService } from '../../../services/http/relatorio.service';
@@ -24,7 +23,8 @@ import { CobradorFiltro } from '../../container-filtros/filtros/cobrador-filtro/
 import { ObservacoesFiltro } from '../../container-filtros/filtros/observacoes-filtro/observacoes-filtro';
 import { PeriodoFiltro } from '../../container-filtros/filtros/periodo-filtro/periodo-filtro';
 import { RegistranteFiltro } from '../../container-filtros/filtros/registrante-filtro/registrante-filtro';
-import { ValorTotalFiltro } from '../../container-filtros/filtros/valor-total-filtro/valor-total-filtro';
+import { ValorFiltro } from '../../container-filtros/filtros/valor-filtro/valor-filtro';
+import { CobrancaQueryFilters } from '../../../model/query-filters/CobrancaQueryFilters';
 
 @Component({
   selector: 'app-tabela-cobrancas',
@@ -100,9 +100,9 @@ export class TabelaCobrancas {
       controlsParaResetar: ['dataInicioFiltro', 'dataFimFiltro'],
     },
     {
-      key: 'valorTotalFiltro',
+      key: 'valorFiltro',
       visivel: false,
-      componente: ValorTotalFiltro,
+      componente: ValorFiltro,
       label: 'Valor Total',
       controlsParaResetar: ['valorInicioFiltro', 'valorFimFiltro'],
     },

@@ -6,5 +6,5 @@ export interface PixResponse {
   cidadeId: number;
   cidadeNome: string;
   cobrancaId: number;
-  caminhoArquivo?: string;
+  nomeComprovante?: string;
 }

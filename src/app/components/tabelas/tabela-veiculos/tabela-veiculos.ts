@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { VeiculoResponse } from '../../../model/responses/VeiculoResponse';
 import { VeiculoService } from '../../../services/http/veiculo.service';
 import { ModalService } from '../../../services/ui/modal.service';
@@ -19,9 +19,13 @@ export class TabelaVeiculos implements OnInit {
   private veiculoService = inject(VeiculoService);
   private toastService = inject(ToastService);
 
-  veiculos = this.veiculoService.veiculos;
   veiculoSelecionado: VeiculoResponse | null = null;
-  mostrarAtivos = true;
+  mostrarAtivos = signal(true);
+  listaExibida = computed(() => {
+    return this.veiculoService
+      .veiculos()
+      .filter((f) => f.ativo === this.mostrarAtivos());
+  });
 
   ngOnInit() {
     this.veiculoService.buscaVeiculos();
@@ -49,18 +53,14 @@ export class TabelaVeiculos implements OnInit {
           'success',
           'Status do veículo atualizado com sucesso!',
         );
-        this.fecharModal(modal);
       },
       error: () =>
         this.toastService.abrir('error', 'Erro ao atualizar status.'),
     });
+    this.fecharModal(modal);
   }
 
   toggleStatusLista() {
-    this.mostrarAtivos = !this.mostrarAtivos;
-  }
-
-  filtraVeiculos(): VeiculoResponse[] {
-    return this.veiculos().filter((v) => v.ativo === this.mostrarAtivos);
+    this.mostrarAtivos.update((status) => !status);
   }
 }

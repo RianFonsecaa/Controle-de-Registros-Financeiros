@@ -1,4 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
 import { FuncionarioService } from '../../../services/http/funcionario.service';
 import { ModalService } from '../../../services/ui/modal.service';
@@ -19,9 +26,14 @@ export class TabelaFuncionarios implements OnInit {
   private funcionarioService = inject(FuncionarioService);
   private toastService = inject(ToastService);
 
-  funcionarios = this.funcionarioService.funcionarios;
   funcionarioSelecionado: FuncionarioResponse | null = null;
-  mostrarAtivos = true;
+  mostrarAtivos = signal(true);
+
+  listaExibida = computed(() => {
+    return this.funcionarioService
+      .funcionarios()
+      .filter((f) => f.ativo === this.mostrarAtivos());
+  });
 
   ngOnInit() {
     this.funcionarioService.buscaFuncionarios();
@@ -54,21 +66,15 @@ export class TabelaFuncionarios implements OnInit {
             'success',
             'Status do funcionário atualizado com sucesso!',
           );
-          this.fecharModal(modal);
         },
         error: () => {
           this.toastService.abrir('error', 'Erro ao atualizar status.');
         },
       });
+    this.fecharModal(modal);
   }
 
   toggleStatusLista() {
-    this.mostrarAtivos = !this.mostrarAtivos;
-  }
-
-  filtraFuncionarios(): FuncionarioResponse[] {
-    return this.funcionarios().filter(
-      (func) => func.ativo === this.mostrarAtivos,
-    );
+    this.mostrarAtivos.update((status) => !status);
   }
 }

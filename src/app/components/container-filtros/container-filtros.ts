@@ -16,7 +16,8 @@ export type FiltroKey =
   | 'periodoFiltro'
   | 'cobradorFiltro'
   | 'observacoesFiltro'
-  | 'valorTotalFiltro';
+  | 'clienteFiltro'
+  | 'valorFiltro';
 
 export interface FiltroConfig {
   key: FiltroKey;

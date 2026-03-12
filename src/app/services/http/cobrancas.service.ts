@@ -3,7 +3,7 @@ import { environment } from '../../../enviroments/enviroments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CobrancaResponse } from '../../model/responses/CobrancaResponse';
 import { CobrancaRequest } from '../../model/requests/CobrancaRequest';
-import { CobrancaQueryFilters } from '../../model/requests/CobrancaQueryFilters';
+import { CobrancaQueryFilters } from '../../model/query-filters/CobrancaQueryFilters';
 
 @Injectable({
   providedIn: 'root',
