@@ -5,6 +5,7 @@ import { TituloPagina } from '../../components/titulo-pagina/titulo-pagina';
 import { PaginaEmManutencao } from '../../components/pagina-em-manutencao/pagina-em-manutencao';
 import { NgComponentOutlet } from '@angular/common';
 import { TabelaPix } from '../../components/tabelas/tabela-pix/tabela-pix';
+import { TabelaVales } from '../../components/tabelas/tabela-vales/tabela-vales';
 
 @Component({
   selector: 'app-registros',
@@ -18,7 +19,7 @@ export class Registros {
   configuracaoAbas: TabConfig[] = [
     { label: 'Cobranças', componente: TabelaCobrancas },
     { label: 'Pix', componente: TabelaPix },
-    { label: 'Vales', componente: PaginaEmManutencao },
+    { label: 'Vales', componente: TabelaVales },
   ];
 
   setComponenteAtivo(comp: Type<any> | null) {

@@ -46,7 +46,7 @@ export class SavePixModal {
 
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
-  @Input() pix: PixResponse | null = null; // Objeto para edição
+  @Input() pix: PixResponse | null = null;
 
   pixForm: FormGroup = new FormGroup({
     cliente: new FormControl(null, [Validators.required]),
@@ -70,13 +70,6 @@ export class SavePixModal {
     }
   }
 
-  private aplicarValoresIniciais() {
-    this.pixForm.patchValue({
-      cidade: this.cidade ?? null,
-      data: this.data ?? null,
-    });
-  }
-
   getControl(name: string): FormControl {
     return this.pixForm.get(name) as FormControl;
   }
@@ -85,7 +78,6 @@ export class SavePixModal {
     this.cancelar.emit();
     this.pixForm.reset();
     this.resetFileInput();
-    this.aplicarValoresIniciais();
   }
 
   private preencherFormulario() {
@@ -111,7 +103,6 @@ export class SavePixModal {
 
     const formValue = this.pixForm.value;
 
-    // Monta a request mantendo o ID se for edição, ou null se for novo
     const pix: PixRequest = {
       id: formValue.id || null,
       cliente: formValue.cliente,
@@ -123,8 +114,6 @@ export class SavePixModal {
     };
 
     this.salvar.emit(pix);
-
-    // Após emitir, limpa o estado
     this.resetarParaCriacao();
   }
 

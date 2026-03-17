@@ -42,7 +42,7 @@ export class TabelaPix implements OnInit {
   private pixService = inject(PixService);
   private toastService = inject(ToastService);
 
-  recebimentosPix = this.pixService.pixList;
+  listaPix = this.pixService.listaPixs;
   filtrosAtivos!: PixQueryFilters;
   pixSelecionado: PixResponse | null = null;
   enviando: boolean = false;
@@ -86,7 +86,7 @@ export class TabelaPix implements OnInit {
   ];
 
   ngOnInit() {
-    this.pixService.buscaTodosPix();
+    this.pixService.buscaPixs();
   }
 
   filtrarRegistros(formValue: any) {
@@ -108,7 +108,7 @@ export class TabelaPix implements OnInit {
 
     this.pixService.deletaPix(this.pixSelecionado.id).subscribe({
       next: () => {
-        this.pixService.buscaTodosPix();
+        this.pixService.buscaPixs();
         this.toastService.abrir(
           'success',
           'Registro de Pix apagado com sucesso!',
@@ -153,12 +153,7 @@ export class TabelaPix implements OnInit {
           'success',
           `Registro de Pix ${msg} com sucesso!`,
         );
-        this.pixService.buscaTodosPix();
-      },
-      error: (error) => {
-        this.enviando = false;
-        const msgErro = error.error?.message || 'Erro ao processar requisição';
-        this.toastService.abrir('error', msgErro);
+        this.pixService.buscaPixs();
       },
       complete: () => (this.enviando = false),
     });
@@ -176,8 +171,6 @@ export class TabelaPix implements OnInit {
         const url = window.URL.createObjectURL(arquivo);
         window.open(url, '_blank');
       },
-      error: () =>
-        this.toastService.abrir('error', 'Erro ao carregar o arquivo.'),
     });
   }
 }

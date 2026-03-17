@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    @if (recebimentosPix().length > 0) {
+    @if (listaPix().length > 0) {
       <div class="relative w-full h-full overflow-auto">
         <table class="min-w-full text-[12px] text-[#636363]">
           <thead>
@@ -68,7 +68,7 @@
           </thead>
 
           <tbody>
-            @for (pix of recebimentosPix(); track pix.id) {
+            @for (pix of listaPix(); track pix.id) {
               <tr
                 class="border-t h-16 border border-gray-200 hover:bg-gray-100 transition-colors"
               >

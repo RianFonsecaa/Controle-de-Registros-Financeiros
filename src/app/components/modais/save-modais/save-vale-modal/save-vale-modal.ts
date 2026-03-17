@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +21,7 @@ import { SaveButton } from '../../../buttons/save-button/save-button';
 import { ValeRequest } from '../../../../model/requests/ValeRequest';
 import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
 import { CobradorSelect } from '../../../selects/cobrador-select/cobrador-select';
+import { ValeResponse } from '../../../../model/responses/ValeResponse';
 
 @Component({
   selector: 'app-save-vale-modal',
@@ -27,14 +36,17 @@ import { CobradorSelect } from '../../../selects/cobrador-select/cobrador-select
   templateUrl: './save-vale-modal.html',
   styleUrl: './save-vale-modal.css',
 })
-export class SaveValeModal {
+export class SaveValeModal implements OnInit, OnChanges {
   funcionarioService = inject(FuncionarioService);
+
   @Output() cancelar = new EventEmitter<void>();
-  @Output() salvar = new EventEmitter<any>();
-  @Input() data!: String;
-  @Input() cidade!: CidadeResponse;
+  @Output() salvar = new EventEmitter<ValeRequest>();
+
+  @Input() data!: string;
+  @Input() vale: ValeResponse | null = null;
 
   valeForm: FormGroup = new FormGroup({
+    id: new FormControl(null),
     funcionario: new FormControl(null, [Validators.required]),
     justificativa: new FormControl(null, [Validators.required]),
     valor: new FormControl(null, [Validators.required]),
@@ -47,7 +59,12 @@ export class SaveValeModal {
 
   ngOnChanges() {
     if (!this.valeForm) return;
-    this.aplicarValorInicial();
+
+    if (this.vale) {
+      this.preencherFormulario();
+    } else {
+      this.resetarParaCriacao();
+    }
   }
 
   getControl(name: string): FormControl {
@@ -56,8 +73,21 @@ export class SaveValeModal {
 
   onCancelar() {
     this.cancelar.emit();
-    this.valeForm.reset();
-    this.aplicarValorInicial();
+    this.resetarParaCriacao();
+  }
+
+  private preencherFormulario() {
+    const funcionario = this.funcionarioService
+      .funcionarios()
+      .find((f) => f.id === this.vale!.funcionarioId);
+
+    this.valeForm.patchValue({
+      id: this.vale?.id,
+      funcionario: funcionario,
+      justificativa: this.vale?.justificativa,
+      valor: this.vale?.valor,
+      data: this.vale?.data,
+    });
   }
 
   onSalvar() {
@@ -68,20 +98,22 @@ export class SaveValeModal {
 
     const formValue = this.valeForm.value;
 
-    const vale: ValeRequest = {
+    const request: ValeRequest = {
+      id: this.vale?.id || null,
       funcionarioId: formValue.funcionario.id,
       funcionarioNome: formValue.funcionario.nome,
-      cobrancaId: 0,
       justificativa: formValue.justificativa,
       valor: formValue.valor,
       data: formValue.data,
+      cobrancaId: this.vale?.cobrancaId || null,
     };
-    this.salvar.emit(vale);
-    this.valeForm.reset();
-    this.aplicarValorInicial();
+
+    this.salvar.emit(request);
+    this.resetarParaCriacao();
   }
 
-  private aplicarValorInicial() {
+  private resetarParaCriacao() {
+    this.valeForm.reset();
     this.valeForm.patchValue({
       data: this.data ?? null,
     });

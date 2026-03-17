@@ -13,7 +13,7 @@ export class PixService {
   private readonly BASE_URL = `${environment.apiUrl}/pix`;
   private http = inject(HttpClient);
 
-  readonly pixList = signal<PixResponse[]>([]);
+  readonly listaPixs = signal<PixResponse[]>([]);
 
   salvarPix(pix: PixRequest, arquivo: File | null) {
     const formData = new FormData();
@@ -30,10 +30,10 @@ export class PixService {
     return this.http.post<PixResponse>(this.BASE_URL, formData);
   }
 
-  buscaTodosPix() {
+  buscaPixs() {
     this.http.get<PixResponse[]>(this.BASE_URL).subscribe({
-      next: (data) => this.pixList.set(data),
-      error: () => this.pixList.set([]),
+      next: (data) => this.listaPixs.set(data),
+      error: () => this.listaPixs.set([]),
     });
   }
 
@@ -49,8 +49,8 @@ export class PixService {
     this.http
       .get<PixResponse[]>(`${this.BASE_URL}/buscaPorFiltro`, { params })
       .subscribe({
-        next: (data) => this.pixList.set(data),
-        error: () => this.pixList.set([]),
+        next: (data) => this.listaPixs.set(data),
+        error: () => this.listaPixs.set([]),
       });
   }
 
