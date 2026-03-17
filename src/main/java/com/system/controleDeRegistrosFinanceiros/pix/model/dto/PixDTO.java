@@ -24,7 +24,6 @@ public class PixDTO {
     private Long cobrancaId;
     private Long cidadeId;
     private String cidadeNome;
-
     private String nomeComprovante;
 
 }

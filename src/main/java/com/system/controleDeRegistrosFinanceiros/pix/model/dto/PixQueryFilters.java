@@ -23,7 +23,7 @@ public class PixQueryFilters {
 
     private Double valorFim;
 
-    public Specification<Pix> toEspecification(){
+    public Specification<Pix> toSpecification(){
         return porCidade(cidadeId)
                 .and(clienteContains(cliente))
                 .and(periodoEntre(dataInicio,dataFim))

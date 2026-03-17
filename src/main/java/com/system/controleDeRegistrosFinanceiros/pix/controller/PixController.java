@@ -72,6 +72,7 @@ public class PixController{
                     .body(recurso);
 
         } catch (IOException e) {
+
             throw new RuntimeException("Erro ao carregar comprovante", e);
         }
     }

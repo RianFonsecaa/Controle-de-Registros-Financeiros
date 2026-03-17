@@ -3,16 +3,23 @@ package com.system.controleDeRegistrosFinanceiros.vale.service;
 import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 import com.system.controleDeRegistrosFinanceiros.cobranca.service.CobrancasService;
+import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
+import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
+import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
+import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
+import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeQueryFilters;
 import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
 import com.system.controleDeRegistrosFinanceiros.vale.repository.ValeRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ValeService{
 
@@ -44,7 +51,13 @@ public class ValeService{
     public ValeDTO salvar(ValeDTO valeDTO) {
         Vale vale = valeMapper.toEntity(valeDTO);
         vale.setFuncionario(funcionarioService.getById(valeDTO.getFuncionarioId()));
-        vale.setCobranca(cobrancasService.getById(valeDTO.getCobrancaId()));
+
+        if (valeDTO.getCobrancaId() != null) {
+            vale.setCobranca(cobrancasService.getById(valeDTO.getCobrancaId()));
+        } else {
+            vale.setCobranca(null);
+        }
+
         Vale salvo = valeRepository.save(vale);
         return valeMapper.toDTO(salvo);
     }
@@ -57,10 +70,29 @@ public class ValeService{
     }
 
     public ValeDTO editar(ValeDTO valeDTO) {
-        if (valeDTO.getId() == null){
-            throw new EntityNotFoundException("Não foi possível editar. Vale com ID " + valeDTO.getId() + " não encontrada.");
+        Vale vale = valeRepository.findById(valeDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("Vale", "id", valeDTO.getId()));
+        valeMapper.updateEntityFromDto(valeDTO, vale);
+        vale.setFuncionario(funcionarioService.getById(valeDTO.getFuncionarioId()));
+
+        if (valeDTO.getCobrancaId() != null) {
+            vale.setCobranca(cobrancasService.getById(valeDTO.getCobrancaId()));
+        } else {
+            vale.setCobranca(null);
         }
-        return this.salvar(valeDTO);
+        Vale salvo = valeRepository.save(vale);
+
+        return valeMapper.toDTO(salvo);
+    }
+
+    public List<ValeDTO> buscaTodosPorFiltro(ValeQueryFilters filters) {
+        List<Vale> valesFiltrados = valeRepository.findAll(filters.toSpecification());
+
+        if (valesFiltrados.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");
+        }
+
+        return valesFiltrados.stream().map(valeMapper :: toDTO).toList();
+
     }
 
 }

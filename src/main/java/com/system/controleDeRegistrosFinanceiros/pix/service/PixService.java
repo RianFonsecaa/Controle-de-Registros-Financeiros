@@ -87,7 +87,7 @@ public class PixService{
             try {
                 Files.createDirectories(Paths.get(DIRETORIO_PIX));
 
-                String nomeComprovante = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
+                String nomeComprovante = arquivo.getOriginalFilename();
                 Path caminho = Paths.get(DIRETORIO_PIX, nomeComprovante);
 
                 Files.write(caminho, arquivo.getBytes());
@@ -105,15 +105,15 @@ public class PixService{
     }
 
 
-    public PixDTO editar(PixDTO dto, MultipartFile arquivo) {
-        Pix pix = pixRepository.findById(dto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Pix", "id", dto.getId()));
+    public PixDTO editar(PixDTO pixDTO, MultipartFile arquivo) {
+        Pix pix = pixRepository.findById(pixDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pix", "id", pixDTO.getId()));
 
-        pixMapper.updateEntityFromDto(dto, pix);
-        pix.setCidade(cidadeService.getById(dto.getCidadeId()));
+        pixMapper.updateEntityFromDto(pixDTO, pix);
+        pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
 
-        if (dto.getCobrancaId() != null) {
-            pix.setCobranca(cobrancasService.getById(dto.getCobrancaId()));
+        if (pixDTO.getCobrancaId() != null) {
+            pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
         } else {
             pix.setCobranca(null);
         }
@@ -139,7 +139,7 @@ public class PixService{
     }
 
     public List<PixDTO> buscaTodosPorFiltro(PixQueryFilters filters) {
-        List<Pix> pixFiltrados = pixRepository.findAll(filters.toEspecification());
+        List<Pix> pixFiltrados = pixRepository.findAll(filters.toSpecification());
 
         if (pixFiltrados.isEmpty()) {
             throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");

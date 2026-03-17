@@ -1,5 +1,4 @@
 package com.system.controleDeRegistrosFinanceiros.pix.specifications;
-import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;

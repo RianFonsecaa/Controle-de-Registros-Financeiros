@@ -18,6 +18,7 @@ public class ValeDTO {
 
     private Long id;
     private Long funcionarioId;
+    private String funcionarioNome;
     private Long cobrancaId;
     private String justificativa;
     private Double valor;
