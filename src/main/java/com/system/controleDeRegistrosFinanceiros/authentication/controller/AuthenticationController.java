@@ -1,26 +1,14 @@
 package com.system.controleDeRegistrosFinanceiros.authentication.controller;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
-import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+import com.system.controleDeRegistrosFinanceiros.authentication.model.*;
+import com.system.controleDeRegistrosFinanceiros.authentication.service.AuthorizationService;
+import com.system.controleDeRegistrosFinanceiros.exceptions.BusinessRuleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import com.system.controleDeRegistrosFinanceiros.authentication.model.LoginRequestDTO;
-import com.system.controleDeRegistrosFinanceiros.authentication.model.LoginResponseDTO;
-import com.system.controleDeRegistrosFinanceiros.authentication.model.RegisterDTO;
-import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
-import com.system.controleDeRegistrosFinanceiros.authentication.repository.UserRepository;
-import com.system.controleDeRegistrosFinanceiros.authentication.utils.TokenService;
 
 import jakarta.validation.Valid;
 
@@ -29,56 +17,46 @@ import jakarta.validation.Valid;
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TokenService tokenService;
+    private AuthorizationService authorizationService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data){
-        try {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-            var auth = authenticationManager.authenticate(usernamePassword);
-            var user = (User) auth.getPrincipal();
-
-            var accessToken = tokenService.generateAccessToken(user);
-            var refreshToken = tokenService.generateRefreshToken(user);
-
-            return ResponseEntity.ok(new LoginResponseDTO(accessToken, refreshToken));
-        } catch (AuthenticationException ex) {
-            throw new BadCredentialsException("Credenciais inválidas. Verifique seu login e senha.");
-        }
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
+        return ResponseEntity.ok(authorizationService.login(data));
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<LoginResponseDTO> refreshToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
-        if (refreshToken == null || refreshToken.isBlank()) {
-            throw new IllegalArgumentException("O atributo 'refreshToken' é obrigatório no corpo da requisição.");
-        }
-
-        String login = tokenService.validateRefreshToken(refreshToken);
-        User user = (User) userRepository.findByLogin(login)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "login", login));
-
-        var newAccessToken = tokenService.generateAccessToken(user);
-        var newRefreshToken = tokenService.generateRefreshToken(user);
-
-        return ResponseEntity.ok(new LoginResponseDTO(newAccessToken, newRefreshToken));
+        return ResponseEntity.ok(authorizationService.refreshToken(request.get("refreshToken")));
     }
+
     @PostMapping("/register")
-        public ResponseEntity<User> register(@RequestBody @Valid RegisterDTO data){
-            if (this.userRepository.existsByLogin(data.login())){
-                throw new ResourceAlreadyExistsException("Usuário", "E-mail", data.login());
-            };
-            String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-            User newUser = new User(data.login(), encryptedPassword, data.name(), data.role());
-        return ResponseEntity.ok(this.userRepository.save(newUser));
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid RegisterDTO data) {
+        return ResponseEntity.ok(authorizationService.register(data));
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(authorizationService.findAllUsers());
+    }
 
+    @PutMapping("/users/{login}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable String login, @RequestBody @Valid UserDTO data) {
+        return ResponseEntity.ok(authorizationService.updateUser(login, data));
+    }
 
+    @DeleteMapping("/users/{login}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
+        authorizationService.deleteUser(login);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/users/{login}/password")
+    public ResponseEntity<Void> updatePassword(@PathVariable String login, @RequestBody Map<String, String> request) {
+        String newPassword = request.get("password");
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new BusinessRuleException("A senha deve ter no mínimo 6 caracteres.");
+        }
+        authorizationService.updatePassword(login, newPassword);
+        return ResponseEntity.ok().build();
+    }
 }
