@@ -71,7 +71,7 @@ export class SaveVeiculoModal implements OnInit, OnChanges {
     const request: VeiculoRequest = {
       ...this.veiculoForm.value,
       placa: this.veiculoForm.value.placa.toUpperCase(),
-      ativo: this.veiculo?.ativo ?? true,
+      ativo: this.veiculo ? this.veiculo.ativo : true,
       id: this.veiculo?.id || null,
     };
 

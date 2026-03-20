@@ -9,7 +9,7 @@ import { UserRequest } from '../../model/requests/UserRequest';
   providedIn: 'root',
 })
 export class UsuariosService {
-  private readonly BASE_URL = `${environment.apiUrl}/auth/users`;
+  private readonly BASE_URL = `${environment.apiUrl}/usuarios`;
   private http = inject(HttpClient);
 
   readonly usuarios = signal<UserResponse[]>([]);
@@ -21,29 +21,21 @@ export class UsuariosService {
     });
   }
 
-  registrarUsuario(dados: UserRequest): Observable<UserResponse> {
-    return this.http.post<UserResponse>(
-      `${environment.apiUrl}/auth/register`,
-      dados,
-    );
+  registrarUsuario(dados: UserRequest) {
+    return this.http.post<UserResponse>(`${this.BASE_URL}/registro`, dados);
   }
 
-  atualizaUsuario(
-    loginOriginal: string,
-    dados: UserRequest,
-  ): Observable<UserResponse> {
+  atualizaUsuario(loginOriginal: string, dados: UserRequest) {
     return this.http
       .put<UserResponse>(`${this.BASE_URL}/${loginOriginal}`, dados)
       .pipe(tap(() => this.buscaUsuarios()));
   }
 
-  excluiUsuario(login: string): Observable<void> {
-    return this.http
-      .delete<void>(`${this.BASE_URL}/${login}`)
-      .pipe(tap(() => this.buscaUsuarios()));
+  toggleStatus(login: string) {
+    return this.http.patch<void>(`${this.BASE_URL}/${login}/toggle`, {});
   }
 
-  mudarSenha(login: string, novaSenha: string): Observable<void> {
+  mudarSenha(login: string, novaSenha: string) {
     return this.http.patch<void>(`${this.BASE_URL}/${login}/password`, {
       password: novaSenha,
     });

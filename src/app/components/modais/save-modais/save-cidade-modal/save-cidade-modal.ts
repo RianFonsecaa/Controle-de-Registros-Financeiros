@@ -55,7 +55,7 @@ export class SaveCidadeModal {
 
     const request: CidadeRequest = {
       ...this.cidadeForm.value,
-      ativo: this.cidade?.ativo,
+      ativo: this.cidade ? this.cidade.ativo : true,
       id: this.cidade?.id || null,
     };
 

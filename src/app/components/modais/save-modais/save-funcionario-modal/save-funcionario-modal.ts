@@ -79,7 +79,7 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
 
     const request: FuncionarioRequest = {
       ...this.funcionarioForm.value,
-      ativo: this.funcionario?.ativo ?? true,
+      ativo: this.funcionario ? this.funcionario.ativo : true,
       id: this.funcionario?.id || null,
     };
 

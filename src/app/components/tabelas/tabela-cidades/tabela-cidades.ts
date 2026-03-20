@@ -46,14 +46,14 @@ export class TabelaCidades {
     this.cidadeSelecionada = null;
   }
 
-  toggleStatusCadastro(modal: HTMLDialogElement) {
+  toggleStatusCidade(modal: HTMLDialogElement) {
     if (!this.cidadeSelecionada) return;
     this.cidadesService.toggleStatus(this.cidadeSelecionada.id).subscribe({
       next: () => {
         this.cidadesService.buscaCidades();
         this.toastService.abrir(
           'success',
-          'Registro de cobrança foi apagado com sucesso!',
+          'Cadastro de Cidade inativado com sucesso!',
         );
         this.modalService.fecharModal(modal);
       },

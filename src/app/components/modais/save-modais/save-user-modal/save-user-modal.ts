@@ -21,6 +21,7 @@ import { SaveButton } from '../../../buttons/save-button/save-button';
 import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
 import { NgClass } from '@angular/common';
 import { UserRequest, UserRole } from '../../../../model/requests/UserRequest';
+import { TokenStorageService } from '../../../../services/auth/token-storage.service';
 
 @Component({
   selector: 'app-save-user-modal',
@@ -35,6 +36,7 @@ export class SaveUserModal implements OnInit, OnChanges {
 
   private usuariosService = inject(UsuariosService);
   private toastService = inject(ToastService);
+  private tokenStorageService = inject(TokenStorageService);
 
   enviando = false;
 
@@ -75,28 +77,46 @@ export class SaveUserModal implements OnInit, OnChanges {
       return;
     }
 
+    const formValue = this.userForm.getRawValue();
+
+    if (this.isTrocaDaPropriaRole(formValue.role as string)) return;
+
     this.enviando = true;
-    const formValue = this.userForm.getRawValue() as UserRequest;
+
+    const request: UserRequest = {
+      ...formValue,
+      ativo: this.usuario?.ativo ?? true,
+      password: formValue.password || undefined,
+    } as UserRequest;
 
     const operacao$ = this.usuario
-      ? this.usuariosService.atualizaUsuario(this.usuario.login, formValue)
-      : this.usuariosService.registrarUsuario(formValue);
+      ? this.usuariosService.atualizaUsuario(this.usuario.login, request)
+      : this.usuariosService.registrarUsuario(request);
 
     operacao$.subscribe({
       next: () => {
-        const msg = this.usuario ? 'atualizado' : 'cadastrado';
-        this.toastService.abrir('success', `Usuário ${msg} com sucesso!`);
-        this.finalizarSucesso();
-      },
-      error: (err) => {
-        this.enviando = false;
         this.toastService.abrir(
-          'error',
-          err.error?.message || 'Erro na operação',
+          'success',
+          `Usuário ${this.usuario ? 'atualizado' : 'cadastrado'} com sucesso!`,
         );
+        this.finalizarSucesso();
       },
       complete: () => (this.enviando = false),
     });
+  }
+
+  private isTrocaDaPropriaRole(roleSolicitada: string): boolean {
+    const emailLogado = this.tokenStorageService.getPayload()?.email;
+    const ehProprioPerfil = this.usuario?.login === emailLogado;
+
+    if (ehProprioPerfil && roleSolicitada !== 'ADMIN') {
+      this.toastService.abrir(
+        'error',
+        'Você não pode alterar o seu próprio nível de acesso!',
+      );
+      return true;
+    }
+    return false;
   }
 
   private finalizarSucesso() {

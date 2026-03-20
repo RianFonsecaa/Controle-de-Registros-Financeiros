@@ -4,4 +4,5 @@ export interface UserResponse {
   name: string;
   login: string;
   role: UserRole;
+  ativo: Boolean;
 }
