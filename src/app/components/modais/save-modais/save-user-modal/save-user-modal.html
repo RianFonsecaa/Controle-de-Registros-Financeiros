@@ -1,0 +1,86 @@
+<div
+  class="modal-box flex flex-row min-w-[500px] gap-4 rounded-xl bg-white p-6"
+>
+  <section class="flex flex-col w-full h-full justify-between gap-6">
+    <div class="flex flex-row items-center gap-2">
+      <div
+        class="flex justify-center items-center p-2 rounded-full bg-blue-100"
+      >
+        <svg
+          class="text-blue-600 w-5 h-5"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z"
+              fill="#currentColor"
+            ></path>
+          </g>
+        </svg>
+      </div>
+      <h1 class="text-[16px] text-blue-500 font-semibold">
+        {{ usuario ? "Editar Usuário" : "Novo Cadastro de Usuário" }}
+      </h1>
+    </div>
+
+    <form [formGroup]="userForm" class="flex flex-col gap-4">
+      <app-primary-input
+        class="w-full"
+        [control]="getControl('name')"
+        placeholder="Nome Completo"
+        label="Nome"
+      ></app-primary-input>
+
+      <app-primary-input
+        class="w-full"
+        [control]="getControl('login')"
+        placeholder="exemplo@email.com"
+        label="E-mail (Login)"
+        type="email"
+      ></app-primary-input>
+
+      @if (!usuario) {
+        <app-primary-input
+          class="w-full"
+          [control]="getControl('password')"
+          placeholder="Mínimo 6 caracteres"
+          label="Senha Provisória"
+          type="password"
+        ></app-primary-input>
+      }
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-bold text-gray-500 uppercase"
+          >Nível de Acesso</label
+        >
+        <select
+          formControlName="role"
+          class="select select-ghost text-md h-12 w-full border border-gray-300 rounded-xl outline-0 text-gray-700"
+        >
+          <option value="USER">Usuário Padrão</option>
+          <option value="ADMIN">Administrador</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="flex flex-row gap-2 justify-start w-full pt-4">
+      <app-cancel-button
+        class="w-full"
+        (cancelar)="cancelar.emit()"
+      ></app-cancel-button>
+      <app-save-button class="w-full" (salvar)="onSalvar()"></app-save-button>
+    </div>
+  </section>
+</div>

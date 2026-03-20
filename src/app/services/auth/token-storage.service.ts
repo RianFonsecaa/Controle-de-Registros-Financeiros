@@ -13,11 +13,11 @@ export class TokenStorageService {
   private cachedPayload: TokenPayloadResponse | null = null;
 
   setTokens(tokens: LoginResponse) {
-    console.log(tokens.accessToken);
     window.localStorage.setItem(this.accessTokenKey, tokens.accessToken);
     window.localStorage.setItem(this.refreshTokenKey, tokens.refreshToken);
-  }
 
+    this.cachedPayload = null;
+  }
   getAccessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
   }
@@ -29,6 +29,8 @@ export class TokenStorageService {
   deleteTokens() {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
+
+    this.cachedPayload = null;
   }
 
   decodeToken(token: string): any {

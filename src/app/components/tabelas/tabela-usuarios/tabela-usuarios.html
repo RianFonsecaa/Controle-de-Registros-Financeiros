@@ -1,35 +1,18 @@
 <section class="flex flex-col h-full gap-4 min-w-0">
   <div
-    class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden"
+    class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden bg-white"
   >
     <div class="flex flex-row min-w-0 justify-between p-6 items-center">
       <span
         class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
-        ><div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
-        <span> LISTAGEM DE CIDADES</span>
-        <div class="flex flex-row items-center gap-2 font-semibold text-sm p-3">
-          <input
-            type="checkbox"
-            [checked]="mostrarAtivos()"
-            (change)="toggleStatusLista()"
-            [ngClass]="{
-              'border-[#23C78D] text-[#23C78D]': mostrarAtivos(),
-              'border-gray-400 text-gray-400': !mostrarAtivos(),
-            }"
-            class="toggle border-2"
-          />
-
-          @if (mostrarAtivos()) {
-            <span class="text-[#23C78D] font-bold">Ativos</span>
-          } @else {
-            <span class="text-gray-400">Inativos</span>
-          }
-        </div>
+      >
+        <div class="rounded-full bg-blue-500 h-2 w-2"></div>
+        <span> LISTAGEM DE USUÁRIOS</span>
       </span>
       <div class="flex items-end min-w-0">
         <app-primary-add-button
-          (abrir)="abrirModal(null, saveCidadeModal)"
-          nome="Cidade"
+          (abrir)="abrirModal(null, saveUserModal)"
+          nome="Usuário"
         ></app-primary-add-button>
       </div>
     </div>
@@ -38,26 +21,29 @@
       <div class="relative w-full h-full overflow-auto">
         <table class="w-full text-[12px] text-[#636363]">
           <thead>
-            <tr>
-              <th class="sticky top-0 bg-white w-[10%] px-6 py-3 text-left">
+            <tr class="bg-gray-50">
+              <th class="sticky top-0 bg-gray-50 w-[12%] px-6 py-3 text-left">
                 AÇÕES
               </th>
-              <th class="sticky top-0 bg-white flex-1 px-2 py-3 text-left">
-                NOME
+              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">NOME</th>
+              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">
+                E-MAIL (LOGIN)
               </th>
+              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">ROLE</th>
             </tr>
           </thead>
 
           <tbody>
-            @for (cidade of listaExibida(); track cidade.id) {
+            @for (user of listaExibida(); track user.login) {
               <tr
-                class="border-t h-16 border w-full border-gray-200 hover:bg-gray-100 transition-colors"
+                class="border-t h-16 border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 <td class="py-2 px-6">
-                  <div class="flex flex-row gap-1">
+                  <div class="flex flex-row gap-2">
                     <button
-                      (click)="abrirModal(cidade, saveCidadeModal)"
+                      (click)="abrirModal(user, saveUserModal)"
                       class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-blue-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
+                      title="Editar Usuário"
                     >
                       <svg
                         class="text-white w-4 h-4"
@@ -85,12 +71,36 @@
                     </button>
 
                     <button
-                      class="flex justify-center items-center rounded-md p-0 h-6 w-6 cursor-pointer shadow-md transition duration-200 hover:scale-110"
-                      (click)="abrirModal(cidade, toggleStatusModal)"
-                      [ngClass]="{
-                        'bg-[#23C78D]': mostrarAtivos(),
-                        'bg-red-500': !mostrarAtivos(),
-                      }"
+                      (click)="abrirModal(user, changePasswordModal)"
+                      class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-amber-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
+                      title="Alterar Senha"
+                    >
+                      <svg
+                        class="text-white w-6 h-6"
+                        fill="currentColor"
+                        viewBox="-7.5 0 32 32"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <title>lock</title>
+                          <path
+                            d="M14.625 15.156h2.094c0.281 0 0.5 0.25 0.5 0.531v11c0 0.281-0.219 0.5-0.5 0.5h-16.219c-0.281 0-0.5-0.219-0.5-0.5v-11c0-0.281 0.219-0.531 0.5-0.531h2.031v-5.125c0-2.875 1.844-5.25 4.688-5.25h2.688c2.875 0 4.719 2.375 4.719 5.25v5.125zM5.188 15.156h6.813v-4.875c0-1.594-1.313-2.938-2.938-2.938h-0.969c-1.594 0-2.906 1.344-2.906 2.938v4.875zM7.156 24h2.906l-0.719-3.156c0.5-0.25 0.844-0.781 0.844-1.375 0-0.906-0.719-1.594-1.594-1.594s-1.563 0.688-1.563 1.594c0 0.594 0.344 1.125 0.844 1.375z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </button>
+
+                    <button
+                      (click)="abrirModal(user, deleteModal)"
+                      class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-red-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
+                      title="Excluir Usuário"
                     >
                       <svg
                         class="text-white w-4 h-4"
@@ -124,65 +134,49 @@
                     </button>
                   </div>
                 </td>
-
-                <td class="p-2">
-                  {{ cidade.nome }}
-                </td>
+                <td class="p-2 font-semibold text-gray-700">{{ user.name }}</td>
+                <td class="p-2 italic">{{ user.login }}</td>
+                <td class="p-2 font-bold">{{ user.role }}</td>
               </tr>
             }
           </tbody>
         </table>
       </div>
     } @else {
-      <div class="flex flex-col gap-2 h-full items-center justify-center p-12">
-        <div class="bg-[#e9e9fa] p-4 rounded-full">
-          <svg
-            class="text-[#5a5add] w-16 h-16"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <path
-                d="M14.5 11.5L12 14M12 14L9.5 16.5M12 14L9.50002 11.5M12 14L14.5 16.5M13 3H5V21H19V9M13 3H14L19 8V9M13 3V7C13 8 14 9 15 9H19"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-            </g>
-          </svg>
+      <div
+        class="flex flex-col gap-2 h-full items-center justify-center p-12 text-center"
+      >
+        <div class="bg-blue-50 p-4 rounded-full text-blue-400">
+          <i class="fa-solid fa-users-slash text-4xl"></i>
         </div>
-        <h3 class="text-xl font-bold text-[#475569]">
-          Nenhuma cidade encontrada
-        </h3>
-        <p class="text-gray-500 text-center max-w-xs">
-          Não há nenhum cadastro de cidades no momento
-        </p>
+        <h3 class="text-xl font-bold text-[#475569]">Nenhum usuário</h3>
       </div>
     }
   </div>
 </section>
 
-<dialog #toggleStatusModal class="modal">
-  <app-toggle-status-modal
-    (confirmar)="toggleStatusCadastro(toggleStatusModal)"
-    (cancelar)="fecharModal(toggleStatusModal)"
-    tipoCadastro="Cidade"
-    [toggleStatus]="mostrarAtivos()"
-  ></app-toggle-status-modal>
+<dialog #saveUserModal class="modal">
+  <app-save-user-modal
+    [usuario]="usuarioSelecionado"
+    (salvar)="fecharModal(saveUserModal)"
+    (cancelar)="fecharModal(saveUserModal)"
+  ></app-save-user-modal>
 </dialog>
 
-<dialog #saveCidadeModal class="modal">
-  <app-save-cidade-modal
-    [cidade]="cidadeSelecionada ? cidadeSelecionada : null"
-    (salvar)="fecharModal(saveCidadeModal)"
-    (cancelar)="fecharModal(saveCidadeModal)"
-  ></app-save-cidade-modal>
+<dialog #deleteModal class="modal">
+  <app-delete-modal
+    (deletar)="confirmarExclusao(deleteModal)"
+    (cancelar)="fecharModal(deleteModal)"
+    titulo="Excluir cadastro de usuários"
+    conteudo="Tem certeza que deseja remover este cadastro de usuário? Esta ação é
+      irreversível."
+  ></app-delete-modal>
+</dialog>
+
+<dialog #changePasswordModal class="modal">
+  <app-change-password-modal
+    [usuario]="usuarioSelecionado"
+    (confirmar)="fecharModal(changePasswordModal)"
+    (cancelar)="fecharModal(changePasswordModal)"
+  ></app-change-password-modal>
 </dialog>

@@ -21,11 +21,10 @@ export class SideBar {
   }
 
   carregarDadosUsuario() {
-    const token = this.tokenStorage.getAccessToken();
+    this.usuario = this.tokenStorage.getPayload();
+  }
 
-    if (token) {
-      this.usuario = this.tokenStorage.decodeToken(token);
-      console.log(this.usuario);
-    }
+  get isAdmin(): boolean {
+    return this.usuario?.role === 'ADMIN';
   }
 }

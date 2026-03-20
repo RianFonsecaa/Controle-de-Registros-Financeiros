@@ -8,6 +8,7 @@ import { SaveButton } from '../../components/buttons/save-button/save-button';
 import { NgComponentOutlet } from '@angular/common';
 import { TabelaFuncionarios } from '../../components/tabelas/tabela-funcionarios/tabela-funcionarios';
 import { TabelaVeiculos } from '../../components/tabelas/tabela-veiculos/tabela-veiculos';
+import { TabelaUsuarios } from '../../components/tabelas/tabela-usuarios/tabela-usuarios';
 
 @Component({
   selector: 'app-cadastros',
@@ -22,6 +23,7 @@ export class Cadastros {
     { label: 'Cidades', componente: TabelaCidades },
     { label: 'Veículos', componente: TabelaVeiculos },
     { label: 'Funcionários', componente: TabelaFuncionarios },
+    { label: 'Usuários', componente: TabelaUsuarios },
   ];
 
   setComponenteAtivo(comp: Type<any> | null) {
