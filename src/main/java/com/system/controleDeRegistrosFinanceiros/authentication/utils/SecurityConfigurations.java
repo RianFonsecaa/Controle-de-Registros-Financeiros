@@ -34,8 +34,9 @@ public class SecurityConfigurations {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authority -> authority
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuarios/registro").permitAll()
+                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST,"/cidades").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST,"/funcionarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/veiculos").hasRole("ADMIN")

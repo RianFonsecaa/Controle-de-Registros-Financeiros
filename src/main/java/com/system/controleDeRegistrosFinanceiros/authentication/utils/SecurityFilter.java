@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ErrorResponse;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,16 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (token != null) {
                 String sub = tokenService.validateToken(token);
                 UUID userId = UUID.fromString(sub);
+
                 if (!ObjectUtils.isEmpty(userId)) {
-                    UserDetails user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuário", "ID", sub));
+                    User user = (User) userRepository.findById(userId)
+                            .orElseThrow(() -> new ResourceNotFoundException("Usuário", "ID", sub));
+
+                    if (!user.getAtivo()) {
+                        sendErrorResponse(response, HttpStatus.FORBIDDEN, "Sua conta foi desativada pelo administrador.");
+                        return;
+                    }
+
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
@@ -55,6 +64,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch (JWTVerificationException ex) {
             sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Token inválido.");
         } catch (Exception ex) {
+            System.err.println("Erro no Filtro: " + ex.getMessage());
             sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno de segurança.");
         }
     }

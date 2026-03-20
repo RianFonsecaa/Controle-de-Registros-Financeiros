@@ -4,7 +4,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -13,15 +15,15 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message) {
+        ErrorResponse apiError = new ErrorResponse(status, message);
+        return new ResponseEntity<>(apiError, status);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
         String message = "Ocorreu um erro inesperado no servidor. Por favor, contate o administrador.";
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
-    }
-
-    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message) {
-        ErrorResponse apiError = new ErrorResponse(status, message);
-        return new ResponseEntity<>(apiError, status);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -61,5 +63,15 @@ public class GlobalExceptionHandler {
                 HttpStatus.PAYLOAD_TOO_LARGE,
                 "O comprovante excede o tamanho máximo permitido"
         );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        return buildErrorResponse(HttpStatus.FORBIDDEN, "Você não tem permissão para realizar esta operação.");
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }

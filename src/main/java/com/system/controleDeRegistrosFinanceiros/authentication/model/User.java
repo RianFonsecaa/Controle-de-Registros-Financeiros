@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column(name = "login", nullable = false, unique = true, length = 50)
     private String login;
 
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
     @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
@@ -49,11 +52,12 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
 
-    public User(String login, String password, String name, UserRole role) {
+    public User(String login, String password, String name, UserRole role, Boolean ativo) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.role = role;
+        this.ativo = ativo;
     }
 
     @Override
@@ -76,5 +80,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return login;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
     }
 }
