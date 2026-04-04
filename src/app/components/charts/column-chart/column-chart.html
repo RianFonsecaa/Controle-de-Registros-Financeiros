@@ -1,0 +1,60 @@
+<div class="bg-white h-[450px] shadow-sm p-4 rounded-3xl">
+  <div class="flex flex-row items-center gap-2">
+    <svg
+      class="w-5 h-5 text-[#00E396]"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M12 19L12 11"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>
+        <path
+          d="M7 19L7 15"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>
+        <path
+          d="M17 19V6"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>
+      </g>
+    </svg>
+
+    <h1 class="text-[#363636] text-[12px] font-extrabold tracking-wider">
+      GRÁFICO DE RENDIMENTO TOTAL DIÁRIO
+    </h1>
+  </div>
+  <div id="chart">
+    @if (chartOptions && chartOptions.series) {
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [yaxis]="chartOptions.yaxis"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [fill]="chartOptions.fill"
+      ></apx-chart>
+    } @else {
+      <div
+        class="flex h-[450px] items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-200"
+      >
+        <p class="text-slate-400 font-medium">Aguardando dados da semana...</p>
+      </div>
+    }
+  </div>
+</div>

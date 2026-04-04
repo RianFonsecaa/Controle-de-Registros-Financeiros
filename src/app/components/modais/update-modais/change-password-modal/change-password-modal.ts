@@ -10,10 +10,11 @@ import { UsuariosService } from '../../../../services/http/usuarios.service';
 import { ToastService } from '../../../../services/ui/toast.service';
 import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
 import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
+import { SaveButton } from '../../../buttons/save-button/save-button';
 
 @Component({
   selector: 'app-change-password-modal',
-  imports: [ReactiveFormsModule, CancelButton, PrimaryInput],
+  imports: [ReactiveFormsModule, CancelButton, PrimaryInput, SaveButton],
   templateUrl: './change-password-modal.html',
   styleUrl: './change-password-modal.css',
 })

@@ -43,7 +43,10 @@ export class SaveUserModal implements OnInit, OnChanges {
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     login: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl(''),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
     role: new FormControl<UserRole>('USER', [Validators.required]),
   });
 
@@ -57,18 +60,6 @@ export class SaveUserModal implements OnInit, OnChanges {
     } else {
       this.resetForm();
     }
-  }
-
-  private resetForm() {
-    this.userForm.reset({ role: 'USER' });
-    this.userForm.get('login')?.enable();
-
-    const passwordControl = this.userForm.get('password');
-    passwordControl?.setValidators([
-      Validators.required,
-      Validators.minLength(6),
-    ]);
-    passwordControl?.updateValueAndValidity();
   }
 
   onSalvar() {
@@ -95,6 +86,7 @@ export class SaveUserModal implements OnInit, OnChanges {
 
     operacao$.subscribe({
       next: () => {
+        console.log(request);
         this.toastService.abrir(
           'success',
           `Usuário ${this.usuario ? 'atualizado' : 'cadastrado'} com sucesso!`,
@@ -121,7 +113,7 @@ export class SaveUserModal implements OnInit, OnChanges {
 
   private finalizarSucesso() {
     this.salvar.emit();
-    this.resetForm();
+    this.userForm.reset();
     this.usuariosService.buscaUsuarios();
   }
 
@@ -143,5 +135,21 @@ export class SaveUserModal implements OnInit, OnChanges {
 
   getControl(name: string): FormControl {
     return this.userForm.get(name) as FormControl;
+  }
+
+  private resetForm() {
+    this.userForm.reset({
+      role: 'USER',
+      name: '',
+      login: '',
+      password: '',
+    });
+
+    this.userForm.get('role')?.setValue('USER');
+  }
+
+  onCancelar() {
+    this.cancelar.emit();
+    this.resetForm();
   }
 }

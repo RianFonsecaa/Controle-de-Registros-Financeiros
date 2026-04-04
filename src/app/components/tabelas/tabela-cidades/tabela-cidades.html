@@ -1,8 +1,10 @@
 <section class="flex flex-col h-full gap-4 min-w-0">
   <div
-    class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden"
+    class="flex flex-col w-full h-full min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden"
   >
-    <div class="flex flex-row min-w-0 justify-between p-6 items-center">
+    <div
+      class="flex flex-row min-w-0 bg-white justify-between p-6 items-center"
+    >
       <span
         class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
         ><div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
@@ -35,7 +37,7 @@
     </div>
 
     @if (listaExibida().length > 0) {
-      <div class="relative w-full h-full overflow-auto">
+      <div class="relative bg-white w-full h-full overflow-auto">
         <table class="w-full text-[12px] text-[#636363]">
           <thead>
             <tr>

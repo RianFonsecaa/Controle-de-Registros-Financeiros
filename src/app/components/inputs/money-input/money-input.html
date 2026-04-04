@@ -23,8 +23,8 @@
   />
 
   @if (control.invalid && control.touched) {
-    <small class="text-red-500">
-      {{ getMensagemErro(control) }}
+    <small class="text-red-500 italic animate-pulse">
+      * {{ getMensagemErro(control) }}
     </small>
   }
 </div>

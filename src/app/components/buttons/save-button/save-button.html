@@ -1,6 +1,9 @@
 <button
-  class="w-full bg-blue-500 rounded-xl text-white font-semibold text-sm p-3 transition-all duration-200 cursor-pointer hover:bg-blue-600 transform active:scale-90"
-  (click)="onSalvar()"
+  (click)="salvar.emit()"
+  [disabled]="disabled || loading"
+  [type]="tipo"
+  class="w-full h-10 rounded-xl font-bold text-sm shadow-md transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+  [ngClass]="colorClass"
 >
-  Salvar
+  {{ loading ? loadingText : label }}
 </button>

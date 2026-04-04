@@ -125,4 +125,9 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
   getControl(name: string): FormControl {
     return this.funcionarioForm.get(name) as FormControl;
   }
+
+  onCancelar() {
+    this.cancelar.emit();
+    this.funcionarioForm.reset();
+  }
 }

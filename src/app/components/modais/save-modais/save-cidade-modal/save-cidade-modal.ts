@@ -90,4 +90,9 @@ export class SaveCidadeModal {
   getControl(name: string): FormControl {
     return this.cidadeForm.get(name) as FormControl;
   }
+
+  onCancelar() {
+    this.cancelar.emit();
+    this.cidadeForm.reset();
+  }
 }

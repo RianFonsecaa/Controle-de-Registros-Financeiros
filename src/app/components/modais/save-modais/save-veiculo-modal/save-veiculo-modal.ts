@@ -113,4 +113,9 @@ export class SaveVeiculoModal implements OnInit, OnChanges {
   getControl(name: string): FormControl {
     return this.veiculoForm.get(name) as FormControl;
   }
+
+  onCancelar() {
+    this.cancelar.emit();
+    this.veiculoForm.reset();
+  }
 }

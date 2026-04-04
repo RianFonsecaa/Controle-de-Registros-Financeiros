@@ -1,8 +1,10 @@
 <section class="flex flex-col h-full gap-4 min-w-0">
   <div
-    class="flex flex-col w-full h-full gap-2 min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden bg-white"
+    class="flex flex-col w-full h-full min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden bg-white"
   >
-    <div class="flex flex-row min-w-0 justify-between p-6 items-center">
+    <div
+      class="flex flex-row min-w-0 bg-white justify-between p-6 items-center"
+    >
       <span
         class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
         ><div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
@@ -35,25 +37,21 @@
     </div>
 
     @if (listaExibida().length > 0) {
-      <div class="relative w-full h-full overflow-auto">
+      <div class="relative bg-white w-full h-full overflow-auto">
         <table class="w-full text-[12px] text-[#636363]">
           <thead>
-            <tr class="bg-gray-50">
-              <th class="sticky top-0 bg-gray-50 w-[12%] px-6 py-3 text-left">
-                AÇÕES
-              </th>
-              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">NOME</th>
-              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">
-                E-MAIL (LOGIN)
-              </th>
-              <th class="sticky top-0 bg-gray-50 px-2 py-3 text-left">ROLE</th>
+            <tr>
+              <th class="sticky top-0 w-[12%] px-6 py-3 text-left">AÇÕES</th>
+              <th class="sticky top-0 px-2 py-3 text-left">NOME</th>
+              <th class="sticky top-0 px-2 py-3 text-left">E-MAIL (LOGIN)</th>
+              <th class="sticky top-0 px-2 py-3 text-left">ROLE</th>
             </tr>
           </thead>
 
           <tbody>
             @for (user of listaExibida(); track user.login) {
               <tr
-                class="border-t h-16 border-gray-200 hover:bg-gray-50 transition-colors"
+                class="border-t h-16 bg-white border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 <td class="py-2 px-6">
                   <div class="flex flex-row gap-2">
@@ -184,7 +182,7 @@
   <app-toggle-status-modal
     (confirmar)="toggleStatusUsuario(toggleStatusModal)"
     (cancelar)="fecharModal(toggleStatusModal)"
-    tipoCadastro="Cidade"
+    tipoCadastro="Usuário"
     [toggleStatus]="mostrarAtivos()"
   ></app-toggle-status-modal>
 </dialog>
