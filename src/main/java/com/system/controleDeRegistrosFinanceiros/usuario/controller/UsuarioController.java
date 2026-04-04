@@ -1,6 +1,5 @@
 package com.system.controleDeRegistrosFinanceiros.usuario.controller;
 
-import com.system.controleDeRegistrosFinanceiros.exceptions.BusinessRuleException;
 import com.system.controleDeRegistrosFinanceiros.usuario.model.RegistroDTO;
 import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
 import com.system.controleDeRegistrosFinanceiros.usuario.service.UsuarioService;
@@ -42,11 +41,8 @@ public class UsuarioController {
 
     @PatchMapping("/{login}/password")
     public ResponseEntity<Void> editarSenha(@PathVariable String login, @RequestBody Map<String, String> request) {
-        String newPassword = request.get("password");
-        if (newPassword == null || newPassword.length() < 6) {
-            throw new BusinessRuleException("A senha deve ter no mínimo 6 caracteres.");
-        }
-        usuarioService.editarSenha(login, newPassword);
+
+        usuarioService.editarSenha(login, request.get("password"));
         return ResponseEntity.ok().build();
     }
 }

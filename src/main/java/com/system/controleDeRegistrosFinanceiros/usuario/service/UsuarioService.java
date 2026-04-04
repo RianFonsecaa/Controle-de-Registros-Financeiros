@@ -69,6 +69,11 @@ public class UsuarioService {
     }
 
     public void editarSenha(String login, String newPassword) {
+;
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new BusinessRuleException("A senha deve ter no mínimo 6 caracteres.");
+        }
+
         User user = (User) userRepository.findByLogin(login)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário", "login", login));
 
