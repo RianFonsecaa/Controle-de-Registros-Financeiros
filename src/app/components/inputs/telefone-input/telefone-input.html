@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-2">
+  <label class="text-[13px] text-gray-600">{{ label }}</label>
+
+  <input
+    [formControl]="control"
+    mask="(00) 0000-0000||(00) 0 0000-0000"
+    [dropSpecialCharacters]="false"
+    placeholder="(00) 0 0000-0000"
+    class="h-12 w-full p-4 border border-gray-300 rounded-xl outline-0"
+  />
+
+  @if (control.invalid && control.touched) {
+    <small class="text-red-500 italic animate-pulse">
+      * {{ getMensagemErro(control) }}
+    </small>
+  }
+</div>

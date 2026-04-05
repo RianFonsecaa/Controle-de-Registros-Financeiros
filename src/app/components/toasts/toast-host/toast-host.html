@@ -1,0 +1,11 @@
+@if (toast()?.tipo === "success") {
+  <app-success-toast [mensagem]="toast()?.mensagem" />
+}
+
+@if (toast()?.tipo === "info") {
+  <app-info-toast [mensagem]="toast()?.mensagem" />
+}
+
+@if (toast()?.tipo === "error") {
+  <app-error-toast [mensagem]="toast()?.mensagem" />
+}

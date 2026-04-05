@@ -1,0 +1,9 @@
+<button
+  (click)="salvar.emit()"
+  [disabled]="disabled || loading"
+  [type]="tipo"
+  class="w-full h-10 rounded-xl font-bold text-sm shadow-md transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+  [ngClass]="colorClass"
+>
+  {{ loading ? loadingText : label }}
+</button>

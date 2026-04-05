@@ -1,0 +1,121 @@
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { FuncionarioService } from '../../../../services/http/funcionario.service';
+import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
+import { MoneyInput } from '../../../inputs/money-input/money-input';
+import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
+import { SaveButton } from '../../../buttons/save-button/save-button';
+import { ValeRequest } from '../../../../model/requests/ValeRequest';
+import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
+import { CobradorSelect } from '../../../selects/cobrador-select/cobrador-select';
+import { ValeResponse } from '../../../../model/responses/ValeResponse';
+
+@Component({
+  selector: 'app-save-vale-modal',
+  imports: [
+    PrimaryInput,
+    MoneyInput,
+    CancelButton,
+    SaveButton,
+    ReactiveFormsModule,
+    CobradorSelect,
+  ],
+  templateUrl: './save-vale-modal.html',
+  styleUrl: './save-vale-modal.css',
+})
+export class SaveValeModal implements OnInit, OnChanges {
+  funcionarioService = inject(FuncionarioService);
+
+  @Output() cancelar = new EventEmitter<void>();
+  @Output() salvar = new EventEmitter<ValeRequest>();
+
+  @Input() data!: string;
+  @Input() vale: ValeResponse | null = null;
+
+  valeForm: FormGroup = new FormGroup({
+    id: new FormControl(null),
+    funcionario: new FormControl(null, [Validators.required]),
+    justificativa: new FormControl(null, [Validators.required]),
+    valor: new FormControl(null, [Validators.required]),
+    data: new FormControl(null, [Validators.required]),
+  });
+
+  ngOnInit() {
+    this.funcionarioService.buscaFuncionarios();
+  }
+
+  ngOnChanges() {
+    if (!this.valeForm) return;
+
+    if (this.vale) {
+      this.preencherFormulario();
+    } else {
+      this.resetarParaCriacao();
+    }
+  }
+
+  getControl(name: string): FormControl {
+    return this.valeForm.get(name) as FormControl;
+  }
+
+  onCancelar() {
+    this.cancelar.emit();
+    this.resetarParaCriacao();
+  }
+
+  private preencherFormulario() {
+    const funcionario = this.funcionarioService
+      .funcionarios()
+      .find((f) => f.id === this.vale!.funcionarioId);
+
+    this.valeForm.patchValue({
+      id: this.vale?.id,
+      funcionario: funcionario,
+      justificativa: this.vale?.justificativa,
+      valor: this.vale?.valor,
+      data: this.vale?.data,
+    });
+  }
+
+  onSalvar() {
+    if (this.valeForm.invalid) {
+      this.valeForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.valeForm.value;
+
+    const request: ValeRequest = {
+      id: this.vale?.id || null,
+      funcionarioId: formValue.funcionario.id,
+      funcionarioNome: formValue.funcionario.nome,
+      justificativa: formValue.justificativa,
+      valor: formValue.valor,
+      data: formValue.data,
+      cobrancaId: this.vale?.cobrancaId || null,
+    };
+
+    this.salvar.emit(request);
+    this.resetarParaCriacao();
+  }
+
+  private resetarParaCriacao() {
+    this.valeForm.reset();
+    this.valeForm.patchValue({
+      data: this.data ?? null,
+    });
+  }
+}
