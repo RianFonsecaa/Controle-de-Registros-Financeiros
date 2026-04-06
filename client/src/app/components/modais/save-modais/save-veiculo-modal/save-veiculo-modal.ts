@@ -85,12 +85,8 @@ export class SaveVeiculoModal implements OnInit, OnChanges {
         this.toastService.abrir('success', `Veículo ${mensagem} com sucesso!`);
         this.finalizarSucesso();
       },
-      error: (error) => {
+      error: () => {
         this.enviando = false;
-        this.toastService.abrir(
-          'error',
-          error.error?.message || 'Erro ao salvar veículo',
-        );
       },
       complete: () => (this.enviando = false),
     });

@@ -6,6 +6,7 @@ import {
   ApexFill,
   ApexPlotOptions,
   ApexXAxis,
+  ApexYAxis,
 } from 'apexcharts';
 import { ChartComponent } from 'ng-apexcharts';
 import {
@@ -21,6 +22,7 @@ export type ChartOptions = {
   plotOptions: ApexPlotOptions | any;
   xaxis: ApexXAxis | any;
   fill: ApexFill | any;
+  yaxis: ApexYAxis | any;
 };
 
 @Component({
@@ -65,6 +67,16 @@ export class BarChart {
       xaxis: { categories: [] },
       fill: {
         colors: ['#4F46E5'],
+      },
+      yaxis: {
+        labels: {
+          formatter: (val: number) => {
+            return val.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            });
+          },
+        },
       },
     };
   }

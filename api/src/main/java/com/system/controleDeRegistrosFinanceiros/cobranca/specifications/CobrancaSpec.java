@@ -35,12 +35,12 @@ public class CobrancaSpec {
         };
     }
 
-    public static Specification<Cobranca> porRegistrante(String usuarioRegistrante) {
+    public static Specification<Cobranca> porRegistrante(String registranteLogin) {
         return (root, query, builder) -> {
-            if (ObjectUtils.isEmpty(usuarioRegistrante)){
+            if (ObjectUtils.isEmpty(registranteLogin)){
                 return null;
             }
-            return builder.like(root.get("usuarioRegistrante").get("name"), "%" + usuarioRegistrante + "%");
+            return builder.equal(root.get("usuarioRegistrante").get("name"), registranteLogin);
         };
     }
 

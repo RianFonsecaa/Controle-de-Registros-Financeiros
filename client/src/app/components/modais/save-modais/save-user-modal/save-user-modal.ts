@@ -93,6 +93,9 @@ export class SaveUserModal implements OnInit, OnChanges {
         );
         this.finalizarSucesso();
       },
+      error: () => {
+        this.enviando = false;
+      },
       complete: () => (this.enviando = false),
     });
   }

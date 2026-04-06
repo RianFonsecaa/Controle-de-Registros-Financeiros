@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../enviroments/enviroments';
 import { Observable, tap } from 'rxjs';
 import { UserResponse } from '../../model/responses/UserResponse';
@@ -13,6 +13,10 @@ export class UsuariosService {
   private http = inject(HttpClient);
 
   readonly usuarios = signal<UserResponse[]>([]);
+
+  readonly usuariosAtivos = computed(() =>
+    this.usuarios().filter((usuario) => usuario.ativo === true),
+  );
 
   buscaUsuarios() {
     this.http.get<UserResponse[]>(this.BASE_URL).subscribe({

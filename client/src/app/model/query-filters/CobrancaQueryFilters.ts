@@ -2,7 +2,7 @@ export interface CobrancaQueryFilters {
   observacoes?: string;
   cidadeId?: number;
   cobradorId?: number;
-  usuarioRegistrante?: string;
+  registranteLogin?: string;
   dataInicio?: string;
   dataFim?: string;
   valorInicio?: number;

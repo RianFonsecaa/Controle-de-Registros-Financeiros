@@ -29,7 +29,7 @@ public class UsuarioService {
 
     public UsuarioDTO registro(RegistroDTO registroDTO) {
         if (this.userRepository.existsByLogin(registroDTO.login())) {
-            throw new ResourceAlreadyExistsException("Usuário", "E-mail", registroDTO.login());
+            throw new ResourceAlreadyExistsException("Já existe um usuário cadastrado com esse E-mail!");
         }
 
         User newUser = usuarioMapper.toEntity(registroDTO);

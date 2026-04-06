@@ -153,6 +153,9 @@ export class TabelaVales implements OnInit {
         );
         this.valeService.buscaVales();
       },
+      error: () => {
+        this.enviando = false;
+      },
       complete: () => (this.enviando = false),
     });
 

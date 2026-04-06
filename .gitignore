@@ -3,6 +3,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.editorconfig
 
 ### STS ###
 .apt_generated
@@ -63,8 +64,11 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
-/.angular/cache
+# Angular / Miscellaneous
+.angular/
+dist/
+tmp/
+out-tsc/
 .sass-cache/
 /connect.lock
 /coverage

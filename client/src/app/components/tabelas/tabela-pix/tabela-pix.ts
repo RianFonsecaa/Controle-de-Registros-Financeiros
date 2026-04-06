@@ -155,6 +155,9 @@ export class TabelaPix implements OnInit {
         );
         this.pixService.buscaPixs();
       },
+      error: () => {
+        this.enviando = false;
+      },
       complete: () => (this.enviando = false),
     });
     this.fecharModal(modal);

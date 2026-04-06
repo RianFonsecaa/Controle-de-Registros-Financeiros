@@ -131,12 +131,14 @@ export class TabelaCobrancas {
       cidadeId: formValue.cidadeFiltro?.id ?? null,
       cobradorId: formValue.cobradorFiltro?.id ?? null,
       observacoes: formValue.observacoesFiltro,
-      usuarioRegistrante: formValue.registranteFiltro,
+      registranteLogin: formValue.registranteFiltro.login ?? null,
       dataInicio: formValue.dataInicioFiltro,
       dataFim: formValue.dataFimFiltro,
       valorInicio: formValue.valorInicioFiltro,
       valorFim: formValue.valorFimFiltro,
     };
+
+    console.log(this.filtrosAtivos);
 
     this.cobrancaService.buscaCobrancasPorFiltro(this.filtrosAtivos);
   }

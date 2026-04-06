@@ -54,6 +54,8 @@ export class UpdateCobrancaModal implements OnChanges {
   cobrancaService = inject(CobrancaService);
   toastService = inject(ToastService);
 
+  enviando: boolean = false;
+
   cobrancaForm: FormGroup = new FormGroup({
     cidade: new FormControl(null, Validators.required),
     cobrador: new FormControl(null, Validators.required),
@@ -125,6 +127,8 @@ export class UpdateCobrancaModal implements OnChanges {
       return;
     }
 
+    this.enviando = true;
+
     const form = this.cobrancaForm.value;
 
     const request: CobrancaRequest = {
@@ -142,9 +146,8 @@ export class UpdateCobrancaModal implements OnChanges {
 
     this.cobrancaService.atualizaCobranca(request).subscribe({
       next: () => this.finalizarSucesso(),
-      error: (err) => {
-        this.toastService.abrir('error', 'Erro ao atualizar cobrança');
-        console.error(err);
+      error: () => {
+        this.enviando = false;
       },
     });
   }

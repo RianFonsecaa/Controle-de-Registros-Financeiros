@@ -4,6 +4,8 @@ import {
   ApexChart,
   ApexResponsive,
   ApexLegend,
+  ApexYAxis,
+  ApexPlotOptions,
 } from 'apexcharts';
 import { ChartComponent } from 'ng-apexcharts';
 import {
@@ -14,9 +16,11 @@ import {
 export type ChartOptions = {
   series: ApexNonAxisChartSeries | any;
   chart: ApexChart | any;
+  plotOptions: ApexPlotOptions | any;
   responsive: ApexResponsive[] | any;
   legend: ApexLegend | any;
   labels: any;
+  yaxis: ApexYAxis | any;
 };
 
 @Component({
@@ -45,9 +49,14 @@ export class DonutChart {
         width: '100%',
         height: 300,
       },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '50%',
+          },
+        },
+      },
       labels: ['Pagamentos Espécie', 'Pagamentos Pix'],
-
-      // ADICIONE ESTE BLOCO AQUI
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
@@ -58,6 +67,16 @@ export class DonutChart {
         itemMargin: {
           horizontal: 10,
           vertical: 10,
+        },
+      },
+      yaxis: {
+        labels: {
+          formatter: (val: number) => {
+            return val.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            });
+          },
         },
       },
     };

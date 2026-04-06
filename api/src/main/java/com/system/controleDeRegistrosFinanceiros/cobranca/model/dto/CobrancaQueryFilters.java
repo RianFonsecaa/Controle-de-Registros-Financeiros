@@ -17,7 +17,7 @@ public class CobrancaQueryFilters {
 
     private Long cobradorId;
 
-    private String usuarioRegistrante;
+    private String registranteLogin;
 
     private LocalDate dataInicio;
 
@@ -31,7 +31,7 @@ public class CobrancaQueryFilters {
         return observacoesContains(observacoes)
                 .and(porCidade(cidadeId))
                 .and(porCobrador(cobradorId))
-                .and(porRegistrante(usuarioRegistrante))
+                .and(porRegistrante(registranteLogin))
                 .and(periodoEntre(dataInicio,dataFim))
                 .and(valorTotalEntre(valorInicio, valorFim));
     }

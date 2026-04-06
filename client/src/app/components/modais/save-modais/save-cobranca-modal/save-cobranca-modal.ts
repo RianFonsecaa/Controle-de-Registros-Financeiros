@@ -65,6 +65,8 @@ export class SaveCobrancaModal {
     observacoes: new FormControl(null, [Validators.required]),
   });
 
+  enviando: boolean = false;
+
   pixs: PixRequest[] = [];
   vales: ValeRequest[] = [];
 
@@ -114,6 +116,8 @@ export class SaveCobrancaModal {
       return;
     }
 
+    this.enviando = true;
+
     const formValue = this.cobrancaForm.value;
 
     const cobrancaRequest: CobrancaRequest = {
@@ -144,7 +148,9 @@ export class SaveCobrancaModal {
           'Registro de cobrança foi salvo com sucesso!',
         );
       },
-      error: () => console.error('Erro ao salvar cobrança'),
+      error: () => {
+        this.enviando = false;
+      },
     });
   }
 

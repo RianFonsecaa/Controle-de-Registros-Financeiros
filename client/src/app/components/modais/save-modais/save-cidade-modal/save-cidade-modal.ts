@@ -69,6 +69,9 @@ export class SaveCidadeModal {
         this.toastService.abrir('success', `Cidade ${mensagem} com sucesso!`);
         this.finalizarSucesso();
       },
+      error: () => {
+        this.enviando = false;
+      },
       complete: () => (this.enviando = false),
     });
   }

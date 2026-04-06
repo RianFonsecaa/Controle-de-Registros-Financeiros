@@ -96,10 +96,8 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
         );
         this.finalizarSucesso();
       },
-      error: (error) => {
+      error: () => {
         this.enviando = false;
-        const msgErro = error.error?.message || 'Erro ao processar requisição';
-        this.toastService.abrir('error', msgErro);
       },
       complete: () => (this.enviando = false),
     });
