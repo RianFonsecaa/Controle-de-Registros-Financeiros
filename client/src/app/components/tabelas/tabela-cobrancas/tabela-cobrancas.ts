@@ -131,7 +131,7 @@ export class TabelaCobrancas {
       cidadeId: formValue.cidadeFiltro?.id ?? null,
       cobradorId: formValue.cobradorFiltro?.id ?? null,
       observacoes: formValue.observacoesFiltro,
-      registranteLogin: formValue.registranteFiltro.login ?? null,
+      registranteLogin: formValue.registranteFiltro?.login ?? null,
       dataInicio: formValue.dataInicioFiltro,
       dataFim: formValue.dataFimFiltro,
       valorInicio: formValue.valorInicioFiltro,

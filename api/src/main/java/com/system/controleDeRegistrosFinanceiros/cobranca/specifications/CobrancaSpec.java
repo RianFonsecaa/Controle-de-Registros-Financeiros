@@ -40,7 +40,7 @@ public class CobrancaSpec {
             if (ObjectUtils.isEmpty(registranteLogin)){
                 return null;
             }
-            return builder.equal(root.get("usuarioRegistrante").get("name"), registranteLogin);
+            return builder.equal(root.get("usuarioRegistrante").get("login"), registranteLogin);
         };
     }
 
