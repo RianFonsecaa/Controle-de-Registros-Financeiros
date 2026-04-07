@@ -26,6 +26,16 @@ export class AuthService {
       );
   }
 
+  refreshToken(): Observable<LoginResponse> {
+    const refreshToken = this.tokenStorageService.getRefreshToken();
+
+    return this.http
+      .post<LoginResponse>(`${this.BASE_URL}/auth/refresh-token`, {
+        refreshToken,
+      })
+      .pipe(tap((response) => this.tokenStorageService.setTokens(response)));
+  }
+
   isLoggedIn(): boolean {
     return this.tokenStorageService.isLoggedIn();
   }
