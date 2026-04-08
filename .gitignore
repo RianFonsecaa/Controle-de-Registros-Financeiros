@@ -89,5 +89,5 @@ db_data/
 docker-compose.override.yml
 
 # Ignorar pasta de uploads de comprovantes
-/uploads/
-/uploads/**
+api/uploads/
+api/uploads/**
