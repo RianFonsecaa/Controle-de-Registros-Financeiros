@@ -1,13 +1,13 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { environment } from '../../../enviroments/enviroments';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { PixRequest } from '../../model/requests/PixRequest';
-import { PixResponse } from '../../model/responses/PixResponse';
-import { PixQueryFilters } from '../../model/query-filters/PixQueryFilters';
-import { Observable } from 'rxjs';
+import { inject, Injectable, signal } from "@angular/core";
+import { environment } from "../../../enviroments/enviroments";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { PixRequest } from "../../model/requests/PixRequest";
+import { PixResponse } from "../../model/responses/PixResponse";
+import { PixQueryFilters } from "../../model/query-filters/PixQueryFilters";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class PixService {
   private readonly BASE_URL = `${environment.apiUrl}/pix`;
@@ -19,12 +19,12 @@ export class PixService {
     const formData = new FormData();
 
     formData.append(
-      'pix',
-      new Blob([JSON.stringify(pix)], { type: 'application/json' }),
+      "pix",
+      new Blob([JSON.stringify(pix)], { type: "application/json" }),
     );
 
     if (arquivo) {
-      formData.append('comprovante', arquivo);
+      formData.append("comprovante", arquivo);
     }
 
     return this.http.post<PixResponse>(this.BASE_URL, formData);
@@ -41,7 +41,7 @@ export class PixService {
     let params = new HttpParams();
 
     Object.entries(filtros).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && value !== '') {
+      if (value !== null && value !== undefined && value !== "") {
         params = params.set(key, value as any);
       }
     });
@@ -57,12 +57,12 @@ export class PixService {
   atualizarPix(pix: PixRequest, arquivo: File | null) {
     const formData = new FormData();
     formData.append(
-      'pix',
-      new Blob([JSON.stringify(pix)], { type: 'application/json' }),
+      "pix",
+      new Blob([JSON.stringify(pix)], { type: "application/json" }),
     );
 
     if (arquivo) {
-      formData.append('comprovante', arquivo);
+      formData.append("comprovante", arquivo);
     }
     console.log(pix);
     return this.http.put<PixResponse>(this.BASE_URL, formData);
@@ -79,8 +79,8 @@ export class PixService {
   }
 
   getComprovante(nome: string): Observable<Blob> {
-    return this.http.get(`${this.BASE_URL}/comprovante/${nome}`, {
-      responseType: 'blob',
+    return this.http.get(`${this.BASE_URL}/comprovantes/${nome}`, {
+      responseType: "blob",
     });
   }
 }

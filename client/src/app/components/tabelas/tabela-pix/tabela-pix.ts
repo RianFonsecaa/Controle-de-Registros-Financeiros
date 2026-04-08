@@ -1,27 +1,27 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { UpdateButton } from '../../buttons/update-button/update-button';
-import { PixResponse } from '../../../model/responses/PixResponse';
+import { Component, inject, OnInit, ViewChild } from "@angular/core";
+import { UpdateButton } from "../../buttons/update-button/update-button";
+import { PixResponse } from "../../../model/responses/PixResponse";
 import {
   ContainerFiltros,
   FiltroConfig,
-} from '../../container-filtros/container-filtros';
-import { CidadeFiltro } from '../../container-filtros/filtros/cidade-filtro/cidade-filtro';
-import { PeriodoFiltro } from '../../container-filtros/filtros/periodo-filtro/periodo-filtro';
-import { ValorFiltro } from '../../container-filtros/filtros/valor-filtro/valor-filtro';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PixService } from '../../../services/http/pix.service';
-import { ModalService } from '../../../services/ui/modal.service';
-import { ToastService } from '../../../services/ui/toast.service';
-import { SavePixModal } from '../../modais/save-modais/save-pix-modal/save-pix-modal';
-import { DeleteModal } from '../../modais/delete-modal/delete-modal';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
-import { PixRequest } from '../../../model/requests/PixRequest';
-import { ClienteFiltro } from '../../container-filtros/filtros/cliente-filtro/cliente-filtro';
-import { PixQueryFilters } from '../../../model/query-filters/PixQueryFilters';
+} from "../../container-filtros/container-filtros";
+import { CidadeFiltro } from "../../container-filtros/filtros/cidade-filtro/cidade-filtro";
+import { PeriodoFiltro } from "../../container-filtros/filtros/periodo-filtro/periodo-filtro";
+import { ValorFiltro } from "../../container-filtros/filtros/valor-filtro/valor-filtro";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { PixService } from "../../../services/http/pix.service";
+import { ModalService } from "../../../services/ui/modal.service";
+import { ToastService } from "../../../services/ui/toast.service";
+import { SavePixModal } from "../../modais/save-modais/save-pix-modal/save-pix-modal";
+import { DeleteModal } from "../../modais/delete-modal/delete-modal";
+import { CurrencyPipe, DatePipe } from "@angular/common";
+import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-button";
+import { PixRequest } from "../../../model/requests/PixRequest";
+import { ClienteFiltro } from "../../container-filtros/filtros/cliente-filtro/cliente-filtro";
+import { PixQueryFilters } from "../../../model/query-filters/PixQueryFilters";
 
 @Component({
-  selector: 'app-tabela-pix',
+  selector: "app-tabela-pix",
   imports: [
     ReactiveFormsModule,
     ContainerFiltros,
@@ -32,8 +32,8 @@ import { PixQueryFilters } from '../../../model/query-filters/PixQueryFilters';
     CurrencyPipe,
     PrimaryAddButton,
   ],
-  templateUrl: './tabela-pix.html',
-  styleUrl: './tabela-pix.css',
+  templateUrl: "./tabela-pix.html",
+  styleUrl: "./tabela-pix.css",
 })
 export class TabelaPix implements OnInit {
   @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
@@ -58,30 +58,30 @@ export class TabelaPix implements OnInit {
 
   configuracaoFiltros: FiltroConfig[] = [
     {
-      key: 'clienteFiltro',
+      key: "clienteFiltro",
       visivel: false,
       componente: ClienteFiltro,
-      label: 'Cliente',
+      label: "Cliente",
     },
     {
-      key: 'cidadeFiltro',
+      key: "cidadeFiltro",
       visivel: false,
       componente: CidadeFiltro,
-      label: 'Cidade',
+      label: "Cidade",
     },
     {
-      key: 'periodoFiltro',
+      key: "periodoFiltro",
       visivel: false,
       componente: PeriodoFiltro,
-      label: 'Período',
-      controlsParaResetar: ['dataInicioFiltro', 'dataFimFiltro'],
+      label: "Período",
+      controlsParaResetar: ["dataInicioFiltro", "dataFimFiltro"],
     },
     {
-      key: 'valorFiltro',
+      key: "valorFiltro",
       visivel: false,
       componente: ValorFiltro,
-      label: 'Valor',
-      controlsParaResetar: ['valorInicioFiltro', 'valorFimFiltro'],
+      label: "Valor",
+      controlsParaResetar: ["valorInicioFiltro", "valorFimFiltro"],
     },
   ];
 
@@ -110,8 +110,8 @@ export class TabelaPix implements OnInit {
       next: () => {
         this.pixService.buscaPixs();
         this.toastService.abrir(
-          'success',
-          'Registro de Pix apagado com sucesso!',
+          "success",
+          "Registro de Pix apagado com sucesso!",
         );
       },
     });
@@ -148,9 +148,9 @@ export class TabelaPix implements OnInit {
 
     operacao$.subscribe({
       next: () => {
-        const msg = this.pixSelecionado ? 'atualizado' : 'cadastrado';
+        const msg = this.pixSelecionado ? "atualizado" : "cadastrado";
         this.toastService.abrir(
-          'success',
+          "success",
           `Registro de Pix ${msg} com sucesso!`,
         );
         this.pixService.buscaPixs();
@@ -163,16 +163,25 @@ export class TabelaPix implements OnInit {
     this.fecharModal(modal);
   }
 
-  visualizarComprovante(pix: PixResponse) {
-    if (!pix.nomeComprovante) {
-      this.toastService.abrir('error', 'Este registro não possui comprovante.');
-      return;
-    }
+  visualizarComprovante(nomeArquivo: string) {
+    this.pixService.getComprovante(nomeArquivo).subscribe({
+      next: (blob) => {
+        const file = new Blob([blob], { type: blob.type });
+        const url = window.URL.createObjectURL(file);
+        const novaGuia = window.open(url, "_blank");
 
-    this.pixService.getComprovante(pix.nomeComprovante).subscribe({
-      next: (arquivo: Blob) => {
-        const url = window.URL.createObjectURL(arquivo);
-        window.open(url, '_blank');
+        if (
+          !novaGuia ||
+          novaGuia.closed ||
+          typeof novaGuia.closed === "undefined"
+        ) {
+          alert(
+            "O navegador bloqueou a abertura do comprovante. Por favor, permita pop-ups para este site.",
+          );
+        }
+      },
+      error: (err) => {
+        console.error("Erro ao buscar comprovante", err);
       },
     });
   }
