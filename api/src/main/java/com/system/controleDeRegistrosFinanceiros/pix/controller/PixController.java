@@ -102,7 +102,22 @@ public class PixController{
         return ResponseEntity.ok(pixService.buscarPorCobranca(cobrancaId));
     }
 
+@GetMapping("/comprovantes/{nomeArquivo}")
+    public ResponseEntity<Resource> getComprovante(@PathVariable String nomeArquivo) {
+        Resource resource = pixService.carregarComprovante(nomeArquivo);
+        
+        String contentType = null;
+        try {
+            contentType = Files.probeContentType(Paths.get(resource.getFile().getAbsolutePath()));
+        } catch (IOException e) {
+            contentType = "application/octet-stream";
+        }
 
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 
 
 }

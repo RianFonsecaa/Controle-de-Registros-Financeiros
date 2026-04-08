@@ -1,6 +1,7 @@
 package com.system.controleDeRegistrosFinanceiros.pix.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,7 @@ import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundExce
 import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class PixService{
 
-    private static final String DIRETORIO_PIX = "C:\\Users\\Rian\\Downloads\\CaminhoPix";
+    private static final String DIRETORIO_PIX = "uploads/pix";
 
     private final PixRepository pixRepository;
     private final PixMapper pixMapper;
@@ -70,39 +72,47 @@ public class PixService{
     }
 
 
-    public PixDTO salvar(PixDTO pixDTO, MultipartFile arquivo) {
+   public PixDTO salvar(PixDTO pixDTO, MultipartFile arquivo) {
 
-        Pix pix = pixMapper.toEntity(pixDTO);
-        pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
+    Pix pix = pixMapper.toEntity(pixDTO);
+    pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
 
-        if (pixDTO.getCobrancaId() != null) {
-            pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
-        } else {
-            pix.setCobranca(null);
-        }
-
-        Pix salvo = pixRepository.save(pix);
-
-        if (arquivo != null && !arquivo.isEmpty()) {
-            try {
-                Files.createDirectories(Paths.get(DIRETORIO_PIX));
-
-                String nomeComprovante = arquivo.getOriginalFilename();
-                Path caminho = Paths.get(DIRETORIO_PIX, nomeComprovante);
-
-                Files.write(caminho, arquivo.getBytes());
-
-                pix.setNomeComprovante(nomeComprovante);
-
-                salvo = pixRepository.save(pix);
-
-            } catch (IOException e) {
-                throw new RuntimeException("Erro ao salvar arquivo do Pix", e);
-            }
-        }
-
-        return pixMapper.toDTO(salvo);
+    if (pixDTO.getCobrancaId() != null) {
+        pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
+    } else {
+        pix.setCobranca(null);
     }
+
+    Pix salvo = pixRepository.save(pix);
+
+    if (arquivo != null && !arquivo.isEmpty()) {
+        try {
+            Path diretorioPath = Paths.get(DIRETORIO_PIX);
+            if (!Files.exists(diretorioPath)) {
+                Files.createDirectories(diretorioPath);
+            }
+
+            String extensao = "";
+            String originalNome = arquivo.getOriginalFilename();
+            if (originalNome != null && originalNome.contains(".")) {
+                extensao = originalNome.substring(originalNome.lastIndexOf("."));
+            }
+            String nomeComprovante = UUID.randomUUID().toString() + extensao;
+
+            Path caminho = diretorioPath.resolve(nomeComprovante);
+            Files.write(caminho, arquivo.getBytes());
+
+            salvo.setNomeComprovante(nomeComprovante);
+            salvo = pixRepository.save(salvo);
+
+        } catch (IOException e) {
+            e.printStackTrace(); 
+            throw new RuntimeException("Erro ao salvar arquivo do Pix: " + e.getMessage(), e);
+        }
+    }
+
+    return pixMapper.toDTO(salvo);
+}
 
 
     public PixDTO editar(PixDTO pixDTO, MultipartFile arquivo) {
@@ -155,5 +165,20 @@ public class PixService{
         }
         pixRepository.deleteById(id);
     }
+
+    public Resource carregarComprovante(String nomeArquivo) {
+    try {
+        Path caminho = Paths.get(DIRETORIO_PIX).resolve(nomeArquivo).normalize();
+        Resource resource = new UrlResource(caminho.toUri());
+
+        if (resource.exists() || resource.isReadable()) {
+            return resource;
+        } else {
+            throw new ResourceNotFoundException("Arquivo não encontrado: " + nomeArquivo);
+        }
+    } catch (MalformedURLException e) {
+        throw new RuntimeException("Erro ao carregar o arquivo", e);
+    }
+}
     
 }
