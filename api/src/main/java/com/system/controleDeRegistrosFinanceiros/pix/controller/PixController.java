@@ -102,7 +102,7 @@ public class PixController{
         return ResponseEntity.ok(pixService.buscarPorCobranca(cobrancaId));
     }
 
-@GetMapping("/comprovantes/{nomeArquivo}")
+    @GetMapping("/comprovantes/{nomeArquivo}")
     public ResponseEntity<Resource> getComprovante(@PathVariable String nomeArquivo) {
         Resource resource = pixService.carregarComprovante(nomeArquivo);
         
