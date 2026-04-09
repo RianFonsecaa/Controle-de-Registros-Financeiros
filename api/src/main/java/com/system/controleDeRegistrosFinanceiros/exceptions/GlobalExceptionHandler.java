@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+        ex.printStackTrace();
         String message = "Ocorreu um erro inesperado no servidor. Por favor, contate o administrador.";
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }

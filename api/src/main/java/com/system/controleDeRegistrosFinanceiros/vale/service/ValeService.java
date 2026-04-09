@@ -1,13 +1,9 @@
 package com.system.controleDeRegistrosFinanceiros.vale.service;
 
-import com.system.controleDeRegistrosFinanceiros.cidade.service.CidadeService;
-import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
+
 import com.system.controleDeRegistrosFinanceiros.cobranca.service.CobrancasService;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
-import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixDTO;
-import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
-import com.system.controleDeRegistrosFinanceiros.pix.model.entity.Pix;
 import com.system.controleDeRegistrosFinanceiros.vale.mapper.ValeMapper;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeDTO;
 import com.system.controleDeRegistrosFinanceiros.vale.model.dto.ValeQueryFilters;
@@ -88,7 +84,7 @@ public class ValeService{
         List<Vale> valesFiltrados = valeRepository.findAll(filters.toSpecification());
 
         if (valesFiltrados.isEmpty()) {
-            throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhum vale com os filtros especificados!");
         }
 
         return valesFiltrados.stream().map(valeMapper :: toDTO).toList();

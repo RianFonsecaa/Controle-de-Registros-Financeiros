@@ -3,7 +3,6 @@ import com.system.controleDeRegistrosFinanceiros.authentication.model.User;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.relatorio.mapper.DadosRelatorioMapper;
-import jakarta.persistence.EntityNotFoundException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.core.io.Resource;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RelatorioService {
@@ -47,47 +45,49 @@ public class RelatorioService {
                 .getAuthentication()
                 .getPrincipal();
 
-        double totalPix = 0;
-        double totalVale = 0;
-        double totalEspecie = 0;
-        double totalFinal = 0;
-
         List<DadosRelatorio> dadosRelatorio = geraDadosDoRelatorio(filters);
 
-        Resource resource = resourceLoader.getResource("classpath:reports/cobranca-report.jrxml");
-        InputStream inputStream = resource.getInputStream();
-        JasperReport relatorioPrincipal = JasperCompileManager.compileReport(inputStream);
+        Resource resource = resourceLoader.getResource("classpath:reports/cobranca_report.jasper");
+        
+        try (InputStream inputStream = resource.getInputStream()) {
 
-        for (DadosRelatorio dados : dadosRelatorio) {
-            totalPix     += dados.getValorPix();
-            totalVale    += dados.getValorVale();
-            totalEspecie += dados.getValorEspecie();
-            totalFinal   += dados.getValorTotal();
+            Resource logoResource = resourceLoader.getResource("classpath:images/Logo_branca.png");
+            byte[] logoBytes = logoResource.getContentAsByteArray();
+
+            double totalPix = 0;
+            double totalVale = 0;
+            double totalEspecie = 0;
+            double totalFinal = 0;
+
+            for (DadosRelatorio dados : dadosRelatorio) {
+                totalPix     += (dados.getValorPix() != null ? dados.getValorPix() : 0);
+                totalVale    += (dados.getValorVale() != null ? dados.getValorVale() : 0);
+                totalEspecie += (dados.getValorEspecie() != null ? dados.getValorEspecie() : 0);
+                totalFinal   += (dados.getValorTotal() != null ? dados.getValorTotal() : 0);
+            }
+
+            totalPix     = Math.round(totalPix * 100.0) / 100.0;
+            totalVale    = Math.round(totalVale * 100.0) / 100.0;
+            totalEspecie = Math.round(totalEspecie * 100.0) / 100.0;
+            totalFinal   = Math.round(totalFinal * 100.0) / 100.0;
+
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("PERIODO", LocalDate.now());
+            parameters.put("DATA_EMISSAO", LocalDate.now());
+            parameters.put("USUARIO_EMITENTE", user.getName());
+            parameters.put("REPORT_LOCALE", Locale.of("pt", "BR"));
+            parameters.put("LOGO", logoBytes);
+            parameters.put("TOTAL_FINAL", totalFinal);
+            parameters.put("TOTAL_PIX", totalPix);
+            parameters.put("TOTAL_VALE", totalVale);
+            parameters.put("TOTAL_ESPECIE", totalEspecie);
+
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dadosRelatorio);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parameters, dataSource);
+
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         }
-
-        totalPix     = Math.round(totalPix * 100.0) / 100.0;
-        totalVale    = Math.round(totalVale * 100.0) / 100.0;
-        totalEspecie = Math.round(totalEspecie * 100.0) / 100.0;
-        totalFinal   = Math.round(totalFinal * 100.0) / 100.0;
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("PERIODO", LocalDate.now());
-        parameters.put("DATA_EMISSAO", LocalDate.now());
-        parameters.put("USUARIO_EMITENTE", user.getName());
-        parameters.put("REPORT_LOCALE", Locale.of("pt", "BR"));
-        parameters.put("LOGO", "classpath:images/Logo_branca.png");
-        parameters.put("TOTAL_FINAL", totalFinal);
-        parameters.put("TOTAL_PIX", totalPix);
-        parameters.put("TOTAL_VALE", totalVale);
-        parameters.put("TOTAL_ESPECIE", totalEspecie);
-
-        JRBeanCollectionDataSource dataSource =
-                new JRBeanCollectionDataSource(dadosRelatorio);
-
-        JasperPrint jasperPrint =
-                JasperFillManager.fillReport(relatorioPrincipal, parameters, dataSource);
-
-        return JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
     public List<DadosRelatorio> geraDadosDoRelatorio(CobrancaQueryFilters filters) {

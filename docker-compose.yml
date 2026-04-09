@@ -37,6 +37,8 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+    volumes:
+      - ./api/uploads:/app/uploads
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       DB_PASSWORD: ${DB_PASSWORD}
