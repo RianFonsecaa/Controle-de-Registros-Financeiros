@@ -6,24 +6,25 @@ import {
   OnChanges,
   OnInit,
   Output,
-} from '@angular/core';
+} from "@angular/core";
 import {
   FormGroup,
   FormControl,
   Validators,
   ReactiveFormsModule,
-} from '@angular/forms';
-import { FuncionarioRequest } from '../../../../model/requests/FuncionarioRequest';
-import { FuncionarioResponse } from '../../../../model/responses/FuncionarioResponse';
-import { FuncionarioService } from '../../../../services/http/funcionario.service';
-import { ToastService } from '../../../../services/ui/toast.service';
-import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
-import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
-import { SaveButton } from '../../../buttons/save-button/save-button';
-import { TelefoneInput } from '../../../inputs/telefone-input/telefone-input';
+  AbstractControl,
+} from "@angular/forms";
+import { FuncionarioRequest } from "../../../../model/requests/FuncionarioRequest";
+import { FuncionarioResponse } from "../../../../model/responses/FuncionarioResponse";
+import { FuncionarioService } from "../../../../services/http/funcionario.service";
+import { ToastService } from "../../../../services/ui/toast.service";
+import { PrimaryInput } from "../../../inputs/primary-input/primary-input";
+import { CancelButton } from "../../../buttons/cancel-button/cancel-button";
+import { SaveButton } from "../../../buttons/save-button/save-button";
+import { TelefoneInput } from "../../../inputs/telefone-input/telefone-input";
 
 @Component({
-  selector: 'app-save-funcionario-modal',
+  selector: "app-save-funcionario-modal",
   imports: [
     PrimaryInput,
     ReactiveFormsModule,
@@ -31,8 +32,8 @@ import { TelefoneInput } from '../../../inputs/telefone-input/telefone-input';
     SaveButton,
     TelefoneInput,
   ],
-  templateUrl: './save-funcionario-modal.html',
-  styleUrl: './save-funcionario-modal.css',
+  templateUrl: "./save-funcionario-modal.html",
+  styleUrl: "./save-funcionario-modal.css",
 })
 export class SaveFuncionarioModal implements OnInit, OnChanges {
   @Input() funcionario!: FuncionarioResponse | null;
@@ -54,7 +55,12 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
 
     email: new FormControl(null, [Validators.required, Validators.email]),
 
-    dataNascimento: new FormControl(null, [Validators.required]),
+    dataNascimento: new FormControl(null, [
+      Validators.required,
+      this.dataNaoFutura,
+      this.dataRange("2010-01-01", new Date()),
+      this.maiorDeIdade,
+    ]),
   });
 
   ngOnInit() {
@@ -79,6 +85,9 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
 
     const request: FuncionarioRequest = {
       ...this.funcionarioForm.value,
+      dataNascimento: this.formatarData(
+        this.funcionarioForm.value.dataNascimento,
+      ),
       ativo: this.funcionario ? this.funcionario.ativo : true,
       id: this.funcionario?.id || null,
     };
@@ -89,9 +98,9 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
 
     operacao$.subscribe({
       next: () => {
-        const mensagem = request.id ? 'atualizado' : 'cadastrado';
+        const mensagem = request.id ? "atualizado" : "cadastrado";
         this.toastService.abrir(
-          'success',
+          "success",
           `Funcionário ${mensagem} com sucesso!`,
         );
         this.finalizarSucesso();
@@ -127,5 +136,33 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
   onCancelar() {
     this.cancelar.emit();
     this.funcionarioForm.reset();
+  }
+
+  private dataNaoFutura(control: AbstractControl) {
+    const data = new Date(control.value);
+    return data > new Date() ? { dataFutura: true } : null;
+  }
+
+  private dataRange(min: string, max: Date) {
+    return (control: AbstractControl) => {
+      const data = new Date(control.value);
+      if (data < new Date(min) || data > max) {
+        return { foraDoRange: true };
+      }
+      return null;
+    };
+  }
+
+  private maiorDeIdade(control: AbstractControl) {
+    const data = new Date(control.value);
+    const hoje = new Date();
+    const idade = hoje.getFullYear() - data.getFullYear();
+
+    return idade < 18 ? { menorIdade: true } : null;
+  }
+
+  private formatarData(data: string): string {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}-${mes}-${ano}`;
   }
 }

@@ -6,25 +6,26 @@ import {
   OnChanges,
   OnInit,
   Output,
-} from '@angular/core';
+} from "@angular/core";
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
-} from '@angular/forms';
-import { FuncionarioService } from '../../../../services/http/funcionario.service';
-import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
-import { MoneyInput } from '../../../inputs/money-input/money-input';
-import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
-import { SaveButton } from '../../../buttons/save-button/save-button';
-import { ValeRequest } from '../../../../model/requests/ValeRequest';
-import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
-import { CobradorSelect } from '../../../selects/cobrador-select/cobrador-select';
-import { ValeResponse } from '../../../../model/responses/ValeResponse';
+} from "@angular/forms";
+import { FuncionarioService } from "../../../../services/http/funcionario.service";
+import { PrimaryInput } from "../../../inputs/primary-input/primary-input";
+import { MoneyInput } from "../../../inputs/money-input/money-input";
+import { CancelButton } from "../../../buttons/cancel-button/cancel-button";
+import { SaveButton } from "../../../buttons/save-button/save-button";
+import { ValeRequest } from "../../../../model/requests/ValeRequest";
+import { CidadeResponse } from "../../../../model/responses/CidadeResponse";
+import { CobradorSelect } from "../../../selects/cobrador-select/cobrador-select";
+import { ValeResponse } from "../../../../model/responses/ValeResponse";
 
 @Component({
-  selector: 'app-save-vale-modal',
+  selector: "app-save-vale-modal",
   imports: [
     PrimaryInput,
     MoneyInput,
@@ -33,8 +34,8 @@ import { ValeResponse } from '../../../../model/responses/ValeResponse';
     ReactiveFormsModule,
     CobradorSelect,
   ],
-  templateUrl: './save-vale-modal.html',
-  styleUrl: './save-vale-modal.css',
+  templateUrl: "./save-vale-modal.html",
+  styleUrl: "./save-vale-modal.css",
 })
 export class SaveValeModal implements OnInit, OnChanges {
   funcionarioService = inject(FuncionarioService);
@@ -50,7 +51,11 @@ export class SaveValeModal implements OnInit, OnChanges {
     funcionario: new FormControl(null, [Validators.required]),
     justificativa: new FormControl(null, [Validators.required]),
     valor: new FormControl(null, [Validators.required]),
-    data: new FormControl(null, [Validators.required]),
+    data: new FormControl(null, [
+      Validators.required,
+      this.dataNaoFutura,
+      this.dataRange("2010-01-01", new Date()),
+    ]),
   });
 
   ngOnInit() {
@@ -104,12 +109,32 @@ export class SaveValeModal implements OnInit, OnChanges {
       funcionarioNome: formValue.funcionario.nome,
       justificativa: formValue.justificativa,
       valor: formValue.valor,
-      data: formValue.data,
+      data: this.formatarData(formValue.data),
       cobrancaId: this.vale?.cobrancaId || null,
     };
 
     this.salvar.emit(request);
     this.resetarParaCriacao();
+  }
+
+  private dataNaoFutura(control: AbstractControl) {
+    const data = new Date(control.value);
+    return data > new Date() ? { dataFutura: true } : null;
+  }
+
+  private dataRange(min: string, max: Date) {
+    return (control: AbstractControl) => {
+      const data = new Date(control.value);
+      if (data < new Date(min) || data > max) {
+        return { foraDoRange: true };
+      }
+      return null;
+    };
+  }
+
+  private formatarData(data: string): string {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}-${mes}-${ano}`;
   }
 
   private resetarParaCriacao() {

@@ -6,26 +6,27 @@ import {
   Input,
   Output,
   ViewChild,
-} from '@angular/core';
-import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
-import { DeleteButton } from '../../../buttons/delete-button/delete-button';
+} from "@angular/core";
+import { CancelButton } from "../../../buttons/cancel-button/cancel-button";
+import { DeleteButton } from "../../../buttons/delete-button/delete-button";
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
-} from '@angular/forms';
-import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
-import { CidadesService } from '../../../../services/http/cidades.service';
-import { SaveButton } from '../../../buttons/save-button/save-button';
-import { MoneyInput } from '../../../inputs/money-input/money-input';
-import { PixRequest } from '../../../../model/requests/PixRequest';
-import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
-import { CidadeSelect } from '../../../selects/cidade-select/cidade-select';
-import { PixResponse } from '../../../../model/responses/PixResponse';
+} from "@angular/forms";
+import { PrimaryInput } from "../../../inputs/primary-input/primary-input";
+import { CidadesService } from "../../../../services/http/cidades.service";
+import { SaveButton } from "../../../buttons/save-button/save-button";
+import { MoneyInput } from "../../../inputs/money-input/money-input";
+import { PixRequest } from "../../../../model/requests/PixRequest";
+import { CidadeResponse } from "../../../../model/responses/CidadeResponse";
+import { CidadeSelect } from "../../../selects/cidade-select/cidade-select";
+import { PixResponse } from "../../../../model/responses/PixResponse";
 
 @Component({
-  selector: 'app-save-pix-modal',
+  selector: "app-save-pix-modal",
   imports: [
     CancelButton,
     ReactiveFormsModule,
@@ -34,15 +35,15 @@ import { PixResponse } from '../../../../model/responses/PixResponse';
     MoneyInput,
     CidadeSelect,
   ],
-  templateUrl: './save-pix-modal.html',
-  styleUrl: './save-pix-modal.css',
+  templateUrl: "./save-pix-modal.html",
+  styleUrl: "./save-pix-modal.css",
 })
 export class SavePixModal {
   cidadesService = inject(CidadesService);
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<any>();
 
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("fileInput") fileInput!: ElementRef<HTMLInputElement>;
 
   @Input() data!: String;
   @Input() cidade!: CidadeResponse;
@@ -52,7 +53,11 @@ export class SavePixModal {
     cliente: new FormControl(null, [Validators.required]),
     valor: new FormControl(null, [Validators.required]),
     cidade: new FormControl(null, [Validators.required]),
-    data: new FormControl(null, [Validators.required]),
+    data: new FormControl(null, [
+      Validators.required,
+      this.dataNaoFutura,
+      this.dataRange("2010-01-01", new Date()),
+    ]),
     comprovante: new FormControl(),
   });
 
@@ -90,7 +95,7 @@ export class SavePixModal {
       cliente: this.pix?.cliente,
       valor: this.pix?.valor,
       cidade: cidade,
-      data: this.pix?.data,
+      data: this.formatarDataParaInput(this.pix?.data),
       comprovante: null,
     });
   }
@@ -108,7 +113,7 @@ export class SavePixModal {
       cliente: formValue.cliente,
       valor: formValue.valor,
       cidadeId: formValue.cidade.id,
-      data: formValue.data,
+      data: this.formatarData(formValue.data),
       comprovante: formValue.comprovante,
       cobrancaId: this.pix?.cobrancaId || null,
     };
@@ -128,13 +133,40 @@ export class SavePixModal {
 
   private resetFileInput() {
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = '';
+      this.fileInput.nativeElement.value = "";
     }
+  }
+
+  private dataNaoFutura(control: AbstractControl) {
+    const data = new Date(control.value);
+    return data > new Date() ? { dataFutura: true } : null;
+  }
+
+  private dataRange(min: string, max: Date) {
+    return (control: AbstractControl) => {
+      const data = new Date(control.value);
+      if (data < new Date(min) || data > max) {
+        return { foraDoRange: true };
+      }
+      return null;
+    };
+  }
+
+  private formatarData(data: string): string {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}-${mes}-${ano}`;
+  }
+
+  private formatarDataParaInput(data: string | undefined): string {
+    if (!data) return "";
+
+    const [dia, mes, ano] = data.split("-");
+    return `${ano}-${mes}-${dia}`;
   }
 
   onFileChange(input: HTMLInputElement) {
     if (!input.files?.length) return;
 
-    this.getControl('comprovante').setValue(input.files[0]);
+    this.getControl("comprovante").setValue(input.files[0]);
   }
 }

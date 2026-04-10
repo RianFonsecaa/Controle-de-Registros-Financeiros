@@ -5,30 +5,31 @@ import {
   Input,
   OnChanges,
   Output,
-} from '@angular/core';
+} from "@angular/core";
 import {
   FormGroup,
   FormControl,
   Validators,
   ReactiveFormsModule,
-} from '@angular/forms';
-import { CobrancaRequest } from '../../../../model/requests/CobrancaRequest';
-import { CobrancaResponse } from '../../../../model/responses/CobrancaResponse';
-import { CidadesService } from '../../../../services/http/cidades.service';
-import { CobrancaService } from '../../../../services/http/cobrancas.service';
-import { FuncionarioService } from '../../../../services/http/funcionario.service';
-import { VeiculoService } from '../../../../services/http/veiculo.service';
-import { VeiculoSelect } from '../../../selects/veiculo-select/veiculo-select';
-import { MoneyInput } from '../../../inputs/money-input/money-input';
-import { CidadeSelect } from '../../../selects/cidade-select/cidade-select';
-import { PrimaryInput } from '../../../inputs/primary-input/primary-input';
-import { CobradorSelect } from '../../../selects/cobrador-select/cobrador-select';
-import { CancelButton } from '../../../buttons/cancel-button/cancel-button';
-import { SaveButton } from '../../../buttons/save-button/save-button';
-import { ToastService } from '../../../../services/ui/toast.service';
+  AbstractControl,
+} from "@angular/forms";
+import { CobrancaRequest } from "../../../../model/requests/CobrancaRequest";
+import { CobrancaResponse } from "../../../../model/responses/CobrancaResponse";
+import { CidadesService } from "../../../../services/http/cidades.service";
+import { CobrancaService } from "../../../../services/http/cobrancas.service";
+import { FuncionarioService } from "../../../../services/http/funcionario.service";
+import { VeiculoService } from "../../../../services/http/veiculo.service";
+import { VeiculoSelect } from "../../../selects/veiculo-select/veiculo-select";
+import { MoneyInput } from "../../../inputs/money-input/money-input";
+import { CidadeSelect } from "../../../selects/cidade-select/cidade-select";
+import { PrimaryInput } from "../../../inputs/primary-input/primary-input";
+import { CobradorSelect } from "../../../selects/cobrador-select/cobrador-select";
+import { CancelButton } from "../../../buttons/cancel-button/cancel-button";
+import { SaveButton } from "../../../buttons/save-button/save-button";
+import { ToastService } from "../../../../services/ui/toast.service";
 
 @Component({
-  selector: 'app-update-cobranca-modal',
+  selector: "app-update-cobranca-modal",
   imports: [
     VeiculoSelect,
     MoneyInput,
@@ -39,8 +40,8 @@ import { ToastService } from '../../../../services/ui/toast.service';
     SaveButton,
     ReactiveFormsModule,
   ],
-  templateUrl: './update-cobranca-modal.html',
-  styleUrl: './update-cobranca-modal.css',
+  templateUrl: "./update-cobranca-modal.html",
+  styleUrl: "./update-cobranca-modal.css",
 })
 export class UpdateCobrancaModal implements OnChanges {
   @Input() cobranca!: CobrancaResponse | null;
@@ -60,7 +61,11 @@ export class UpdateCobrancaModal implements OnChanges {
     cidade: new FormControl(null, Validators.required),
     cobrador: new FormControl(null, Validators.required),
     veiculo: new FormControl(null, Validators.required),
-    data: new FormControl(null, Validators.required),
+    data: new FormControl(null, [
+      Validators.required,
+      this.dataNaoFutura,
+      this.dataRange("2010-01-01", new Date()),
+    ]),
     observacoes: new FormControl(null, Validators.required),
     valorEspecie: new FormControl(0),
     valorTotalPix: new FormControl(0),
@@ -98,7 +103,7 @@ export class UpdateCobrancaModal implements OnChanges {
       cidade: cidade,
       cobrador: cobrador,
       veiculo: veiculo,
-      data: this.cobranca.data,
+      data: this.formatarDataParaInput(this.cobranca.data),
       observacoes: this.cobranca.observacoes,
       valorEspecie: this.cobranca.valorEspecie,
       valorTotalPix: this.cobranca.valorTotalPix,
@@ -108,11 +113,11 @@ export class UpdateCobrancaModal implements OnChanges {
   }
 
   calcularValoresTotais() {
-    const especie = Number(this.getControl('valorEspecie').value) || 0;
-    const pix = Number(this.getControl('valorTotalPix').value) || 0;
-    const vales = Number(this.getControl('valorTotalVale').value) || 0;
+    const especie = Number(this.getControl("valorEspecie").value) || 0;
+    const pix = Number(this.getControl("valorTotalPix").value) || 0;
+    const vales = Number(this.getControl("valorTotalVale").value) || 0;
 
-    this.getControl('valorTotal').setValue(especie + pix + vales, {
+    this.getControl("valorTotal").setValue(especie + pix + vales, {
       emitEvent: false,
     });
   }
@@ -136,7 +141,7 @@ export class UpdateCobrancaModal implements OnChanges {
       cidadeId: form.cidade.id,
       cobradorId: form.cobrador.id,
       veiculoId: form.veiculo.id,
-      data: form.data,
+      data: this.formatarDataParaApi(form.data),
       observacoes: form.observacoes,
       valorEspecie: form.valorEspecie,
       valorTotalPix: form.valorTotalPix,
@@ -157,9 +162,36 @@ export class UpdateCobrancaModal implements OnChanges {
     this.cobrancaForm.reset();
     this.cobrancaService.buscaCobrancas();
     this.toastService.abrir(
-      'success',
-      'Registro de cobrança atualizado com sucesso!',
+      "success",
+      "Registro de cobrança atualizado com sucesso!",
     );
+  }
+
+  private dataNaoFutura(control: AbstractControl) {
+    const data = new Date(control.value);
+    return data > new Date() ? { dataFutura: true } : null;
+  }
+
+  private dataRange(min: string, max: Date) {
+    return (control: AbstractControl) => {
+      const data = new Date(control.value);
+      if (data < new Date(min) || data > max) {
+        return { foraDoRange: true };
+      }
+      return null;
+    };
+  }
+
+  private formatarDataParaApi(data: string): string {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}-${mes}-${ano}`;
+  }
+
+  private formatarDataParaInput(data: string): string {
+    if (!data) return "";
+
+    const [dia, mes, ano] = data.split("-");
+    return `${ano}-${mes}-${dia}`;
   }
 
   onCancelar() {

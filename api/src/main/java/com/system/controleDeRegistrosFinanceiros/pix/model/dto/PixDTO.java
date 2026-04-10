@@ -2,6 +2,7 @@ package com.system.controleDeRegistrosFinanceiros.pix.model.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.system.controleDeRegistrosFinanceiros.cidade.model.entity.Cidade;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.entity.Cobranca;
 
@@ -20,6 +21,7 @@ public class PixDTO {
     private Long id;
     private String cliente;
     private Double valor;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate data;
     private Long cobrancaId;
     private Long cidadeId;

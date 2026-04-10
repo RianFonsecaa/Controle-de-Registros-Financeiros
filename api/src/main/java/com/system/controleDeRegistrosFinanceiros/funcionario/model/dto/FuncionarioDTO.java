@@ -2,6 +2,8 @@ package com.system.controleDeRegistrosFinanceiros.funcionario.model.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class FuncionarioDTO {
     private String nome;
     private String telefone;
     private String email;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
     private Boolean ativo;
 }

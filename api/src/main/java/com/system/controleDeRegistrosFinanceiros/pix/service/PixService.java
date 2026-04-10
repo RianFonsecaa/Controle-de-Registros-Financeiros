@@ -72,47 +72,47 @@ public class PixService{
     }
 
 
-   public PixDTO salvar(PixDTO pixDTO, MultipartFile arquivo) {
+    public PixDTO salvar(PixDTO pixDTO, MultipartFile arquivo) {
 
-    Pix pix = pixMapper.toEntity(pixDTO);
-    pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
+        Pix pix = pixMapper.toEntity(pixDTO);
+        pix.setCidade(cidadeService.getById(pixDTO.getCidadeId()));
 
-    if (pixDTO.getCobrancaId() != null) {
-        pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
-    } else {
-        pix.setCobranca(null);
-    }
-
-    Pix salvo = pixRepository.save(pix);
-
-    if (arquivo != null && !arquivo.isEmpty()) {
-        try {
-            Path diretorioPath = Paths.get(DIRETORIO_PIX);
-            if (!Files.exists(diretorioPath)) {
-                Files.createDirectories(diretorioPath);
-            }
-
-            String extensao = "";
-            String originalNome = arquivo.getOriginalFilename();
-            if (originalNome != null && originalNome.contains(".")) {
-                extensao = originalNome.substring(originalNome.lastIndexOf("."));
-            }
-            String nomeComprovante = UUID.randomUUID().toString() + extensao;
-
-            Path caminho = diretorioPath.resolve(nomeComprovante);
-            Files.write(caminho, arquivo.getBytes());
-
-            salvo.setNomeComprovante(nomeComprovante);
-            salvo = pixRepository.save(salvo);
-
-        } catch (IOException e) {
-            e.printStackTrace(); 
-            throw new RuntimeException("Erro ao salvar arquivo do Pix: " + e.getMessage(), e);
+        if (pixDTO.getCobrancaId() != null) {
+            pix.setCobranca(cobrancasService.getById(pixDTO.getCobrancaId()));
+        } else {
+            pix.setCobranca(null);
         }
-    }
 
-    return pixMapper.toDTO(salvo);
-}
+        Pix salvo = pixRepository.save(pix);
+
+        if (arquivo != null && !arquivo.isEmpty()) {
+            try {
+                Path diretorioPath = Paths.get(DIRETORIO_PIX);
+                if (!Files.exists(diretorioPath)) {
+                    Files.createDirectories(diretorioPath);
+                }
+
+                String extensao = "";
+                String originalNome = arquivo.getOriginalFilename();
+                if (originalNome != null && originalNome.contains(".")) {
+                    extensao = originalNome.substring(originalNome.lastIndexOf("."));
+                }
+                String nomeComprovante = UUID.randomUUID().toString() + extensao;
+
+                Path caminho = diretorioPath.resolve(nomeComprovante);
+                Files.write(caminho, arquivo.getBytes());
+
+                salvo.setNomeComprovante(nomeComprovante);
+                salvo = pixRepository.save(salvo);
+
+            } catch (IOException e) {
+                e.printStackTrace(); 
+                throw new RuntimeException("Erro ao salvar arquivo do Pix: " + e.getMessage(), e);
+            }
+        }
+
+        return pixMapper.toDTO(salvo);
+    }
 
 
     public PixDTO editar(PixDTO pixDTO, MultipartFile arquivo) {

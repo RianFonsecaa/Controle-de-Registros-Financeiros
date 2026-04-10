@@ -1,10 +1,10 @@
 <div class="flex flex-col gap-2">
   <label class="text-[13px] text-gray-600">{{ label }}</label>
   <input
-    autocomplete="off"
-    [placeholder]="placeholder"
-    [type]="type"
     [formControl]="control"
+    type="date"
+    [min]="'2010-01-01'"
+    [max]="dataHoje"
     class="relative h-12 w-full text-md p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-800 placeholder:text-[#c2c2c2]"
   />
 

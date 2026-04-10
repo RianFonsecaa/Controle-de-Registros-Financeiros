@@ -46,14 +46,12 @@
         >
         </app-cidade-select>
 
-        <app-primary-input
+        <app-date-input
           class="relative w-[40%]"
-          [control]="getControl('data')"
-          placeholder="Data"
-          id="data"
-          type="date"
           label="Data"
-        ></app-primary-input>
+          [control]="getControl('data')"
+        >
+        </app-date-input>
       </div>
       <div class="flex flex-row relative w-full gap-2">
         <app-cobrador-select

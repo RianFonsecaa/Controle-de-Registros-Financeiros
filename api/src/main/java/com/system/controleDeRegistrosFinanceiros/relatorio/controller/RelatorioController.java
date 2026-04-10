@@ -28,7 +28,7 @@ public class RelatorioController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "Relatório de Cobranças de"+ ".pdf");
+        headers.setContentDispositionFormData("attachment", "Relatório de Cobranças"+ ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

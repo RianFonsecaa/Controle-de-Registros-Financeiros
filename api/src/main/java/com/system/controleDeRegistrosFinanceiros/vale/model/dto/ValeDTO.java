@@ -2,6 +2,7 @@ package com.system.controleDeRegistrosFinanceiros.vale.model.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class ValeDTO {
     private Long cobrancaId;
     private String justificativa;
     private Double valor;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate data;
 
 }
