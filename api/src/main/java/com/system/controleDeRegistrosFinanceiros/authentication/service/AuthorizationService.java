@@ -33,9 +33,6 @@ public class AuthorizationService implements UserDetailsService {
     @Lazy
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByLogin(username)
@@ -61,8 +58,8 @@ public class AuthorizationService implements UserDetailsService {
         if (refreshToken == null || refreshToken.isBlank()) {
             throw new IllegalArgumentException("O atributo 'refreshToken' é obrigatório.");
         }
-
         String login = tokenService.validateRefreshToken(refreshToken);
+        
         User user = (User) userRepository.findByLogin(login)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário", "login", login));
 

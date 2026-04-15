@@ -73,14 +73,12 @@
       <div class="flex flex-row gap-2">
         <app-telefone-input class="w-1/2" [control]="getControl('telefone')">
         </app-telefone-input>
-        <app-primary-input
-          class="w-1/2"
-          [control]="getControl('dataNascimento')"
-          placeholder="Data de Nascimento"
-          id="dataNascimento"
-          type="date"
+        <app-date-input
+          class="relative w-1/2"
           label="Data de Nascimento"
-        ></app-primary-input>
+          [control]="getControl('dataNascimento')"
+        >
+        </app-date-input>
       </div>
     </form>
 

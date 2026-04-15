@@ -23,20 +23,19 @@
 
     <div class="flex flex-row gap-2">
       <app-money-input
-        class="w-[50%]"
+        class="w-1/2"
         id="valor"
         [control]="getControl('valor')"
         placeholder="R$ 0,00"
         label="Valor"
       ></app-money-input>
 
-      <app-primary-input
-        class="w-[50%]"
-        id="data"
+      <app-date-input
+        class="relative w-1/2"
         label="Data"
-        type="date"
         [control]="getControl('data')"
-      ></app-primary-input>
+      >
+      </app-date-input>
     </div>
 
     <fieldset class="fieldset w-full">

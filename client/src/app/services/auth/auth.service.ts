@@ -1,15 +1,15 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { inject, Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { map, Observable, tap } from "rxjs";
 
-import { TokenStorageService } from './token-storage.service';
-import { Router } from '@angular/router';
-import { environment } from '../../../enviroments/enviroments';
-import { LoginResponse } from '../../model/responses/LoginResponse';
-import { LoginRequest } from '../../model/requests/LoginRequest';
+import { TokenStorageService } from "./token-storage.service";
+import { Router } from "@angular/router";
+import { environment } from "../../../enviroments/enviroments";
+import { LoginResponse } from "../../model/responses/LoginResponse";
+import { LoginRequest } from "../../model/requests/LoginRequest";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
   private readonly BASE_URL = environment.apiUrl;
@@ -42,6 +42,6 @@ export class AuthService {
 
   logout() {
     this.tokenStorageService.deleteTokens();
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 }

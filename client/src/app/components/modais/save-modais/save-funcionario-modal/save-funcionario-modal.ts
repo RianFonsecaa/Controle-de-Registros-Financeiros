@@ -22,6 +22,7 @@ import { PrimaryInput } from "../../../inputs/primary-input/primary-input";
 import { CancelButton } from "../../../buttons/cancel-button/cancel-button";
 import { SaveButton } from "../../../buttons/save-button/save-button";
 import { TelefoneInput } from "../../../inputs/telefone-input/telefone-input";
+import { DateInput } from "../../../inputs/date-input/date-input";
 
 @Component({
   selector: "app-save-funcionario-modal",
@@ -31,6 +32,7 @@ import { TelefoneInput } from "../../../inputs/telefone-input/telefone-input";
     CancelButton,
     SaveButton,
     TelefoneInput,
+    DateInput,
   ],
   templateUrl: "./save-funcionario-modal.html",
   styleUrl: "./save-funcionario-modal.css",
@@ -58,7 +60,6 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
     dataNascimento: new FormControl(null, [
       Validators.required,
       this.dataNaoFutura,
-      this.dataRange("2010-01-01", new Date()),
       this.maiorDeIdade,
     ]),
   });
@@ -141,16 +142,6 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
   private dataNaoFutura(control: AbstractControl) {
     const data = new Date(control.value);
     return data > new Date() ? { dataFutura: true } : null;
-  }
-
-  private dataRange(min: string, max: Date) {
-    return (control: AbstractControl) => {
-      const data = new Date(control.value);
-      if (data < new Date(min) || data > max) {
-        return { foraDoRange: true };
-      }
-      return null;
-    };
   }
 
   private maiorDeIdade(control: AbstractControl) {

@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { environment } from '../../../enviroments/enviroments';
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable, signal } from "@angular/core";
+import { Observable, tap } from "rxjs";
+import { environment } from "../../../enviroments/enviroments";
 
 export interface ResumoGeral {
   totalArrecadado: number;
@@ -30,10 +30,12 @@ export interface DashboardData {
   rankingCidades: RendimentoCidade[];
   rendimentoDiario: RendimentoDiario[];
   distribuicaoPagamentos: MetodoPagamento;
+  mesReferencia: String;
+  ultimaAtualizacao: String;
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DashboardService {
   private http = inject(HttpClient);
@@ -50,7 +52,7 @@ export class DashboardService {
         this.dadosDashboard.set(data);
       },
       error: (err) => {
-        console.error('Erro ao buscar dados do dashboard:', err);
+        console.error("Erro ao buscar dados do dashboard:", err);
         this.loading.set(false);
       },
       complete: () => {

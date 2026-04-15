@@ -3,6 +3,68 @@
     titulo="Dashboard de Controle Financeiro"
   ></app-titulo-pagina>
   <div class="flex flex-col gap-4 m-6">
+    <div
+      class="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-teal-500 rounded-[2.5rem] p-8 shadow-xl shadow-emerald-100"
+    >
+      <div
+        class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6"
+      >
+        <div class="space-y-2">
+          <span
+            class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-black text-emerald-50 uppercase tracking-widest"
+          >
+            Período de Referência
+          </span>
+          <h2 class="text-3xl font-black text-white">
+            Métricas de
+            <span class="underline decoration-teal-300 underline-offset-4">{{
+              dadosDashboard()?.mesReferencia
+            }}</span>
+          </h2>
+          <p class="text-emerald-50/80 text-sm font-medium max-w-md">
+            Todos os dados e indicadores abaixo refletem a performance
+            financeira consolidada até a data de hoje.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="text-right hidden md:block">
+            <p
+              class="text-emerald-100 text-xs font-bold uppercase tracking-tighter"
+            >
+              Última Atualização
+            </p>
+            <p class="text-white font-black">
+              {{ dadosDashboard()?.ultimaAtualizacao }}
+            </p>
+          </div>
+          <div class="h-12 w-[1px] bg-white/20 hidden md:block"></div>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-12 h-12 text-emerald-200 opacity-50"
+          >
+            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div
+        class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full translate-x-32 -translate-y-32 blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 w-48 h-48 bg-teal-400/20 rounded-full -translate-x-24 translate-y-24 blur-2xl"
+      ></div>
+    </div>
     <div class="flex flex-row gap-4">
       <app-card-somatorios
         label="Total Arrecadado"

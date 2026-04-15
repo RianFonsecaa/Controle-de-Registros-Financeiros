@@ -24,6 +24,7 @@ import { PixRequest } from "../../../../model/requests/PixRequest";
 import { CidadeResponse } from "../../../../model/responses/CidadeResponse";
 import { CidadeSelect } from "../../../selects/cidade-select/cidade-select";
 import { PixResponse } from "../../../../model/responses/PixResponse";
+import { DateInput } from "../../../inputs/date-input/date-input";
 
 @Component({
   selector: "app-save-pix-modal",
@@ -34,6 +35,7 @@ import { PixResponse } from "../../../../model/responses/PixResponse";
     SaveButton,
     MoneyInput,
     CidadeSelect,
+    DateInput,
   ],
   templateUrl: "./save-pix-modal.html",
   styleUrl: "./save-pix-modal.css",
@@ -138,14 +140,27 @@ export class SavePixModal {
   }
 
   private dataNaoFutura(control: AbstractControl) {
-    const data = new Date(control.value);
-    return data > new Date() ? { dataFutura: true } : null;
+    if (!control.value) return null;
+
+    const dataSelecionada = new Date(control.value + "T00:00:00");
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    return dataSelecionada > hoje ? { dataFutura: true } : null;
   }
 
   private dataRange(min: string, max: Date) {
     return (control: AbstractControl) => {
-      const data = new Date(control.value);
-      if (data < new Date(min) || data > max) {
+      if (!control.value) return null;
+
+      const data = new Date(control.value + "T00:00:00");
+      const minDate = new Date(min + "T00:00:00");
+
+      const maxDate = new Date(max);
+      maxDate.setHours(0, 0, 0, 0);
+
+      if (data < minDate || data > maxDate) {
         return { foraDoRange: true };
       }
       return null;

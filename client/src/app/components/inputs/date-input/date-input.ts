@@ -10,7 +10,7 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 export class DateInput {
   @Input() control!: FormControl;
   @Input() label: string = "";
-  dataHoje = new Date().toISOString().split("T")[0];
+  dataHoje = new Date().toLocaleDateString("en-CA");
 
   getMensagemErro(formControl: FormControl): string {
     if (!formControl || !formControl.errors) return "";

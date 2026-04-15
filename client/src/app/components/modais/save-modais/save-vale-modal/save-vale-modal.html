@@ -12,20 +12,19 @@
 
     <div class="flex flex-row gap-4">
       <app-money-input
-        class="w-[50%]"
+        class="w-1/2"
         id="valor"
         [control]="getControl('valor')"
         placeholder="R$ 0,00"
         label="Valor"
       ></app-money-input>
 
-      <app-primary-input
-        class="w-[50%]"
-        id="data"
+      <app-date-input
+        class="relative w-1/2"
         label="Data"
-        type="date"
         [control]="getControl('data')"
-      ></app-primary-input>
+      >
+      </app-date-input>
     </div>
 
     <textarea
@@ -35,9 +34,10 @@
       placeholder="Digite as observações..."
       class="w-full p-4 border border-gray-300 rounded-xl outline-0 text-md text-gray-700 placeholder:text-[#c2c2c2]"
     ></textarea>
-    @if (getControl('justificativa').invalid &&
-    getControl('justificativa').touched){
-    <small class="text-red-500"> Este campo é obrigatório! </small>
+    @if (
+      getControl("justificativa").invalid && getControl("justificativa").touched
+    ) {
+      <small class="text-red-500"> Este campo é obrigatório! </small>
     }
   </form>
 

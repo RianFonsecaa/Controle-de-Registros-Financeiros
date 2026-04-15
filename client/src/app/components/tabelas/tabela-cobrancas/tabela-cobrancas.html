@@ -6,7 +6,7 @@
     (filtrar)="filtrarRegistros($event)"
   ></app-container-filtros>
   <div
-    class="flex flex-col w-full h-full min-w-0 rounded-3xl overflow-hidden border border-gray-300 shadow-lg"
+    class="flex flex-col w-full h-full min-w-0 rounded-3xl overflow-hidden border border-gray-200 shadow-lg"
   >
     <div
       class="flex flex-row min-w-0 bg-white justify-between p-6 items-center"
@@ -168,7 +168,7 @@
                 </td>
 
                 <td class="p-2">
-                  {{ cobranca.data | date: "dd/MM/yyyy" }}
+                  {{ cobranca.data }}
                 </td>
 
                 <td class="p-2">

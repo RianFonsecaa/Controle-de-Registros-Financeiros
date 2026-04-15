@@ -30,7 +30,6 @@ import { CobrancaQueryFilters } from "../../../model/query-filters/CobrancaQuery
   selector: "app-tabela-cobrancas",
   imports: [
     CurrencyPipe,
-    DatePipe,
     DeleteModal,
     SaveCobrancaModal,
     PrimaryAddButton,

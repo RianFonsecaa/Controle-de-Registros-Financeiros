@@ -23,16 +23,17 @@ import { ValeRequest } from "../../../../model/requests/ValeRequest";
 import { CidadeResponse } from "../../../../model/responses/CidadeResponse";
 import { CobradorSelect } from "../../../selects/cobrador-select/cobrador-select";
 import { ValeResponse } from "../../../../model/responses/ValeResponse";
+import { DateInput } from "../../../inputs/date-input/date-input";
 
 @Component({
   selector: "app-save-vale-modal",
   imports: [
-    PrimaryInput,
     MoneyInput,
     CancelButton,
     SaveButton,
     ReactiveFormsModule,
     CobradorSelect,
+    DateInput,
   ],
   templateUrl: "./save-vale-modal.html",
   styleUrl: "./save-vale-modal.css",
@@ -118,14 +119,27 @@ export class SaveValeModal implements OnInit, OnChanges {
   }
 
   private dataNaoFutura(control: AbstractControl) {
-    const data = new Date(control.value);
-    return data > new Date() ? { dataFutura: true } : null;
+    if (!control.value) return null;
+
+    const dataSelecionada = new Date(control.value + "T00:00:00");
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    return dataSelecionada > hoje ? { dataFutura: true } : null;
   }
 
   private dataRange(min: string, max: Date) {
     return (control: AbstractControl) => {
-      const data = new Date(control.value);
-      if (data < new Date(min) || data > max) {
+      if (!control.value) return null;
+
+      const data = new Date(control.value + "T00:00:00");
+      const minDate = new Date(min + "T00:00:00");
+
+      const maxDate = new Date(max);
+      maxDate.setHours(0, 0, 0, 0);
+
+      if (data < minDate || data > maxDate) {
         return { foraDoRange: true };
       }
       return null;

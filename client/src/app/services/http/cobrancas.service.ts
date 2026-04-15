@@ -26,7 +26,6 @@ export class CobrancaService {
     this.http.get<CobrancaResponse[]>(this.BASE_URL).subscribe({
       next: (data) => this.cobrancas.set(data),
       error: () => this.cobrancas.set([]),
-      complete: () => console.log(this.cobrancas()),
     });
   }
 

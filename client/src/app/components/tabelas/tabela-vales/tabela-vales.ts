@@ -1,39 +1,38 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from "@angular/core";
 import {
   ContainerFiltros,
   FiltroConfig,
-} from '../../container-filtros/container-filtros';
-import { ValeService } from '../../../services/http/vale.service';
-import { ToastService } from '../../../services/ui/toast.service';
-import { ModalService } from '../../../services/ui/modal.service';
-import { ValeQueryFilters } from '../../../model/query-filters/ValeQueryFilters';
-import { ValeResponse } from '../../../model/responses/ValeResponse';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PeriodoFiltro } from '../../container-filtros/filtros/periodo-filtro/periodo-filtro';
-import { ValorFiltro } from '../../container-filtros/filtros/valor-filtro/valor-filtro';
-import { ValeRequest } from '../../../model/requests/ValeRequest';
-import { CobradorFiltro } from '../../container-filtros/filtros/cobrador-filtro/cobrador-filtro';
-import { ObservacoesFiltro } from '../../container-filtros/filtros/observacoes-filtro/observacoes-filtro';
-import { SaveValeModal } from '../../modais/save-modais/save-vale-modal/save-vale-modal';
-import { DeleteModal } from '../../modais/delete-modal/delete-modal';
-import { UpdateButton } from '../../buttons/update-button/update-button';
-import { DatePipe, CurrencyPipe } from '@angular/common';
-import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
+} from "../../container-filtros/container-filtros";
+import { ValeService } from "../../../services/http/vale.service";
+import { ToastService } from "../../../services/ui/toast.service";
+import { ModalService } from "../../../services/ui/modal.service";
+import { ValeQueryFilters } from "../../../model/query-filters/ValeQueryFilters";
+import { ValeResponse } from "../../../model/responses/ValeResponse";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { PeriodoFiltro } from "../../container-filtros/filtros/periodo-filtro/periodo-filtro";
+import { ValorFiltro } from "../../container-filtros/filtros/valor-filtro/valor-filtro";
+import { ValeRequest } from "../../../model/requests/ValeRequest";
+import { CobradorFiltro } from "../../container-filtros/filtros/cobrador-filtro/cobrador-filtro";
+import { ObservacoesFiltro } from "../../container-filtros/filtros/observacoes-filtro/observacoes-filtro";
+import { SaveValeModal } from "../../modais/save-modais/save-vale-modal/save-vale-modal";
+import { DeleteModal } from "../../modais/delete-modal/delete-modal";
+import { UpdateButton } from "../../buttons/update-button/update-button";
+import { DatePipe, CurrencyPipe } from "@angular/common";
+import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-button";
 
 @Component({
-  selector: 'app-tabela-vales',
+  selector: "app-tabela-vales",
   imports: [
     ReactiveFormsModule,
     SaveValeModal,
     DeleteModal,
     UpdateButton,
-    DatePipe,
     CurrencyPipe,
     PrimaryAddButton,
     ContainerFiltros,
   ],
-  templateUrl: './tabela-vales.html',
-  styleUrl: './tabela-vales.css',
+  templateUrl: "./tabela-vales.html",
+  styleUrl: "./tabela-vales.css",
 })
 export class TabelaVales implements OnInit {
   @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
@@ -58,30 +57,30 @@ export class TabelaVales implements OnInit {
 
   configuracaoFiltros: FiltroConfig[] = [
     {
-      key: 'cobradorFiltro',
+      key: "cobradorFiltro",
       visivel: false,
       componente: CobradorFiltro,
-      label: 'Cobrador',
+      label: "Cobrador",
     },
     {
-      key: 'observacoesFiltro',
+      key: "observacoesFiltro",
       visivel: false,
       componente: ObservacoesFiltro,
-      label: 'Observações',
+      label: "Observações",
     },
     {
-      key: 'periodoFiltro',
+      key: "periodoFiltro",
       visivel: false,
       componente: PeriodoFiltro,
-      label: 'Período',
-      controlsParaResetar: ['dataInicioFiltro', 'dataFimFiltro'],
+      label: "Período",
+      controlsParaResetar: ["dataInicioFiltro", "dataFimFiltro"],
     },
     {
-      key: 'valorFiltro',
+      key: "valorFiltro",
       visivel: false,
       componente: ValorFiltro,
-      label: 'Valor',
-      controlsParaResetar: ['valorInicioFiltro', 'valorFimFiltro'],
+      label: "Valor",
+      controlsParaResetar: ["valorInicioFiltro", "valorFimFiltro"],
     },
   ];
 
@@ -110,8 +109,8 @@ export class TabelaVales implements OnInit {
       next: () => {
         this.valeService.buscaVales();
         this.toastService.abrir(
-          'success',
-          'Registro de Vale apagado com sucesso!',
+          "success",
+          "Registro de Vale apagado com sucesso!",
         );
       },
     });
@@ -146,9 +145,9 @@ export class TabelaVales implements OnInit {
 
     operacao$.subscribe({
       next: () => {
-        const msg = this.valeSelecionado ? 'atualizado' : 'cadastrado';
+        const msg = this.valeSelecionado ? "atualizado" : "cadastrado";
         this.toastService.abrir(
-          'success',
+          "success",
           `Registro de Vale ${msg} com sucesso!`,
         );
         this.valeService.buscaVales();

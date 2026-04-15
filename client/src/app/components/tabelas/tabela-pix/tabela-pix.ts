@@ -28,7 +28,6 @@ import { PixQueryFilters } from "../../../model/query-filters/PixQueryFilters";
     SavePixModal,
     DeleteModal,
     UpdateButton,
-    DatePipe,
     CurrencyPipe,
     PrimaryAddButton,
   ],
