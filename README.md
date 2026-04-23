@@ -55,7 +55,7 @@ docker ps
 
 # 💡 Comandos de Manutenção
 
-### 🔍 Monitorização
+### 🔍 Monitoração
 
 - **Ver logs da aplicação:** `docker-compose logs -f app`
 - **Ver logs do banco de dados:** `docker-compose logs -f db`
