@@ -40,9 +40,9 @@ services:
     volumes:
       - ./api/uploads:/app/uploads
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true
       DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
+      TZ: America/Sao_Paulo
 
   client:
     build:

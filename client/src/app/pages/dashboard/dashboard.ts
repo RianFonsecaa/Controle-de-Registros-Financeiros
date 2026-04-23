@@ -24,5 +24,6 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     this.dashboardService.buscaDadosDashboard();
+    console.log(this.dadosDashboard()?.ultimaAtualizacao);
   }
 }

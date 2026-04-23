@@ -30,19 +30,18 @@ public class DashboardService {
     }
 
 public DashboardDTO getDashboardData() {
-    // 1. Use LocalDateTime para capturar a data E a hora atual
     LocalDateTime agora = LocalDateTime.now();
     
-    // 2. Extraia o LocalDate para usar nas buscas do repositório
     LocalDate hoje = agora.toLocalDate();
     LocalDate inicioMes = hoje.withDayOfMonth(1);
     LocalDate inicioSemana = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-    // 3. O mês continua funcionando igual
     String mesReferencia = hoje.getMonth().getDisplayName(TextStyle.FULL, Locale.of("pt", "BR"));
     
-    // 4. AGORA SIM: O 'agora' (LocalDateTime) possui HourOfDay, MinuteOfHour, etc.
     String ultimaAtualizacao = agora.format(DateTimeFormatter.ofPattern("HH:mm"));
+    
+
+
 
     List<Cobranca> cobrancasDoMes = cobrancaRepository.findByDataBetween(inicioMes, hoje);
     List<Pix> pixsDoMes = pixRepository.findByDataBetween(inicioMes, hoje);
