@@ -6,7 +6,7 @@ Este guia fornece as instruções necessárias para configurar e executar o ambi
 
 ---
 
-### 📋 Pré-requisitos
+## 📋 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
@@ -45,23 +45,30 @@ Confirme se todos os containers estão ativos:
 docker ps
 ```
 
-### 📂 Portas e Acessos
+# 📂 Portas
 
-| Serviço         | Porta  | Descrição                        |
-| :-------------- | :----- | :------------------------------- |
-| **Backend API** | `8080` | Endpoints REST da aplicação      |
-| **PostgreSQL**  | `5432` | Banco de dados principal         |
-| **Frontend**    | `4200` | Interface do Dashboard (Angular) |
+| Serviço         | Porta  | Descrição                      |
+| :-------------- | :----- | :----------------------------- |
+| **Backend API** | `8080` | Endpoints REST da aplicação    |
+| **MySQL**       | `3306` | Banco de dados principal       |
+| **Frontend**    | `80`   | Interface do Sistema (Angular) |
 
-### 💡 Comandos de Manutenção
+# 💡 Comandos de Manutenção
 
-#### 🔍 Monitorização
+### 🔍 Monitorização
 
 - **Ver logs da aplicação:** `docker-compose logs -f app`
 - **Ver logs do banco de dados:** `docker-compose logs -f db`
 
-#### 🔄 Ciclo de Vida
+### 🔄 Ciclo de Vida
 
 - **Parar serviços:** `docker-compose stop`
 - **Remover containers:** `docker-compose down`
 - **Remover tudo (incluindo dados do banco):** `docker-compose down -v`
+
+# 🔑 Acesso à Aplicação
+
+Ao rodar o sistema a primeira vez, será criado um usuário padrão com acesso nível 'ADMIN' para utização das funcionalidades da aplicação. Suas credenciais são:
+
+- **Login:** `admin@gmail.com`
+- **Senha:** `admin`
