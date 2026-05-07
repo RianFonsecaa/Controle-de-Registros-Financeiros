@@ -91,3 +91,6 @@ docker-compose.override.yml
 # Ignorar pasta de uploads de comprovantes
 api/uploads/
 api/uploads/**
+
+# WAHA Sessions (Dados sensíveis e arquivos de cache do navegador)
+waha_sessions/

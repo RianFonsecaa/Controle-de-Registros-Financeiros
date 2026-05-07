@@ -36,6 +36,7 @@ public class SecurityConfigurations {
         .authorizeHttpRequests(authority -> authority
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
+            .requestMatchers("/api/whatsapp/**").permitAll()
             .requestMatchers(HttpMethod.POST,"/usuarios/registro").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT,"/usuarios/registro").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PATCH,"/usuarios/registro").hasRole("ADMIN")

@@ -44,6 +44,22 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       TZ: America/Sao_Paulo
 
+  waha:
+    image: devlikeapro/waha
+    container_name: waha
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./waha_sessions:/app/.sessions
+    environment:
+      - WHATSAPP_HOOK_URL=http://api:8080/api/whatsapp/webhook
+      - WHATSAPP_HOOK_EVENTS=message
+      - WHATSAPP_API_KEY=f37c6513d51a40aa80bbd215ff7c98d9
+      - TZ=America/Sao_Paulo
+    depends_on:
+      - api
+
   client:
     build:
       context: ./client
