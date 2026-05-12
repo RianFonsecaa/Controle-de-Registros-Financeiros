@@ -1,0 +1,78 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: crf-mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: crf_bd
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${DB_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: crf-api-server
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api/uploads:/app/uploads
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true
+      DB_PASSWORD: ${DB_PASSWORD}
+      WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_KEY: ${SUPABASE_KEY}
+      BUCKET_NAME: ${BUCKET_NAME}
+      TZ: America/Sao_Paulo
+
+  waha:
+    image: devlikeapro/waha
+    container_name: waha
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./waha_sessions:/app/.sessions
+    environment:
+      WHATSAPP_DEFAULT_ENGINE: NOWEB
+      WHATSAPP_HOOK_URL: http://api:8080/api/whatsapp/webhook
+      WHATSAPP_HOOK_EVENTS: message
+      WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}
+      WAHA_DASHBOARD_PASSWORD: ${WAHA_DASHBOARD_PASSWORD}
+      TZ: America/Sao_Paulo
+    depends_on:
+      - api
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: crf-angular-client
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - api

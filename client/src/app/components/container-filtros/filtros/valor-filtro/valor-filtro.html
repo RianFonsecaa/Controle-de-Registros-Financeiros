@@ -1,0 +1,65 @@
+<div
+  [formGroup]="form"
+  class="flex flex-row rounded-2xl border border-gray-200"
+>
+  <label
+    class="flex items-center rounded-l-xl text-[13px] font-semibold text-[#94A3B8] bg-[#eff3f8] p-3"
+  >
+    Valor Total
+  </label>
+
+  <div class="flex items-center p-1 gap-2">
+    <div
+      class="flex flex-row gap-1 p-2 bg-[#f2f6fc] rounded-xl text-[#94A3B8] font-medium"
+    >
+      <span>R$</span>
+      <input
+        (change)="onPreencherValor()"
+        type="number"
+        step="0.01"
+        min="0"
+        class="w-32"
+        formControlName="valorInicioFiltro"
+        placeholder="0,00"
+      />
+    </div>
+
+    <span class="text-[13px] font-semibold text-[#94A3B8]">a</span>
+
+    <div
+      class="flex flex-row gap-1 p-2 bg-[#f2f6fc] rounded-xl text-[#94A3B8] font-medium"
+    >
+      <span>R$</span>
+      <input
+        (change)="onPreencherValor()"
+        type="number"
+        step="0.01"
+        min="0"
+        class="w-32"
+        formControlName="valorFimFiltro"
+        placeholder="0,00"
+      />
+    </div>
+  </div>
+
+  <button
+    (click)="onRemover()"
+    class="flex items-center px-3 cursor-pointer group"
+  >
+    <svg
+      class="w-5 h-5 text-[#94A3B8] transition-colors duration-200 group-hover:text-red-500"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18 17.94 6M18 18 6.06 6"
+      />
+    </svg>
+  </button>
+</div>

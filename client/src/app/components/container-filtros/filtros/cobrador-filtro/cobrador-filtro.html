@@ -1,0 +1,52 @@
+<div
+  [formGroup]="form"
+  class="flex flex-row rounded-2xl border border-gray-200"
+>
+  <label
+    class="flex items-center rounded-l-xl text-[13px] font-semibold text-[#94A3B8] bg-[#eff3f8] p-2"
+    >Cobrador</label
+  >
+
+  <div class="flex flex-row p-1">
+    <select
+      (change)="onPreencherValor()"
+      formControlName="cobradorFiltro"
+      [compareWith]="compareById"
+      class="select select-ghost border-0 text-mdw-full rounded-xl outline-0 font-medium text-[#94A3B8] bg-[#f2f6fc]"
+    >
+      <option [ngValue]="null" disabled>Selecione</option>
+
+      @for (cobrador of funcionarios; track $index) {
+        <option
+          class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
+          [ngValue]="cobrador"
+        >
+          {{ cobrador.nome }}
+        </option>
+      }
+    </select>
+
+    <button
+      (click)="onRemover()"
+      class="flex items-center px-3 cursor-pointer group"
+    >
+      <svg
+        class="w-5 h-5 text-[#94A3B8] transition-colors duration-200 group-hover:text-red-500"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18 17.94 6M18 18 6.06 6"
+        />
+      </svg>
+    </button>
+  </div>
+</div>

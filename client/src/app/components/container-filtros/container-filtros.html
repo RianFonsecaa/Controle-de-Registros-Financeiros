@@ -1,0 +1,81 @@
+<div
+  class="flex flex-col w-full min-w-0 justify-between rounded-3xl border border-[#dfdfdf] shadow-md bg-white"
+>
+  <div class="flex flex-row p-4 border-b border-gray-200 gap-4">
+    <span
+      class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
+    >
+      <div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
+      <span>{{ titulo | uppercase }}</span>
+    </span>
+  </div>
+
+  <div class="flex flex-row w-full gap-2 p-4">
+    <div class="flex flex-row flex-wrap gap-2 w-[85%]">
+      <form
+        [formGroup]="filtroForm"
+        class="flex flex-row flex-wrap gap-2 min-w-0"
+      >
+        @for (item of configuracaoFiltros; track item.key) {
+          @if (item.visivel) {
+            <ng-container
+              [ngComponentOutlet]="item.componente"
+              [ngComponentOutletInputs]="{
+                form: filtroForm,
+                onRemover: removerFiltro.bind(this, item.key),
+                onPreencherValor: onFiltrar.bind(this),
+              }"
+            ></ng-container>
+          }
+        }
+      </form>
+
+      <div
+        class="flex flex-row items-center py-0 px-4 text-md font-semibold h-12 border-dashed border-2 border-gray-300 rounded-2xl text-[#94A3B8] transition-all duration-300 cursor-pointer group hover:border-[#6257f7c1] hover:text-[#6157f7] transform active:scale-90"
+      >
+        <svg
+          class="w-3 h-3 group-hover:text-[#6157f7]"
+          viewBox="0 0 32 32"
+          fill="currentColor"
+        >
+          <path
+            d="M390,1049 L382,1049 L382,1041 C382,1038.79 380.209,1037 378,1037 C375.791,1037 374,1038.79 374,1041 L374,1049 L366,1049 C363.791,1049 362,1050.79 362,1053 C362,1055.21 363.791,1057 366,1057 L374,1057 L374,1065 C374,1067.21 375.791,1069 378,1069 C380.209,1069 382,1067.21 382,1065 L382,1057 L390,1057 C392.209,1057 394,1055.21 394,1053 C394,1050.79 392.209,1049 390,1049"
+            transform="translate(-362.000000, -1037.000000)"
+          ></path>
+        </svg>
+
+        <select
+          class="select select-ghost outline-0 text-md font-semibold text-[#94A3B8] group-hover:text-[#6157f7] cursor-pointer"
+          (change)="adicionarFiltro($event)"
+        >
+          <option value="" selected>Adicionar Filtro</option>
+          @for (filtro of configuracaoFiltros; track filtro.key) {
+            @if (!filtro.visivel) {
+              <option [value]="filtro.key">{{ filtro.label }}</option>
+            }
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="flex flex-row justify-end items-end w-[15%]">
+      @if (possuiFiltrosAtivos) {
+        <button
+          (click)="removerTodosFiltros()"
+          class="flex flex-row gap-1 bg-[#FB2C36]/10 px-4 py-3 rounded-2xl items-center transition-all duration-200 cursor-pointer transform active:scale-90"
+        >
+          <svg
+            class="text-[#FB2C36] w-4 h-4"
+            viewBox="0 0 1024 1024"
+            fill="currentColor"
+          >
+            <path
+              d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"
+            ></path>
+          </svg>
+          <span class="text-[#FB2C36] text-sm font-bold">Remover Todos</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

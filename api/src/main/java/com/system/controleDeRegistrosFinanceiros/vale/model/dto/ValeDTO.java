@@ -1,0 +1,29 @@
+package com.system.controleDeRegistrosFinanceiros.vale.model.dto;
+
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ValeDTO {
+
+    private Long id;
+    private Long funcionarioId;
+    private String funcionarioNome;
+    private Long cobrancaId;
+    private String justificativa;
+    private Double valor;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate data;
+
+}

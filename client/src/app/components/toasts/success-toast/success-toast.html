@@ -1,0 +1,33 @@
+<div class="toast toast-top toast-end animate-fadeIn">
+  <div
+    class="flex flex-row h-20 items-center align-middle gap-4 bg-white rounded-md p-3 shadow-black/20 shadow-[0_0_12px_rgba]"
+  >
+    <div class="bg-[#00A876] w-1.5 h-full rounded-xl"></div>
+    <svg
+      class="w-6 h-6 text-[#00A876]"
+      viewBox="0 0 1024 1024"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="#000000"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          fill="currentColor"
+          d="M512 64a448 448 0 110 896 448 448 0 010-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 10-54.336 54.336l126.72 126.72a38.272 38.272 0 0054.336 0l262.4-262.464a38.4 38.4 0 10-54.272-54.336L456.192 600.384z"
+        ></path>
+      </g>
+    </svg>
+
+    <div class="flex flex-col p-1">
+      <h1 class="font-bold text-gray-600">Operação Concluída</h1>
+      <span class="text-gray-400 font-semibold text-[13px]">
+        {{ mensagem }}
+      </span>
+    </div>
+  </div>
+</div>

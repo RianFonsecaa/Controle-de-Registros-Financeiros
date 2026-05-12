@@ -1,0 +1,180 @@
+<section class="flex flex-col h-full gap-4 min-w-0">
+  <div
+    class="flex flex-col w-full h-full min-w-0 rounded-3xl border border-gray-300 shadow-lg overflow-hidden"
+  >
+    <div
+      class="flex flex-row min-w-0 bg-white justify-between p-6 items-center"
+    >
+      <span
+        class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
+      >
+        <div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
+        <span> LISTAGEM DE VEÍCULOS</span>
+
+        <div class="flex flex-row items-center gap-2 font-semibold text-sm p-3">
+          <input
+            type="checkbox"
+            [checked]="mostrarAtivos()"
+            (change)="toggleStatusLista()"
+            [ngClass]="{
+              'border-[#23C78D] text-[#23C78D]': mostrarAtivos(),
+              'border-gray-400 text-gray-400': !mostrarAtivos(),
+            }"
+            class="toggle border-2"
+          />
+          @if (mostrarAtivos()) {
+            <span class="text-[#23C78D] font-bold">Ativos</span>
+          } @else {
+            <span class="text-gray-400">Inativos</span>
+          }
+        </div>
+      </span>
+
+      <div class="flex items-end min-w-0">
+        <app-primary-add-button
+          (abrir)="abrirModal(null, saveVeiculoModal)"
+          nome="Veículo"
+        ></app-primary-add-button>
+      </div>
+    </div>
+
+    @if (listaExibida().length > 0) {
+      <div class="relative bg-white w-full h-full overflow-auto">
+        <table class="w-full text-[12px] text-[#636363]">
+          <thead>
+            <tr>
+              <th class="sticky top-0 bg-white w-[10%] px-6 py-3 text-left">
+                AÇÕES
+              </th>
+              <th class="sticky top-0 bg-white px-2 py-3 text-left">MODELO</th>
+              <th class="sticky top-0 bg-white px-2 py-3 text-left">PLACA</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (veiculo of listaExibida(); track veiculo.id) {
+              <tr
+                class="border-t h-16 bg-white border w-full border-gray-200 hover:bg-gray-100 transition-colors"
+              >
+                <td class="py-2 px-6">
+                  <div class="flex flex-row gap-1">
+                    <button
+                      (click)="abrirModal(veiculo, saveVeiculoModal)"
+                      class="flex justify-center items-center rounded-md p-0 h-6 w-6 bg-blue-500 cursor-pointer shadow-md transition duration-200 hover:scale-110"
+                    >
+                      <svg
+                        class="text-white w-4 h-4"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            d="M11.4001 18.1612L11.4001 18.1612L18.796 10.7653C17.7894 10.3464 16.5972 9.6582 15.4697 8.53068C14.342 7.40298 13.6537 6.21058 13.2348 5.2039L5.83882 12.5999L5.83879 12.5999C5.26166 13.1771 4.97307 13.4657 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L7.47918 20.5844C8.25351 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5343 19.0269 10.823 18.7383 11.4001 18.1612Z"
+                            fill="currentColor"
+                          ></path>
+                          <path
+                            d="M20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178L14.3999 4.03882C14.4121 4.0755 14.4246 4.11268 14.4377 4.15035C14.7628 5.0875 15.3763 6.31601 16.5303 7.47002C17.6843 8.62403 18.9128 9.23749 19.85 9.56262C19.8875 9.57563 19.9245 9.58817 19.961 9.60026L20.8482 8.71306Z"
+                            fill="currentColor"
+                          ></path>
+                        </g>
+                      </svg>
+                    </button>
+
+                    <button
+                      class="flex justify-center items-center rounded-md p-0 h-6 w-6 cursor-pointer shadow-md transition duration-200 hover:scale-110"
+                      (click)="abrirModal(veiculo, toggleStatusModal)"
+                      [ngClass]="{
+                        'bg-[#23C78D]': mostrarAtivos(),
+                        'bg-red-500': !mostrarAtivos(),
+                      }"
+                    >
+                      <svg
+                        class="text-white w-4 h-4"
+                        version="1.1"
+                        id="_x32_"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 512 512"
+                        xml:space="preserve"
+                        fill="currentColor"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <g>
+                            <path
+                              class="st0"
+                              d="M423.262,91.992c-16.877-15.91-43.434-15.098-59.32,1.778c-15.894,16.877-15.098,43.434,1.779,59.32 c32.082,30.213,49.754,71.238,49.754,115.5c0,87.934-71.541,159.476-159.476,159.476S96.525,356.524,96.525,268.59 c0-44.262,17.668-85.287,49.754-115.5c16.877-15.885,17.672-42.442,1.779-59.32c-15.885-16.885-42.455-17.688-59.32-1.778 C40.344,137.557,12.59,201.926,12.59,268.59C12.59,402.803,121.783,512,256,512c134.213,0,243.41-109.197,243.41-243.41 C499.41,201.926,471.656,137.557,423.262,91.992z"
+                            ></path>
+                            <path
+                              class="st0"
+                              d="M256,268.59c23.178,0,41.967-15.033,41.967-33.574V33.574C297.967,15.033,279.178,0,256,0 c-23.178,0-41.967,15.033-41.967,33.574v201.443C214.033,253.557,232.822,268.59,256,268.59z"
+                            ></path>
+                          </g>
+                        </g>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+                <td class="p-2">{{ veiculo.modelo }}</td>
+                <td class="p-2 font-mono">{{ veiculo.placa }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-2 h-full items-center justify-center p-12">
+        <div class="bg-[#e9e9fa] p-4 rounded-full">
+          <svg
+            class="text-[#5a5add] w-16 h-16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M14.5 11.5L12 14M12 14L9.5 16.5M12 14L9.50002 11.5M12 14L14.5 16.5M13 3H5V21H19V9M13 3H14L19 8V9M13 3V7C13 8 14 9 15 9H19"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-[#475569]">
+          Nenhum veículo encontrado
+        </h3>
+        <p class="text-gray-500 text-center max-w-xs">
+          Não há nenhum cadastro de veículos no momento
+        </p>
+      </div>
+    }
+  </div>
+</section>
+
+<dialog #toggleStatusModal class="modal">
+  <app-toggle-status-modal
+    (confirmar)="toggleStatusCadastro(toggleStatusModal)"
+    (cancelar)="fecharModal(toggleStatusModal)"
+    tipoCadastro="Veículo"
+    [toggleStatus]="mostrarAtivos()"
+  ></app-toggle-status-modal>
+</dialog>
+
+<dialog #saveVeiculoModal class="modal">
+  <app-save-veiculo-modal
+    [veiculo]="veiculoSelecionado ? veiculoSelecionado : null"
+    (salvar)="fecharModal(saveVeiculoModal)"
+    (cancelar)="fecharModal(saveVeiculoModal)"
+  ></app-save-veiculo-modal>
+</dialog>
