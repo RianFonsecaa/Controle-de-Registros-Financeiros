@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import com.system.controleDeRegistrosFinanceiros.whatsapp.service.WhatsappBotService;
 
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/whatsapp")
@@ -26,13 +24,9 @@ public class WhatsappWebhookController {
 
         if ("message".equals(evento) && payload != null) {
             Boolean deMim = (Boolean) payload.get("fromMe");
-
-            // Segurança contra loop infinito
             if (Boolean.TRUE.equals(deMim)) {
                 return ResponseEntity.ok().build();
             }
-
-            // Delegando a lógica do switch para o Service
             botService.processarMensagem(payload);
         }
         return ResponseEntity.ok().build();
