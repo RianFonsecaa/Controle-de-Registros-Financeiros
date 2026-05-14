@@ -45,13 +45,20 @@
         </svg>
 
         <select
-          class="select select-ghost outline-0 text-md font-semibold text-[#94A3B8] group-hover:text-[#6157f7] cursor-pointer"
+          class="select select-ghost outline-0 text-md font-semibold bg-white text-[#94A3B8] group-hover:text-[#6157f7] cursor-pointer"
           (change)="adicionarFiltro($event)"
         >
-          <option value="" selected>Adicionar Filtro</option>
+          <option class="hover:bg-gray-100" value="" selected>
+            Adicionar Filtro
+          </option>
           @for (filtro of configuracaoFiltros; track filtro.key) {
             @if (!filtro.visivel) {
-              <option [value]="filtro.key">{{ filtro.label }}</option>
+              <option
+                class="active:bg-blue-600 active:text-white hover:bg-gray-50"
+                [value]="filtro.key"
+              >
+                {{ filtro.label }}
+              </option>
             }
           }
         </select>

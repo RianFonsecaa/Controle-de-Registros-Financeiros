@@ -1,0 +1,151 @@
+<div
+  class="modal-box w-[480px] h-[650px] flex flex-col flex-1 overflow-y-auto gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+>
+  <div class="flex flex-col gap-1">
+    <h2 class="text-lg font-semibold text-slate-700">Compartilhar relatório</h2>
+
+    <p class="text-sm text-slate-400">
+      Selecione os usuários que irão receber o relatório via WhatsApp
+    </p>
+  </div>
+
+  <form [formGroup]="whatsappListForm">
+    <div class="relative">
+      <select
+        formControlName="usuarioSelecionado"
+        class="w-full appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all duration-200 focus:border-[#51BCAD] focus:bg-white focus:ring-4 focus:ring-[#51BCAD]/10"
+      >
+        <option [ngValue]="null" disabled>Selecione um usuário</option>
+
+        @for (usuario of usuarioService.usuariosAtivos(); track $index) {
+          <option [ngValue]="usuario">
+            {{ usuario.name }}
+          </option>
+        }
+      </select>
+
+      <div
+        class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
+      >
+        <svg
+          class="h-5 w-5 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m19 9-7 7-7-7"
+          />
+        </svg>
+      </div>
+    </div>
+  </form>
+
+  @if (usuariosAdicionados.length > 0) {
+    <div class="flex flex-col h-full gap-3">
+      @for (usuarioAdicionado of usuariosAdicionados; track $index) {
+        <div
+          class="group flex items-center justify-between rounded-2xl border border-[#51BCAD]/10 bg-gradient-to-r from-[#51BCAD]/5 to-emerald-50 p-4 transition-all duration-200 hover:border-[#51BCAD]/30 hover:shadow-sm"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm"
+            >
+              <svg
+                class="w-6 h-6 text-[#17EC72]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M6.014 8.00613C6.12827 7.1024 7.30277 5.87414 8.23488 6.01043L8.23339 6.00894C9.14051 6.18132 9.85859 7.74261 10.2635 8.44465C10.5504 8.95402 10.3641 9.4701 10.0965 9.68787C9.7355 9.97883 9.17099 10.3803 9.28943 10.7834C9.5 11.5 12 14 13.2296 14.7107C13.695 14.9797 14.0325 14.2702 14.3207 13.9067C14.5301 13.6271 15.0466 13.46 15.5548 13.736C16.3138 14.178 17.0288 14.6917 17.69 15.27C18.0202 15.546 18.0977 15.9539 17.8689 16.385C17.4659 17.1443 16.3003 18.1456 15.4542 17.9421C13.9764 17.5868 8 15.27 6.08033 8.55801C5.97237 8.24048 5.99955 8.12044 6.014 8.00613Z"
+                    fill="currentColor"
+                  ></path>
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12 23C10.7764 23 10.0994 22.8687 9 22.5L6.89443 23.5528C5.56462 24.2177 4 23.2507 4 21.7639V19.5C1.84655 17.492 1 15.1767 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM6 18.6303L5.36395 18.0372C3.69087 16.4772 3 14.7331 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C11.0143 21 10.552 20.911 9.63595 20.6038L8.84847 20.3397L6 21.7639V18.6303Z"
+                    fill="currentColor"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="font-semibold text-slate-700">
+                {{ usuarioAdicionado.name }}
+              </span>
+
+              <span class="text-sm font-semibold text-slate-400">
+                {{ formatarTelefone(usuarioAdicionado.telefone) }}
+              </span>
+            </div>
+          </div>
+
+          <div
+            class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+          >
+            Adicionado
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div
+      class="flex flex-col h-full items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-slate-50/70 p-10"
+    >
+      <div
+        class="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#51BCAD]/10"
+      >
+        <svg
+          class="h-10 w-10 text-[#51BCAD]"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M2.25 6C2.25 5.58579 2.58579 5.25 3 5.25H21C21.4142 5.25 21.75 5.58579 21.75 6C21.75 6.41421 21.4142 6.75 21 6.75H3C2.58579 6.75 2.25 6.41421 2.25 6ZM2.25 10C2.25 9.58579 2.58579 9.25 3 9.25H21C21.4142 9.25 21.75 9.58579 21.75 10C21.75 10.4142 21.4142 10.75 21 10.75H3C2.58579 10.75 2.25 10.4142 2.25 10ZM14.4697 12.9697C14.7626 12.6768 15.2374 12.6768 15.5303 12.9697L17.5 14.9393L19.4697 12.9697C19.7626 12.6768 20.2374 12.6768 20.5303 12.9697C20.8232 13.2626 20.8232 13.7374 20.5303 14.0303L18.5607 16L20.5303 17.9697C20.8232 18.2626 20.8232 18.7374 20.5303 19.0303C20.2374 19.3232 19.7626 19.3232 19.4697 19.0303L17.5 17.0607L15.5303 19.0303C15.2374 19.3232 14.7626 19.3232 14.4697 19.0303C14.1768 18.7374 14.1768 18.2626 14.4697 17.9697L16.4393 16L14.4697 14.0303C14.1768 13.7374 14.1768 13.2626 14.4697 12.9697ZM2.25 14C2.25 13.5858 2.58579 13.25 3 13.25H11C11.4142 13.25 11.75 13.5858 11.75 14C11.75 14.4142 11.4142 14.75 11 14.75H3C2.58579 14.75 2.25 14.4142 2.25 14ZM2.25 18C2.25 17.5858 2.58579 17.25 3 17.25H11C11.4142 17.25 11.75 17.5858 11.75 18C11.75 18.4142 11.4142 18.75 11 18.75H3C2.58579 18.75 2.25 18.4142 2.25 18Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </div>
+
+      <h3 class="text-xl font-bold text-slate-700">
+        Nenhum usuário selecionado
+      </h3>
+
+      <p
+        class="mt-2 max-w-sm text-center text-sm font-medium leading-relaxed text-slate-400"
+      >
+        Adicione usuários para compartilhar automaticamente o relatório gerado
+        via WhatsApp.
+      </p>
+    </div>
+  }
+  <div class="flex flex-row gap-2 justify-start w-full">
+    <app-cancel-button
+      class="w-full"
+      (cancelar)="onCancelar()"
+    ></app-cancel-button>
+
+    <button
+      (click)="onEnviar()"
+      type="submit"
+      class="w-full h-10 bg-blue-500 text-white rounded-xl font-bold text-sm shadow-md transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+    >
+      Enviar
+    </button>
+  </div>
+</div>

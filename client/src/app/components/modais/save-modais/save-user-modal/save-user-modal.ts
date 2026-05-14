@@ -113,9 +113,9 @@ export class SaveUserModal implements OnInit, OnChanges {
 
   private isTrocaDaPropriaRole(roleSolicitada: string): boolean {
     const emailLogado = this.tokenStorageService.getPayload()?.email;
-    const ehProprioPerfil = this.usuario?.login === emailLogado;
+    const proprioPerfil = this.usuario?.login === emailLogado;
 
-    if (ehProprioPerfil && roleSolicitada !== "ADMIN") {
+    if (proprioPerfil && roleSolicitada !== "ADMIN") {
       this.toastService.abrir(
         "error",
         "Você não pode alterar o seu próprio nível de acesso!",

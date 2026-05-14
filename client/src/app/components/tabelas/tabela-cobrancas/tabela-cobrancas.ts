@@ -25,6 +25,8 @@ import { PeriodoFiltro } from "../../container-filtros/filtros/periodo-filtro/pe
 import { RegistranteFiltro } from "../../container-filtros/filtros/registrante-filtro/registrante-filtro";
 import { ValorFiltro } from "../../container-filtros/filtros/valor-filtro/valor-filtro";
 import { CobrancaQueryFilters } from "../../../model/query-filters/CobrancaQueryFilters";
+import { WhatsappButton } from "../../buttons/whatsapp-button/whatsapp-button";
+import { SelectUserModal } from "../../modais/select-user-modal/select-user-modal";
 
 @Component({
   selector: "app-tabela-cobrancas",
@@ -34,11 +36,13 @@ import { CobrancaQueryFilters } from "../../../model/query-filters/CobrancaQuery
     SaveCobrancaModal,
     PrimaryAddButton,
     RelatorioButton,
+    WhatsappButton,
     ContainerFiltros,
     ContainerFiltros,
     UpdateButton,
     UpdateCobrancaModal,
     LoadingModal,
+    SelectUserModal,
   ],
   templateUrl: "./tabela-cobrancas.html",
   styleUrl: "./tabela-cobrancas.css",

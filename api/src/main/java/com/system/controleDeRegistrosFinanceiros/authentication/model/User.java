@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(name = "login", nullable = false, unique = true, length = 50)
     private String login;
 
+    @Column(name = "telefone", nullable = false, length = 11)
+    private String telefone;
+
     @Column(nullable = false)
     private Boolean ativo = true;
 
@@ -54,11 +57,12 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
 
-    public User(String login, String password, String name, UserRole role, Boolean ativo) {
+    public User(String login, String password, String name, UserRole role, String telefone, Boolean ativo) {
         this.login = login;
         this.password = password;
         this.name = name;
         this.role = role;
+        this.telefone = telefone;
         this.ativo = ativo;
     }
 

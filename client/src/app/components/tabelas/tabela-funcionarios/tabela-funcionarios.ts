@@ -5,21 +5,21 @@ import {
   inject,
   OnInit,
   signal,
-} from '@angular/core';
-import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
-import { FuncionarioService } from '../../../services/http/funcionario.service';
-import { ModalService } from '../../../services/ui/modal.service';
-import { ToastService } from '../../../services/ui/toast.service';
-import { NgClass } from '@angular/common';
-import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
-import { ToggleStatusModal } from '../../modais/toggle-status-modal/toggle-status-modal';
-import { SaveFuncionarioModal } from '../../modais/save-modais/save-funcionario-modal/save-funcionario-modal';
+} from "@angular/core";
+import { FuncionarioResponse } from "../../../model/responses/FuncionarioResponse";
+import { FuncionarioService } from "../../../services/http/funcionario.service";
+import { ModalService } from "../../../services/ui/modal.service";
+import { ToastService } from "../../../services/ui/toast.service";
+import { NgClass } from "@angular/common";
+import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-button";
+import { ToggleStatusModal } from "../../modais/toggle-status-modal/toggle-status-modal";
+import { SaveFuncionarioModal } from "../../modais/save-modais/save-funcionario-modal/save-funcionario-modal";
 
 @Component({
-  selector: 'app-tabela-funcionarios',
+  selector: "app-tabela-funcionarios",
   imports: [NgClass, PrimaryAddButton, ToggleStatusModal, SaveFuncionarioModal],
-  templateUrl: './tabela-funcionarios.html',
-  styleUrl: './tabela-funcionarios.css',
+  templateUrl: "./tabela-funcionarios.html",
+  styleUrl: "./tabela-funcionarios.css",
 })
 export class TabelaFuncionarios implements OnInit {
   private modalService = inject(ModalService);
@@ -63,12 +63,12 @@ export class TabelaFuncionarios implements OnInit {
         next: () => {
           this.funcionarioService.buscaFuncionarios();
           this.toastService.abrir(
-            'success',
-            'Status do funcionário atualizado com sucesso!',
+            "success",
+            "Status do funcionário atualizado com sucesso!",
           );
         },
         error: () => {
-          this.toastService.abrir('error', 'Erro ao atualizar status.');
+          this.toastService.abrir("error", "Erro ao atualizar status.");
         },
       });
     this.fecharModal(modal);
@@ -76,5 +76,15 @@ export class TabelaFuncionarios implements OnInit {
 
   toggleStatusLista() {
     this.mostrarAtivos.update((status) => !status);
+  }
+
+  formatarTelefone(telefone: string): string {
+    const numero = telefone.replace(/\D/g, "");
+
+    if (numero.length === 11) {
+      return numero.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    }
+
+    return telefone;
   }
 }

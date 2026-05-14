@@ -79,9 +79,6 @@ export class SaveCobrancaModal {
   @Output() cancelar = new EventEmitter<void>();
   @Output() salvar = new EventEmitter<void>();
 
-  exibirSuccessToast: boolean = false;
-  mensagemToast: string = "";
-
   ngOnInit() {
     this.cobrancaForm.valueChanges.subscribe(() => {
       this.calcularValoresTotais();

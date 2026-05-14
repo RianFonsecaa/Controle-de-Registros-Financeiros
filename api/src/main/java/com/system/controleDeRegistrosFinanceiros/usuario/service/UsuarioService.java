@@ -33,9 +33,12 @@ public class UsuarioService {
         }
 
         User newUser = usuarioMapper.toEntity(registroDTO);
+
         newUser.setPassword(passwordEncoder.encode(registroDTO.password()));
+        newUser.setTelefone(formatarTelefone(newUser.getTelefone()));
 
         userRepository.save(newUser);
+
         return usuarioMapper.toDTO(newUser);
     }
 
@@ -52,7 +55,10 @@ public class UsuarioService {
 
         usuarioMapper.updateEntityFromDto(data, user);
 
+        user.setTelefone(formatarTelefone(user.getTelefone()));
+
         userRepository.save(user);
+
         return usuarioMapper.toDTO(user);
     }
 
@@ -66,6 +72,12 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário", "login", login));
         usuario.setAtivo(!usuario.getAtivo());
         userRepository.save(usuario);
+    }
+
+    private String formatarTelefone(String telefone) {
+        return telefone != null
+                ? telefone.replaceAll("\\D", "")
+                : null;
     }
 
     public void editarSenha(String login, String newPassword) {

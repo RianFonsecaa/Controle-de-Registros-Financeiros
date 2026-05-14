@@ -10,6 +10,7 @@ services:
       - "3307:3306"
     volumes:
       - ./db_data:/var/lib/mysql
+
     healthcheck:
       test:
         [
@@ -20,7 +21,7 @@ services:
           "localhost",
           "-u",
           "root",
-          "-p${DB_PASSWORD}",
+          "-p$${DB_PASSWORD}",
         ]
       interval: 10s
       timeout: 5s
@@ -41,6 +42,8 @@ services:
       - ./api/uploads:/app/uploads
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       DB_PASSWORD: ${DB_PASSWORD}
       WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}
       SUPABASE_URL: ${SUPABASE_URL}
@@ -58,6 +61,8 @@ services:
       - ./waha_sessions:/app/.sessions
     environment:
       WHATSAPP_DEFAULT_ENGINE: NOWEB
+      WHATSAPP_CONFIG_NOWEB_STORE_ENABLED: "True"
+      WHATSAPP_CONFIG_NOWEB_STORE_FULL_SYNC: "True"
       WHATSAPP_HOOK_URL: http://api:8080/api/whatsapp/webhook
       WHATSAPP_HOOK_EVENTS: message
       WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}
