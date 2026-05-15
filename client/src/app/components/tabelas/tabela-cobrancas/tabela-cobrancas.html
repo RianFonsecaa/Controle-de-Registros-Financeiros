@@ -274,7 +274,7 @@
 
 <dialog #selectUserModal class="modal">
   <app-select-user-modal
-    (enviar)="fecharModal(selectUserModal)"
+    (enviar)="enviaRelatorioParaWhatsapp($event)"
     (cancelar)="fecharModal(selectUserModal)"
   ></app-select-user-modal>
 </dialog>

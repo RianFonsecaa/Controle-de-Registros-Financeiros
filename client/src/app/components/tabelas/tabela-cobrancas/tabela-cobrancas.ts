@@ -27,6 +27,8 @@ import { ValorFiltro } from "../../container-filtros/filtros/valor-filtro/valor-
 import { CobrancaQueryFilters } from "../../../model/query-filters/CobrancaQueryFilters";
 import { WhatsappButton } from "../../buttons/whatsapp-button/whatsapp-button";
 import { SelectUserModal } from "../../modais/select-user-modal/select-user-modal";
+import { EnviaRelatorioWppRequest } from "../../../model/requests/EnviaRelatorioWppRequest";
+import { WhatsappService } from "../../../services/http/whatsapp.service";
 
 @Component({
   selector: "app-tabela-cobrancas",
@@ -49,11 +51,14 @@ import { SelectUserModal } from "../../modais/select-user-modal/select-user-moda
 })
 export class TabelaCobrancas {
   @ViewChild("loadingModal") loadingModal!: ElementRef<HTMLDialogElement>;
+  @ViewChild("selectUserModal")
+  selectUserModal!: ElementRef<HTMLDialogElement>;
   @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
   private modalService = inject(ModalService);
   private cobrancaService = inject(CobrancaService);
   private relatorioService = inject(RelatorioService);
   private toastService = inject(ToastService);
+  private whatsappService = inject(WhatsappService);
 
   cobrancas = this.cobrancaService.cobrancas;
   filtrosAtivos!: CobrancaQueryFilters;
@@ -182,6 +187,50 @@ export class TabelaCobrancas {
         complete: () =>
           this.modalService.fecharModal(this.loadingModal.nativeElement),
       });
+  }
+
+  enviaRelatorioParaWhatsapp(numerosSelecionados: string[]) {
+    if (!this.possuiFiltros() || this.cobrancas().length === 0) {
+      this.modalService.fecharModal(this.selectUserModal.nativeElement);
+      this.toastService.abrir(
+        "error",
+        "Nenhum filtro preenchido ou tabela vazia",
+      );
+      return;
+    }
+
+    if (!numerosSelecionados || numerosSelecionados.length === 0) {
+      this.toastService.abrir(
+        "error",
+        "Selecione ao menos um usuário para enviar o relatório",
+      );
+      return;
+    }
+
+    this.modalService.fecharModal(this.selectUserModal.nativeElement);
+
+    this.modalService.abrirModal(this.loadingModal.nativeElement);
+
+    const payload: EnviaRelatorioWppRequest = {
+      filtros: this.filtrosAtivos,
+      numerosTelefone: numerosSelecionados,
+    };
+
+    this.whatsappService.enviaRelatorio(payload).subscribe({
+      next: (mensagemSucesso) => {
+        this.toastService.abrir("success", mensagemSucesso);
+      },
+      error: (err) => {
+        this.toastService.abrir(
+          "error",
+          "Falha ao iniciar envio dos relatórios.",
+        );
+        this.modalService.fecharModal(this.loadingModal.nativeElement);
+      },
+      complete: () => {
+        this.modalService.fecharModal(this.loadingModal.nativeElement);
+      },
+    });
   }
 
   private possuiFiltros(): boolean {

@@ -16,7 +16,7 @@ export class SelectUserModal {
   usuariosAdicionados: UserResponse[] = [];
 
   @Output() cancelar = new EventEmitter<void>();
-  @Output() enviar = new EventEmitter<void>();
+  @Output() enviar = new EventEmitter<string[]>();
 
   usuarioService = inject(UsuariosService);
 
@@ -64,7 +64,10 @@ export class SelectUserModal {
   }
 
   onEnviar() {
-    this.enviar.emit();
-    console.log(this.usuariosAdicionados);
+    const listaNumeros = this.usuariosAdicionados.map((user) => user.telefone);
+
+    this.enviar.emit(listaNumeros);
+    this.usuariosAdicionados = [];
+    this.whatsappListForm.reset();
   }
 }
