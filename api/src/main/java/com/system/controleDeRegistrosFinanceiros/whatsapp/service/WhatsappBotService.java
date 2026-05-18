@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
 import com.system.controleDeRegistrosFinanceiros.relatorio.service.RelatorioService;
 import com.system.controleDeRegistrosFinanceiros.usuario.service.UsuarioService;
-import com.system.controleDeRegistrosFinanceiros.whatsapp.model.EnviarRelatorioRequest;
+import com.system.controleDeRegistrosFinanceiros.whatsapp.model.RelatorioWppRequestDTO;
 
 @Service
 public class WhatsappBotService {
@@ -48,6 +48,32 @@ public class WhatsappBotService {
     public WhatsappBotService(RelatorioService relatorioService, UsuarioService usuarioService){
         this.relatorioService = relatorioService;
         this.usuarioService = usuarioService;
+    }
+
+      public boolean validarEProcessar(Map<String, Object> payload) {
+        String from = (String) payload.get("from");
+
+        if (from == null) return false;
+
+        if (from.contains("@g.us") || from.contains("@newsletter")) {
+            return false;
+        }
+
+        String numeroParaValidar = identificarRemetente(from);
+        if (numeroParaValidar == null) return false;
+
+        String numeroLimpo = limparNumero(numeroParaValidar);
+       boolean autorizado = usuarioService.buscaTodos().stream()
+        .anyMatch(u -> u.ativo() && 
+                       u.telefone() != null && 
+                       compararNumeros(numeroLimpo, limparNumero(u.telefone())));
+
+        if (autorizado) {
+            processarMensagem(payload);
+            return true;
+        }
+
+        return false;
     }
 
    public void processarMensagem(Map<String, Object> payload) {
@@ -120,29 +146,50 @@ public class WhatsappBotService {
         }
     }
 
+
     @Async
-    public void enviarRelatorioParaLista(EnviarRelatorioRequest request) {
+    public void enviarRelatorioParaLista(RelatorioWppRequestDTO request) {
         try {
             byte[] pdf = relatorioService.gerarRelatorioParaWhatsapp(request.filtros(), "Comercial Fonseca");
-            
             String nomeArquivo = "rel_" + System.currentTimeMillis() + ".pdf";
             String link = relatorioService.fazerUploadParaSupabase(pdf, nomeArquivo);
 
             for (String numero : request.numerosTelefone()) {
-                String formatado = numero.replaceAll("[^0-9]", "") + "@c.us";
-                String mensagem = request.mensagemPersonalizada() + "\n\nLink do Relatório:\n" + link;
-                
-                enviarResposta(formatado, mensagem);
-                Thread.sleep(1000); 
-            }
-            
-            relatorioService.agendarExclusaoDocumentoSupabase(nomeArquivo, arquivoExpiraEm);
+                try {
+                    String apenasNumeros = numero.replaceAll("\\D", "");
 
-       } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Thread de envio interrompida: " + e.getMessage());
+                    if (apenasNumeros.isBlank()) continue;
+
+                    if (apenasNumeros.length() == 11) {
+                        String ddd = apenasNumeros.substring(0, 2);
+                        String resto = apenasNumeros.substring(3); 
+                        apenasNumeros = ddd + resto;
+                    }
+
+                    if (!apenasNumeros.startsWith("55")) {
+                        apenasNumeros = "55" + apenasNumeros;
+                    }
+
+                    String chatId = apenasNumeros + "@c.us";
+                    
+                    String mensagem = """
+                            📄 *Relatório Gerado*
+
+                            Acesse o relatório pelo link abaixo:
+                            %s
+                            """.formatted(link);
+
+                    enviarResposta(chatId, mensagem);
+
+                    Thread.sleep(2000);
+
+                } catch (Exception e) {
+                    System.err.println("Erro ao enviar para " + numero + ": " + e.getMessage());
+                }
+            }
+            relatorioService.agendarExclusaoDocumentoSupabase(nomeArquivo, arquivoExpiraEm);
         } catch (Exception e) {
-            System.err.println("Erro no envio em lote: " + e.getMessage());
+            System.err.println("Erro geral no envio: " + e.getMessage());
         }
     }
 
@@ -159,7 +206,6 @@ public class WhatsappBotService {
 
             HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
             restTemplate.postForEntity(WAHA_URL, entity, String.class);
-            System.out.println(">>> RESPOSTA ENVIADA PARA: " + para);
         } catch (Exception e) {
             System.err.println(">>> ERRO WAHA: " + e.getMessage());
         }
@@ -186,30 +232,8 @@ public class WhatsappBotService {
         return null;
     }
 
-    public boolean validarEProcessar(Map<String, Object> payload) {
-        String from = (String) payload.get("from");
-        if (from == null) return false;
-
-        String numeroParaValidar = identificarRemetente(from);
-        if (numeroParaValidar == null) return false;
-
-        String numeroLimpo = limparNumero(numeroParaValidar);
-        boolean autorizado = usuarioService.buscaTodos().stream()
-                .anyMatch(u -> u.telefone() != null && 
-                               compararNumeros(numeroLimpo, limparNumero(u.telefone()))) ;
-
-        if (autorizado) {
-            processarMensagem(payload);
-            return true;
-        }
-
-        System.out.println(">>> Bloqueado: Acesso negado para o número: " + numeroLimpo);
-        return false;
-    }
-
     private String identificarRemetente(String from) {
         if (from.contains("@lid")) {
-            System.out.println(">>> Traduzindo LID: " + from);
             return buscarNumeroPorLid(from);
         }
         return from;

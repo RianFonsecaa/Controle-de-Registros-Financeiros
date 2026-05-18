@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.system.controleDeRegistrosFinanceiros.usuario.service.UsuarioService;
-import com.system.controleDeRegistrosFinanceiros.whatsapp.model.EnviarRelatorioRequest;
+import com.system.controleDeRegistrosFinanceiros.whatsapp.model.RelatorioWppRequestDTO;
 import com.system.controleDeRegistrosFinanceiros.whatsapp.service.WhatsappBotService;
 
 import java.util.Map;
@@ -22,23 +22,23 @@ public class WhatsappWebhookController {
         
     }
 
-@PostMapping("/webhook")
-public ResponseEntity<Void> receber(@RequestBody Map<String, Object> request) {
-    String evento = (String) request.get("event");
-    Map<String, Object> payload = (Map<String, Object>) request.get("payload");
+    @PostMapping("/webhook")
+    public ResponseEntity<Void> receber(@RequestBody Map<String, Object> request) {
+        String evento = (String) request.get("event");
+        Map<String, Object> payload = (Map<String, Object>) request.get("payload");
 
-    if ("message".equals(evento) && payload != null) {
-        if (Boolean.TRUE.equals(payload.get("fromMe"))) {
-            return ResponseEntity.ok().build();
+        if ("message".equals(evento) && payload != null) {
+            if (Boolean.TRUE.equals(payload.get("fromMe"))) {
+                return ResponseEntity.ok().build();
+            }
+            whatsappBotService.validarEProcessar(payload);
         }
-        whatsappBotService.validarEProcessar(payload);
+
+        return ResponseEntity.ok().build();
     }
 
-    return ResponseEntity.ok().build();
-}
-
-    @PostMapping("/enviar-relatorio-lote")
-    public ResponseEntity<String> dispararRelatorios(@RequestBody EnviarRelatorioRequest request) {
+    @PostMapping("/envia-relatorio-lista")
+    public ResponseEntity<String> dispararRelatorios(@RequestBody RelatorioWppRequestDTO request) {
         whatsappBotService.enviarRelatorioParaLista(request);
         return ResponseEntity.ok("Processo de envio iniciado com sucesso!");
     }

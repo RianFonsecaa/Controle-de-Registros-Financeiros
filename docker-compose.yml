@@ -61,8 +61,12 @@ services:
       - ./waha_sessions:/app/.sessions
     environment:
       WHATSAPP_DEFAULT_ENGINE: NOWEB
-      WHATSAPP_CONFIG_NOWEB_STORE_ENABLED: "True"
-      WHATSAPP_CONFIG_NOWEB_STORE_FULL_SYNC: "True"
+
+      WAHA_WORKER_CONFIG_NOWEB_STORE_ENABLED: "True"
+      WAHA_WORKER_CONFIG_NOWEB_STORE_FULL_SYNC: "True"
+
+      WAHA_SESSIONS_CHANNELS: '[{"name": "default", "engine": "NOWEB", "config": {"noweb": {"store": {"enabled": true, "full_sync": true}}}}]'
+
       WHATSAPP_HOOK_URL: http://api:8080/api/whatsapp/webhook
       WHATSAPP_HOOK_EVENTS: message
       WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}
