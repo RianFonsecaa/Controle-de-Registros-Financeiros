@@ -1,66 +1,40 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { PrimaryAddButton } from '../../buttons/primary-add-button/primary-add-button';
-import { CidadesService } from '../../../services/http/cidades.service';
-import { ModalService } from '../../../services/ui/modal.service';
-import { ToastService } from '../../../services/ui/toast.service';
-import { CidadeResponse } from '../../../model/responses/CidadeResponse';
-import { DeleteModal } from '../../modais/delete-modal/delete-modal';
-import { SaveCidadeModal } from '../../modais/save-modais/save-cidade-modal/save-cidade-modal';
-import { NgClass } from '@angular/common';
-import { ToggleStatusModal } from '../../modais/toggle-status-modal/toggle-status-modal';
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-button";
+import { CidadesService } from "../../../services/http/cidades.service";
+import { ModalService } from "../../../services/ui/modal.service";
+import { ToastService } from "../../../services/ui/toast.service";
+import { CidadeResponse } from "../../../model/responses/CidadeResponse";
+import { DeleteModal } from "../../modais/delete-modal/delete-modal";
+import { SaveCidadeModal } from "../../modais/save-modais/save-cidade-modal/save-cidade-modal";
+import { NgClass } from "@angular/common";
+import { ToggleStatusModal } from "../../modais/toggle-status-modal/toggle-status-modal";
+import { Paginacao } from "../../paginacao/paginacao";
+import { BaseTabelaCadastroComponent } from "../../../model/base/BaseTabelaCadastroComponent";
 
 @Component({
-  selector: 'app-tabela-cidades',
-  imports: [PrimaryAddButton, SaveCidadeModal, NgClass, ToggleStatusModal],
-  templateUrl: './tabela-cidades.html',
-  styleUrl: './tabela-cidades.css',
+  selector: "app-tabela-cidades",
+  imports: [
+    PrimaryAddButton,
+    SaveCidadeModal,
+    NgClass,
+    ToggleStatusModal,
+    Paginacao,
+  ],
+  templateUrl: "./tabela-cidades.html",
+  styleUrl: "./tabela-cidades.css",
 })
-export class TabelaCidades {
-  private modalService = inject(ModalService);
-  private cidadesService = inject(CidadesService);
-  private toastService = inject(ToastService);
+export class TabelaCidades extends BaseTabelaCadastroComponent<CidadeResponse> {
+  cidadesService = inject(CidadesService);
 
-  cidadeSelecionada: CidadeResponse | null = null;
-  mostrarAtivos = signal(true);
+  readonly nomeEntidade = "Cidade";
+  readonly serviceBase = this.cidadesService;
+  readonly listaExibida = this.cidadesService.cidades;
 
-  listaExibida = computed(() => {
-    return this.cidadesService
-      .cidades()
-      .filter((f) => f.ativo === this.mostrarAtivos());
-  });
-
-  ngOnInit() {
+  carregarDados(): void {
     this.cidadesService.buscaCidades();
   }
 
-  abrirModal(cidade: CidadeResponse | null, modal: HTMLDialogElement) {
-    if (cidade) {
-      this.cidadeSelecionada = cidade;
-    }
-
-    this.modalService.abrirModal(modal);
-  }
-
-  fecharModal(modal: HTMLDialogElement) {
-    this.modalService.fecharModal(modal);
-    this.cidadeSelecionada = null;
-  }
-
-  toggleStatusCidade(modal: HTMLDialogElement) {
-    if (!this.cidadeSelecionada) return;
-    this.cidadesService.toggleStatus(this.cidadeSelecionada.id).subscribe({
-      next: () => {
-        this.cidadesService.buscaCidades();
-        this.toastService.abrir(
-          'success',
-          'Cadastro de Cidade inativado com sucesso!',
-        );
-        this.modalService.fecharModal(modal);
-      },
-    });
-  }
-
-  toggleStatusLista() {
-    this.mostrarAtivos.update((status) => !status);
+  toggleStatusCidade(modal: HTMLDialogElement): void {
+    this.toggleStatusStatusGeral(modal);
   }
 }

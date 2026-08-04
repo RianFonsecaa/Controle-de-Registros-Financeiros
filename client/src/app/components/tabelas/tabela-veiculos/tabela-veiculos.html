@@ -162,11 +162,20 @@
       </div>
     }
   </div>
+
+  <app-paginacao
+    [paginaAtual]="veiculoService.paginaAtual()"
+    [totalPaginas]="veiculoService.totalPaginas()"
+    [itensPorPagina]="veiculoService.itensPorPagina()"
+    (aoMudarPagina)="aoMudarDePagina($event)"
+    (aoMudarTamanho)="aoMudarItensPorPagina($event)"
+  >
+  </app-paginacao>
 </section>
 
 <dialog #toggleStatusModal class="modal">
   <app-toggle-status-modal
-    (confirmar)="toggleStatusCadastro(toggleStatusModal)"
+    (confirmar)="toggleStatusVeiculo(toggleStatusModal)"
     (cancelar)="fecharModal(toggleStatusModal)"
     tipoCadastro="Veículo"
     [toggleStatus]="mostrarAtivos()"
@@ -175,7 +184,7 @@
 
 <dialog #saveVeiculoModal class="modal">
   <app-save-veiculo-modal
-    [veiculo]="veiculoSelecionado ? veiculoSelecionado : null"
+    [veiculo]="itemSelecionado ? itemSelecionado : null"
     (salvar)="fecharModal(saveVeiculoModal)"
     (cancelar)="fecharModal(saveVeiculoModal)"
   ></app-save-veiculo-modal>

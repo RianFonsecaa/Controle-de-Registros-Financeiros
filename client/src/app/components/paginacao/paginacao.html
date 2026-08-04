@@ -1,0 +1,55 @@
+<div
+  class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 mt-2 mb-4 rounded-xl border border-[#dfdfdf] shadow-md bg-white"
+>
+  <div class="flex items-center gap-2 text-sm text-gray-600">
+    <span>Itens por página:</span>
+    <select
+      [value]="itensPorPagina"
+      (change)="alterarTamanho($event)"
+      class="border rounded px-2 py-1 bg-white outline-none focus:border-blue-500 cursor-pointer text-gray-700"
+    >
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+    </select>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <button
+      (click)="irParaPrimeira()"
+      [disabled]="estaNaPrimeiraPagina"
+      class="px-3 py-1.5 border rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-gray-700"
+    >
+      «
+    </button>
+
+    <button
+      (click)="irParaAnterior()"
+      [disabled]="estaNaPrimeiraPagina"
+      class="px-3 py-1.5 border rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-gray-700"
+    >
+      Anterior
+    </button>
+
+    <span class="text-sm text-gray-600 min-w-[110px] text-center">
+      Página <strong>{{ paginaExibida }}</strong> de
+      <strong>{{ totalPaginas }}</strong>
+    </span>
+
+    <button
+      (click)="irParaProxima()"
+      [disabled]="estaNaUltimaPagina"
+      class="px-3 py-1.5 border rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-gray-700"
+    >
+      Próxima
+    </button>
+
+    <button
+      (click)="irParaUltima()"
+      [disabled]="estaNaUltimaPagina"
+      class="px-3 py-1.5 border rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-gray-700"
+    >
+      »
+    </button>
+  </div>
+</div>

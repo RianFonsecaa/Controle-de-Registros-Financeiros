@@ -7,10 +7,8 @@
     >
       <span
         class="flex flex-row items-center justify-center gap-2 font-extrabold text-[#475569]"
-      >
-        <div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
+        ><div class="rounded-full bg-[#23C78D] h-2 w-2"></div>
         <span> LISTAGEM DE FUNCIONÁRIOS</span>
-
         <div class="flex flex-row items-center gap-2 font-semibold text-sm p-3">
           <input
             type="checkbox"
@@ -148,11 +146,20 @@
       </div>
     }
   </div>
+
+  <app-paginacao
+    [paginaAtual]="funcionarioService.paginaAtual()"
+    [totalPaginas]="funcionarioService.totalPaginas()"
+    [itensPorPagina]="funcionarioService.itensPorPagina()"
+    (aoMudarPagina)="aoMudarDePagina($event)"
+    (aoMudarTamanho)="aoMudarItensPorPagina($event)"
+  >
+  </app-paginacao>
 </section>
 
 <dialog #toggleStatusModal class="modal">
   <app-toggle-status-modal
-    (confirmar)="toggleStatusCadastro(toggleStatusModal)"
+    (confirmar)="toggleStatusFuncionario(toggleStatusModal)"
     (cancelar)="fecharModal(toggleStatusModal)"
     tipoCadastro="Funcionário"
     [toggleStatus]="mostrarAtivos()"
@@ -161,7 +168,7 @@
 
 <dialog #saveFuncionarioModal class="modal">
   <app-save-funcionario-modal
-    [funcionario]="funcionarioSelecionado ? funcionarioSelecionado : null"
+    [funcionario]="itemSelecionado ? itemSelecionado : null"
     (salvar)="fecharModal(saveFuncionarioModal)"
     (cancelar)="fecharModal(saveFuncionarioModal)"
   ></app-save-funcionario-modal>

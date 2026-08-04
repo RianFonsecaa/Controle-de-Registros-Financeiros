@@ -19,6 +19,9 @@ import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-b
 import { PixRequest } from "../../../model/requests/PixRequest";
 import { ClienteFiltro } from "../../container-filtros/filtros/cliente-filtro/cliente-filtro";
 import { PixQueryFilters } from "../../../model/query-filters/PixQueryFilters";
+import { Paginacao } from "../../paginacao/paginacao";
+import { CobrancaFiltro } from "../../container-filtros/filtros/cobranca-filtro/cobranca-filtro";
+import { BaseTabelaRegistroComponent } from "../../../model/base/BaseTabelaRegistroComponent";
 
 @Component({
   selector: "app-tabela-pix",
@@ -30,25 +33,25 @@ import { PixQueryFilters } from "../../../model/query-filters/PixQueryFilters";
     UpdateButton,
     CurrencyPipe,
     PrimaryAddButton,
+    Paginacao,
   ],
   templateUrl: "./tabela-pix.html",
   styleUrl: "./tabela-pix.css",
 })
-export class TabelaPix implements OnInit {
-  @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
+export class TabelaPix extends BaseTabelaRegistroComponent<
+  PixResponse,
+  PixQueryFilters
+> {
+  pixService = inject(PixService);
 
-  private modalService = inject(ModalService);
-  private pixService = inject(PixService);
-  private toastService = inject(ToastService);
-
-  listaPix = this.pixService.listaPixs;
-  filtrosAtivos!: PixQueryFilters;
-  pixSelecionado: PixResponse | null = null;
-  enviando: boolean = false;
+  readonly nomeEntidade = "Pix";
+  readonly serviceBase = this.pixService;
+  pixs = this.pixService.listaPixs;
 
   filtroForm = new FormGroup({
     clienteFiltro: new FormControl(null),
     cidadeFiltro: new FormControl(null),
+    cobrancaFiltro: new FormControl(null),
     valorInicioFiltro: new FormControl(null),
     valorFimFiltro: new FormControl(null),
     dataInicioFiltro: new FormControl(null),
@@ -69,6 +72,12 @@ export class TabelaPix implements OnInit {
       label: "Cidade",
     },
     {
+      key: "cobrancaFiltro",
+      visivel: false,
+      componente: CobrancaFiltro,
+      label: "Cobranca",
+    },
+    {
       key: "periodoFiltro",
       visivel: false,
       componente: PeriodoFiltro,
@@ -84,82 +93,62 @@ export class TabelaPix implements OnInit {
     },
   ];
 
-  ngOnInit() {
+  carregarDados() {
     this.pixService.buscaPixs();
+  }
+  executarBuscaFiltro(filtros: PixQueryFilters) {
+    this.pixService.buscaPixPorFiltro(filtros);
   }
 
   filtrarRegistros(formValue: any) {
     this.filtrosAtivos = {
       cliente: formValue.clienteFiltro,
       cidadeId: formValue.cidadeFiltro?.id ?? null,
+      cobrancaId: formValue.cobrancaFiltro,
       dataInicio: formValue.dataInicioFiltro,
       dataFim: formValue.dataFimFiltro,
       valorInicio: formValue.valorInicioFiltro,
       valorFim: formValue.valorFimFiltro,
     };
-
-    this.pixService.buscaPixPorFiltro(this.filtrosAtivos);
-    console.log(this.filtrosAtivos);
+    this.pixService.paginaAtual.set(0);
+    this.executarBuscaFiltro(this.filtrosAtivos);
   }
 
-  deletarPix(modal: HTMLDialogElement) {
-    if (!this.pixSelecionado) return;
-
-    this.pixService.deletaPix(this.pixSelecionado.id).subscribe({
+  deletarRegistro(modal: HTMLDialogElement) {
+    if (!this.itemSelecionado) return;
+    this.pixService.deletaPix(this.itemSelecionado.id).subscribe({
       next: () => {
-        this.pixService.buscaPixs();
+        this.carregarDados();
         this.toastService.abrir(
           "success",
           "Registro de Pix apagado com sucesso!",
         );
+        this.fecharModal(modal);
       },
     });
-    this.fecharModal(modal);
-  }
-
-  atualizaRegistros() {
-    this.containerFiltros.removerTodosFiltros();
-  }
-
-  abrirModal(pix: PixResponse | null, modal: HTMLDialogElement) {
-    this.pixSelecionado = pix;
-    this.modalService.abrirModal(modal);
-  }
-
-  fecharModal(modal: HTMLDialogElement) {
-    this.modalService.fecharModal(modal);
-    this.pixSelecionado = null;
   }
 
   salvarPix(pixData: any, modal: HTMLDialogElement) {
     const { comprovante, ...dados } = pixData;
-
-    const request: PixRequest = {
-      ...dados,
-      id: this.pixSelecionado?.id || null,
-    };
-
+    const request = { ...dados, id: this.itemSelecionado?.id || null };
     this.enviando = true;
 
-    const operacao$ = this.pixSelecionado
+    const op$ = this.itemSelecionado
       ? this.pixService.atualizarPix(request, comprovante)
       : this.pixService.salvarPix(request, comprovante);
 
-    operacao$.subscribe({
+    op$.subscribe({
       next: () => {
-        const msg = this.pixSelecionado ? "atualizado" : "cadastrado";
+        const msg = this.itemSelecionado ? "atualizado" : "cadastrado";
         this.toastService.abrir(
           "success",
           `Registro de Pix ${msg} com sucesso!`,
         );
-        this.pixService.buscaPixs();
-      },
-      error: () => {
-        this.enviando = false;
+        this.carregarDados();
+        this.fecharModal(modal);
       },
       complete: () => (this.enviando = false),
     });
-    this.fecharModal(modal);
   }
 
   visualizarComprovante(nomeArquivo: string) {

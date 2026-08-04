@@ -19,6 +19,8 @@ import { DeleteModal } from "../../modais/delete-modal/delete-modal";
 import { UpdateButton } from "../../buttons/update-button/update-button";
 import { DatePipe, CurrencyPipe } from "@angular/common";
 import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-button";
+import { Paginacao } from "../../paginacao/paginacao";
+import { BaseTabelaRegistroComponent } from "../../../model/base/BaseTabelaRegistroComponent";
 
 @Component({
   selector: "app-tabela-vales",
@@ -30,21 +32,20 @@ import { PrimaryAddButton } from "../../buttons/primary-add-button/primary-add-b
     CurrencyPipe,
     PrimaryAddButton,
     ContainerFiltros,
+    Paginacao,
   ],
   templateUrl: "./tabela-vales.html",
   styleUrl: "./tabela-vales.css",
 })
-export class TabelaVales implements OnInit {
-  @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
+export class TabelaVales extends BaseTabelaRegistroComponent<
+  ValeResponse,
+  ValeQueryFilters
+> {
+  valeService = inject(ValeService);
 
-  private modalService = inject(ModalService);
-  private valeService = inject(ValeService);
-  private toastService = inject(ToastService);
-
-  listaVales = this.valeService.listaVales;
-  filtrosAtivos!: ValeQueryFilters;
-  valeSelecionado: ValeResponse | null = null;
-  enviando: boolean = false;
+  readonly nomeEntidade = "Vale";
+  readonly serviceBase = this.valeService;
+  vales = this.valeService.listaVales;
 
   filtroForm = new FormGroup({
     cobradorFiltro: new FormControl(null),
@@ -84,8 +85,11 @@ export class TabelaVales implements OnInit {
     },
   ];
 
-  ngOnInit() {
+  carregarDados() {
     this.valeService.buscaVales();
+  }
+  executarBuscaFiltro(filtros: ValeQueryFilters) {
+    this.valeService.buscaValePorFiltro(filtros);
   }
 
   filtrarRegistros(formValue: any) {
@@ -97,67 +101,43 @@ export class TabelaVales implements OnInit {
       valorFim: formValue.valorFimFiltro,
       observacoes: formValue.observacoesFiltro,
     };
-
-    this.valeService.buscaValePorFiltro(this.filtrosAtivos);
-    console.log(this.filtrosAtivos);
+    this.valeService.paginaAtual.set(0);
+    this.executarBuscaFiltro(this.filtrosAtivos);
   }
 
-  deletarVale(modal: HTMLDialogElement) {
-    if (!this.valeSelecionado) return;
-
-    this.valeService.deletaVale(this.valeSelecionado.id).subscribe({
+  deletarRegistro(modal: HTMLDialogElement) {
+    if (!this.itemSelecionado) return;
+    this.valeService.deletaVale(this.itemSelecionado.id).subscribe({
       next: () => {
-        this.valeService.buscaVales();
+        this.carregarDados();
         this.toastService.abrir(
           "success",
           "Registro de Vale apagado com sucesso!",
         );
+        this.fecharModal(modal);
       },
     });
-    this.fecharModal(modal);
-  }
-
-  atualizaRegistros() {
-    this.containerFiltros.removerTodosFiltros();
-  }
-
-  abrirModal(vale: ValeResponse | null, modal: HTMLDialogElement) {
-    this.valeSelecionado = vale;
-    this.modalService.abrirModal(modal);
-  }
-
-  fecharModal(modal: HTMLDialogElement) {
-    this.modalService.fecharModal(modal);
-    this.valeSelecionado = null;
   }
 
   salvarVale(valeData: any, modal: HTMLDialogElement) {
     this.enviando = true;
+    const request = { ...valeData, id: this.itemSelecionado?.id ?? null };
 
-    const request: ValeRequest = {
-      ...valeData,
-      id: this.valeSelecionado?.id ?? null,
-    };
-
-    const operacao$ = this.valeSelecionado
+    const op$ = this.itemSelecionado
       ? this.valeService.atualizarVale(request)
       : this.valeService.salvarVale(request);
 
-    operacao$.subscribe({
+    op$.subscribe({
       next: () => {
-        const msg = this.valeSelecionado ? "atualizado" : "cadastrado";
+        const msg = this.itemSelecionado ? "atualizado" : "cadastrado";
         this.toastService.abrir(
           "success",
           `Registro de Vale ${msg} com sucesso!`,
         );
-        this.valeService.buscaVales();
-      },
-      error: () => {
-        this.enviando = false;
+        this.carregarDados();
+        this.fecharModal(modal);
       },
       complete: () => (this.enviando = false),
     });
-
-    this.fecharModal(modal);
   }
 }

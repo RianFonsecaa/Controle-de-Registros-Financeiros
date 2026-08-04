@@ -1,28 +1,28 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CidadeResponse } from '../../../model/responses/CidadeResponse';
-import { CidadesService } from '../../../services/http/cidades.service';
+import { Component, inject, Input } from "@angular/core";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { CidadeResponse } from "../../../model/responses/CidadeResponse";
+import { CidadesService } from "../../../services/http/cidades.service";
 
 @Component({
-  selector: 'app-cidade-select',
+  selector: "app-cidade-select",
   imports: [ReactiveFormsModule],
-  templateUrl: './cidade-select.html',
-  styleUrl: './cidade-select.css',
+  templateUrl: "./cidade-select.html",
+  styleUrl: "./cidade-select.css",
 })
 export class CidadeSelect {
   cidadesService = inject(CidadesService);
-  cidades = this.cidadesService.cidadesAtivas;
+  cidades = this.cidadesService.cidadesOpcoesSelect;
   @Input() control!: FormControl;
 
   ngOnInit() {
-    this.cidadesService.buscaCidades();
+    this.cidadesService.buscaCidadesAtivasListaPura();
   }
 
   getMensagemErro(formControl: FormControl): string {
-    if (formControl.hasError('required')) {
-      return 'Este campo é obrigatório.';
+    if (formControl.hasError("required")) {
+      return "Este campo é obrigatório.";
     }
-    return '';
+    return "";
   }
 
   compareById(a: CidadeResponse, b: CidadeResponse) {

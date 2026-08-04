@@ -1,9 +1,14 @@
 package com.system.controleDeRegistrosFinanceiros.veiculo.controller;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.dto.CidadeDTO;
+import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
 import com.system.controleDeRegistrosFinanceiros.veiculo.model.dto.VeiculoDTO;
 import com.system.controleDeRegistrosFinanceiros.veiculo.service.VeiculoService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +30,15 @@ public class VeiculosController {
     };
 
     @GetMapping
-    public ResponseEntity<List<VeiculoDTO>> buscaTodos() {
-        return ResponseEntity.ok(veiculosService.buscaTodos());
+    public ResponseEntity<Page<VeiculoDTO>> buscaTodos( @RequestParam(required = false) Boolean ativo,
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(veiculosService.buscaTodos(ativo, pageable));
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<VeiculoDTO>> buscaAtivos(){
+        return ResponseEntity.ok(veiculosService.buscaAtivos());
     }
 
     @PutMapping

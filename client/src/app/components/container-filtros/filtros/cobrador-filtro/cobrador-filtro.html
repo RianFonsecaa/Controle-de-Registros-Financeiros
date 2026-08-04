@@ -16,7 +16,7 @@
     >
       <option [ngValue]="null" disabled>Selecione</option>
 
-      @for (cobrador of funcionarios; track $index) {
+      @for (cobrador of funcionarios(); track $index) {
         <option
           class="text-gray-500 font-medium active:bg-blue-600 active:text-white"
           [ngValue]="cobrador"

@@ -1,23 +1,23 @@
-import { Component, inject, Input } from '@angular/core';
-import { FuncionarioResponse } from '../../../../model/responses/FuncionarioResponse';
-import { FuncionarioService } from '../../../../services/http/funcionario.service';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, Input } from "@angular/core";
+import { FuncionarioResponse } from "../../../../model/responses/FuncionarioResponse";
+import { FuncionarioService } from "../../../../services/http/funcionario.service";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-cobrador-filtro',
+  selector: "app-cobrador-filtro",
   imports: [ReactiveFormsModule],
-  templateUrl: './cobrador-filtro.html',
-  styleUrl: './cobrador-filtro.css',
+  templateUrl: "./cobrador-filtro.html",
+  styleUrl: "./cobrador-filtro.css",
 })
 export class CobradorFiltro {
   @Input() form!: FormGroup;
   @Input() onRemover!: () => void;
   @Input() onPreencherValor!: () => void;
   funcionarioService = inject(FuncionarioService);
-  funcionarios = this.funcionarioService.funcionariosAtivos();
+  funcionarios = this.funcionarioService.funcionariosOpcoesSelect;
 
   ngOnInit() {
-    this.funcionarioService.buscaFuncionarios();
+    this.funcionarioService.buscaFuncionariosAtivosListaPura();
   }
 
   compareById(a: FuncionarioResponse, b: FuncionarioResponse) {

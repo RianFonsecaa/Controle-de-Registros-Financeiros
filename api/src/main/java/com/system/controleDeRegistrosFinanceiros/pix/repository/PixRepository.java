@@ -15,5 +15,4 @@ public interface PixRepository extends JpaRepository<Pix,Long>, JpaSpecification
 
     List<Pix> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
 
-    List<Pix> findByCobranca(Cobranca cobranca);
 }

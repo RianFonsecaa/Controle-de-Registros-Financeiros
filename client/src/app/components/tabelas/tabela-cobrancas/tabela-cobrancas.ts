@@ -29,6 +29,9 @@ import { WhatsappButton } from "../../buttons/whatsapp-button/whatsapp-button";
 import { SelectUserModal } from "../../modais/select-user-modal/select-user-modal";
 import { EnviaRelatorioWppRequest } from "../../../model/requests/EnviaRelatorioWppRequest";
 import { WhatsappService } from "../../../services/http/whatsapp.service";
+import { PageResponse } from "../../../model/responses/PageResponse";
+import { Paginacao } from "../../paginacao/paginacao";
+import { BaseTabelaRegistroComponent } from "../../../model/base/BaseTabelaRegistroComponent";
 
 @Component({
   selector: "app-tabela-cobrancas",
@@ -45,24 +48,25 @@ import { WhatsappService } from "../../../services/http/whatsapp.service";
     UpdateCobrancaModal,
     LoadingModal,
     SelectUserModal,
+    Paginacao,
   ],
   templateUrl: "./tabela-cobrancas.html",
   styleUrl: "./tabela-cobrancas.css",
 })
-export class TabelaCobrancas {
+export class TabelaCobrancas extends BaseTabelaRegistroComponent<
+  CobrancaResponse,
+  CobrancaQueryFilters
+> {
   @ViewChild("loadingModal") loadingModal!: ElementRef<HTMLDialogElement>;
-  @ViewChild("selectUserModal")
-  selectUserModal!: ElementRef<HTMLDialogElement>;
-  @ViewChild(ContainerFiltros) containerFiltros!: ContainerFiltros;
-  private modalService = inject(ModalService);
-  private cobrancaService = inject(CobrancaService);
+  @ViewChild("selectUserModal") selectUserModal!: ElementRef<HTMLDialogElement>;
+
+  public cobrancaService = inject(CobrancaService);
   private relatorioService = inject(RelatorioService);
-  private toastService = inject(ToastService);
   private whatsappService = inject(WhatsappService);
 
+  readonly nomeEntidade = "Cobrança";
+  readonly serviceBase = this.cobrancaService;
   cobrancas = this.cobrancaService.cobrancas;
-  filtrosAtivos!: CobrancaQueryFilters;
-  cobrancaSelecionada: CobrancaResponse | null = null;
 
   filtroForm = new FormGroup({
     cidadeFiltro: new FormControl(null),
@@ -116,22 +120,11 @@ export class TabelaCobrancas {
     },
   ];
 
-  ngOnInit() {
+  carregarDados() {
     this.cobrancaService.buscaCobrancas();
   }
-
-  deletarCobranca(modal: HTMLDialogElement) {
-    if (!this.cobrancaSelecionada) return;
-    this.cobrancaService.deletaCobranca(this.cobrancaSelecionada.id).subscribe({
-      next: () => {
-        this.cobrancaService.buscaCobrancas();
-        this.toastService.abrir(
-          "success",
-          "Registro de cobrança foi apagado com sucesso!",
-        );
-        this.modalService.fecharModal(modal);
-      },
-    });
+  executarBuscaFiltro(filtros: CobrancaQueryFilters) {
+    this.cobrancaService.buscaCobrancasPorFiltro(filtros);
   }
 
   filtrarRegistros(formValue: any) {
@@ -145,27 +138,22 @@ export class TabelaCobrancas {
       valorInicio: formValue.valorInicioFiltro,
       valorFim: formValue.valorFimFiltro,
     };
-
-    console.log(this.filtrosAtivos);
-
-    this.cobrancaService.buscaCobrancasPorFiltro(this.filtrosAtivos);
+    this.cobrancaService.paginaAtual.set(0);
+    this.executarBuscaFiltro(this.filtrosAtivos);
   }
 
-  atualizaRegistros() {
-    this.containerFiltros.removerTodosFiltros();
-  }
-
-  abrirModal(cobranca: CobrancaResponse | null, modal: HTMLDialogElement) {
-    if (cobranca) {
-      this.cobrancaSelecionada = cobranca;
-    }
-
-    this.modalService.abrirModal(modal);
-  }
-
-  fecharModal(modal: HTMLDialogElement) {
-    this.modalService.fecharModal(modal);
-    this.cobrancaSelecionada = null;
+  deletarRegistro(modal: HTMLDialogElement) {
+    if (!this.itemSelecionado) return;
+    this.cobrancaService.deletaCobranca(this.itemSelecionado.id).subscribe({
+      next: () => {
+        this.carregarDados();
+        this.toastService.abrir(
+          "success",
+          "Registro de cobrança apagado com sucesso!",
+        );
+        this.fecharModal(modal);
+      },
+    });
   }
 
   geraRelatorio() {
@@ -207,8 +195,6 @@ export class TabelaCobrancas {
       return;
     }
 
-    this.modalService.fecharModal(this.selectUserModal.nativeElement);
-
     this.modalService.abrirModal(this.loadingModal.nativeElement);
 
     const payload: EnviaRelatorioWppRequest = {
@@ -231,12 +217,5 @@ export class TabelaCobrancas {
         this.modalService.fecharModal(this.loadingModal.nativeElement);
       },
     });
-  }
-
-  private possuiFiltros(): boolean {
-    return (
-      this.filtrosAtivos &&
-      Object.values(this.filtrosAtivos).some((v) => v !== null && v !== "")
-    );
   }
 }

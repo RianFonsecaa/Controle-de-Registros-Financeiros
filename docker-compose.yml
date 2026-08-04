@@ -32,7 +32,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
     container_name: crf-api-server
-    restart: on-failure
+    restart: always
     depends_on:
       db:
         condition: service_healthy
@@ -61,12 +61,6 @@ services:
       - ./waha_sessions:/app/.sessions
     environment:
       WHATSAPP_DEFAULT_ENGINE: NOWEB
-
-      WAHA_WORKER_CONFIG_NOWEB_STORE_ENABLED: "True"
-      WAHA_WORKER_CONFIG_NOWEB_STORE_FULL_SYNC: "True"
-
-      WAHA_SESSIONS_CHANNELS: '[{"name": "default", "engine": "NOWEB", "config": {"noweb": {"store": {"enabled": true, "full_sync": true}}}}]'
-
       WHATSAPP_HOOK_URL: http://api:8080/api/whatsapp/webhook
       WHATSAPP_HOOK_EVENTS: message
       WHATSAPP_API_KEY: ${WHATSAPP_API_KEY}

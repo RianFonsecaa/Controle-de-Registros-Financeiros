@@ -7,7 +7,7 @@
   ></app-container-filtros>
 
   <div
-    class="flex flex-col w-full h-full min-w-0 rounded-3xl overflow-hidden border border-gray-200 shadow-lg"
+    class="flex flex-col w-full min-w-0 rounded-3xl overflow-hidden border border-gray-200 shadow-lg"
   >
     <div
       class="flex flex-row min-w-0 bg-white justify-between p-6 items-center"
@@ -26,8 +26,8 @@
       </div>
     </div>
 
-    @if (listaVales().length > 0) {
-      <div class="relative bg-white w-full h-full overflow-auto">
+    @if (vales().length > 0) {
+      <div class="relative bg-white w-full h-[500px] overflow-auto">
         <table class="min-w-full text-[12px] text-[#636363]">
           <thead>
             <tr>
@@ -65,7 +65,7 @@
           </thead>
 
           <tbody>
-            @for (vale of listaVales(); track vale.id) {
+            @for (vale of vales(); track vale.id) {
               <tr
                 class="border-t h-16 bg-white border border-gray-200 hover:bg-gray-100 transition-colors"
               >
@@ -159,11 +159,20 @@
       </div>
     }
   </div>
+
+  <app-paginacao
+    [paginaAtual]="valeService.paginaAtual()"
+    [totalPaginas]="valeService.totalPaginas()"
+    [itensPorPagina]="valeService.itensPorPagina()"
+    (aoMudarPagina)="aoMudarDePagina($event)"
+    (aoMudarTamanho)="aoMudarItensPorPagina($event)"
+  >
+  </app-paginacao>
 </section>
 
 <dialog #deleteModal class="modal">
   <app-delete-modal
-    (deletar)="deletarVale(deleteModal)"
+    (deletar)="deletarRegistro(deleteModal)"
     (cancelar)="fecharModal(deleteModal)"
     titulo="Excluir Registro de Vale"
     conteudo="Tem certeza que deseja remover este vale? Esta ação não pode ser desfeita."
@@ -172,7 +181,7 @@
 
 <dialog #saveValeModal class="modal">
   <app-save-vale-modal
-    [vale]="valeSelecionado"
+    [vale]="itemSelecionado"
     (salvar)="salvarVale($event, saveValeModal)"
     (cancelar)="fecharModal(saveValeModal)"
   ></app-save-vale-modal>

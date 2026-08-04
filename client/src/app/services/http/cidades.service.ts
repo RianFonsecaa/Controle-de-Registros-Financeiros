@@ -1,11 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { CidadeResponse } from '../../model/responses/CidadeResponse';
-import { environment } from '../../../enviroments/enviroments';
-import { CidadeRequest } from '../../model/requests/CidadeRequest';
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable, signal } from "@angular/core";
+import { CidadeResponse } from "../../model/responses/CidadeResponse";
+import { environment } from "../../../enviroments/enviroments";
+import { CidadeRequest } from "../../model/requests/CidadeRequest";
+import { PageResponse } from "../../model/responses/PageResponse";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CidadesService {
   private readonly BASE_URL = `${environment.apiUrl}/cidades`;
@@ -13,15 +14,43 @@ export class CidadesService {
 
   readonly cidades = signal<CidadeResponse[]>([]);
 
-  readonly cidadesAtivas = computed(() =>
-    this.cidades().filter((cidade) => cidade.ativo === true),
-  );
+  readonly paginaAtual = signal<number>(0);
+  readonly itensPorPagina = signal<number>(10);
+  readonly totalPaginas = signal<number>(0);
+
+  readonly exibirApenasAtivos = signal<boolean>(true);
+
+  readonly cidadesOpcoesSelect = signal<CidadeResponse[]>([]);
 
   buscaCidades() {
-    this.http.get<CidadeResponse[]>(this.BASE_URL).subscribe({
-      next: (data) => this.cidades.set(data),
-      error: () => this.cidades.set([]),
+    this.http
+      .get<PageResponse<CidadeResponse>>(this.BASE_URL, {
+        params: {
+          page: this.paginaAtual().toString(),
+          size: this.itensPorPagina().toString(),
+          sort: "id,desc",
+          ativo: this.exibirApenasAtivos().toString(),
+        },
+      })
+      .subscribe({
+        next: (response) => {
+          this.cidades.set(response.content || []);
+          this.totalPaginas.set(response.page.totalPages ?? 0);
+        },
+        error: () => this.resetarEstado(),
+      });
+  }
+
+  buscaCidadesAtivasListaPura() {
+    this.http.get<CidadeResponse[]>(`${this.BASE_URL}/ativas`).subscribe({
+      next: (dados) => this.cidadesOpcoesSelect.set(dados || []),
+      error: () => this.cidadesOpcoesSelect.set([]),
     });
+  }
+
+  private resetarEstado() {
+    this.cidades.set([]);
+    this.totalPaginas.set(0);
   }
 
   salvaCidade(cidade: CidadeRequest) {

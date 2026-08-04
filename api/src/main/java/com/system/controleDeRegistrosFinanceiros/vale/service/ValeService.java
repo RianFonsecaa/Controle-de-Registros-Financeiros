@@ -11,6 +11,9 @@ import com.system.controleDeRegistrosFinanceiros.vale.model.entity.Vale;
 import com.system.controleDeRegistrosFinanceiros.vale.repository.ValeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,11 +34,20 @@ public class ValeService{
         this.cobrancasService = cobrancasService;
     }
 
-    public List<ValeDTO> buscaTodos() {
-        return valeRepository.findAll()
-                .stream()
-                .map(valeMapper::toDTO)
-                .toList();
+    public Page<ValeDTO> buscaTodos(Pageable pageable) {
+        return valeRepository.findAll(pageable)
+                .map(valeMapper::toDTO);
+    }
+
+     public Page<ValeDTO> buscaTodosPorFiltro(Pageable pageable, ValeQueryFilters filters) {
+        Page<Vale> valesFiltrados = valeRepository.findAll(filters.toSpecification(), pageable);
+
+        if (valesFiltrados.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhum vale com os filtros especificados!");
+        }
+
+        return valesFiltrados.map(valeMapper :: toDTO);
+
     }
 
     public ValeDTO buscarPorId(Long id) {
@@ -80,15 +92,5 @@ public class ValeService{
         return valeMapper.toDTO(salvo);
     }
 
-    public List<ValeDTO> buscaTodosPorFiltro(ValeQueryFilters filters) {
-        List<Vale> valesFiltrados = valeRepository.findAll(filters.toSpecification());
-
-        if (valesFiltrados.isEmpty()) {
-            throw new ResourceNotFoundException("Não foi possível encontrar nenhum vale com os filtros especificados!");
-        }
-
-        return valesFiltrados.stream().map(valeMapper :: toDTO).toList();
-
-    }
 
 }

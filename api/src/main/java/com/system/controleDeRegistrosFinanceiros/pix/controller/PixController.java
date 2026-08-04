@@ -14,6 +14,10 @@ import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +40,10 @@ public class PixController{
     }
 
     @GetMapping
-    public ResponseEntity<List<PixDTO>> buscaTodos() {
-        return ResponseEntity.ok(pixService.buscaTodos());
+    public ResponseEntity<Page<PixDTO>> buscaTodos(
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(pixService.buscaTodos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -93,13 +99,11 @@ public class PixController{
     }
 
     @GetMapping("/buscaPorFiltro")
-    public ResponseEntity<List<PixDTO>> buscaTodosPorFiltro(PixQueryFilters filters) {
-        return ResponseEntity.ok(pixService.buscaTodosPorFiltro(filters));
-    }
-
-    @GetMapping("/porCobranca/{cobrancaId}")
-    public ResponseEntity<List<PixDTO>> buscaPorCobranca(@PathVariable Long cobrancaId){
-        return ResponseEntity.ok(pixService.buscarPorCobranca(cobrancaId));
+    public ResponseEntity<Page<PixDTO>> buscaTodosPorFiltro(
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable, 
+        PixQueryFilters filters
+    ) {
+        return ResponseEntity.ok(pixService.buscaTodosPorFiltro(pageable, filters));
     }
 
     @GetMapping("/comprovantes/{nomeArquivo}")

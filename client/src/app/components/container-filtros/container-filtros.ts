@@ -1,4 +1,4 @@
-import { NgComponentOutlet, UpperCasePipe } from '@angular/common';
+import { NgComponentOutlet, UpperCasePipe } from "@angular/common";
 import {
   Component,
   EventEmitter,
@@ -7,17 +7,18 @@ import {
   Type,
   OnInit,
   Input,
-} from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+} from "@angular/core";
+import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 export type FiltroKey =
-  | 'cidadeFiltro'
-  | 'registranteFiltro'
-  | 'periodoFiltro'
-  | 'cobradorFiltro'
-  | 'observacoesFiltro'
-  | 'clienteFiltro'
-  | 'valorFiltro';
+  | "cidadeFiltro"
+  | "registranteFiltro"
+  | "periodoFiltro"
+  | "cobradorFiltro"
+  | "observacoesFiltro"
+  | "clienteFiltro"
+  | "cobrancaFiltro"
+  | "valorFiltro";
 
 export interface FiltroConfig {
   key: FiltroKey;
@@ -28,14 +29,14 @@ export interface FiltroConfig {
 }
 
 @Component({
-  selector: 'app-container-filtros',
+  selector: "app-container-filtros",
   standalone: true,
   imports: [NgComponentOutlet, FormsModule, ReactiveFormsModule, UpperCasePipe],
-  templateUrl: './container-filtros.html',
-  styleUrl: './container-filtros.css',
+  templateUrl: "./container-filtros.html",
+  styleUrl: "./container-filtros.css",
 })
 export class ContainerFiltros {
-  @Input() titulo: string = 'FILTRAGEM';
+  @Input() titulo: string = "FILTRAGEM";
   @Input() filtroForm!: FormGroup;
   @Input() configuracaoFiltros: FiltroConfig[] = [];
 
@@ -53,7 +54,7 @@ export class ContainerFiltros {
     if (filtro) {
       filtro.visivel = true;
     }
-    select.value = '';
+    select.value = "";
   }
 
   removerFiltro(key: string) {
@@ -86,7 +87,7 @@ export class ContainerFiltros {
   }
 
   private temValor(valor: any): boolean {
-    return valor !== null && valor !== undefined && valor !== '';
+    return valor !== null && valor !== undefined && valor !== "";
   }
 
   get possuiFiltrosAtivos(): boolean {

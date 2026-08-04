@@ -4,15 +4,21 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { CobrancaResponse } from "../../model/responses/CobrancaResponse";
 import { CobrancaRequest } from "../../model/requests/CobrancaRequest";
 import { CobrancaQueryFilters } from "../../model/query-filters/CobrancaQueryFilters";
+import { PageResponse } from "../../model/responses/PageResponse";
 
 @Injectable({
   providedIn: "root",
 })
 export class CobrancaService {
   private readonly BASE_URL = `${environment.apiUrl}/cobrancas`;
-  readonly cobrancas = signal<CobrancaResponse[]>([]);
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  readonly cobrancas = signal<CobrancaResponse[]>([]);
+  readonly paginaAtual = signal<number>(0);
+  readonly itensPorPagina = signal<number>(10);
+  readonly totalPaginas = signal<number>(0);
+
+  private filtroAtivo: CobrancaQueryFilters | null = null;
 
   salvaCobranca(cobranca: CobrancaRequest) {
     return this.http.post<CobrancaResponse>(this.BASE_URL, cobranca);
@@ -22,31 +28,76 @@ export class CobrancaService {
     return this.http.put<CobrancaResponse>(this.BASE_URL, cobranca);
   }
 
+  deletaCobranca(id: number) {
+    return this.http.delete<void>(`${this.BASE_URL}/${id}`);
+  }
+
   buscaCobrancas() {
-    this.http.get<CobrancaResponse[]>(this.BASE_URL).subscribe({
-      next: (data) => this.cobrancas.set(data),
-      error: () => this.cobrancas.set([]),
-    });
+    if (this.filtroAtivo) {
+      this.executarBuscaComFiltro();
+    } else {
+      this.executarBuscaGeral();
+    }
   }
 
   buscaCobrancasPorFiltro(filtros: CobrancaQueryFilters) {
-    let params = new HttpParams();
+    this.filtroAtivo = filtros;
+    this.paginaAtual.set(0);
+    this.executarBuscaComFiltro();
+  }
 
-    Object.entries(filtros).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && value !== "") {
-        params = params.set(key, value as any);
-      }
-    });
+  limparFiltros() {
+    this.filtroAtivo = null;
+    this.paginaAtual.set(0);
+    this.executarBuscaGeral();
+  }
 
+  private executarBuscaGeral() {
     this.http
-      .get<CobrancaResponse[]>(`${this.BASE_URL}/buscaPorFiltro`, { params })
+      .get<PageResponse<CobrancaResponse>>(this.BASE_URL, {
+        params: {
+          page: this.paginaAtual().toString(),
+          size: this.itensPorPagina().toString(),
+          sort: "id,desc",
+        },
+      })
       .subscribe({
-        next: (data) => this.cobrancas.set(data),
-        error: () => this.cobrancas.set([]),
+        next: (response) => {
+          this.cobrancas.set(response.content);
+          this.totalPaginas.set(response.page.totalPages ?? 0);
+        },
+        error: () => this.resetarEstado(),
       });
   }
 
-  deletaCobranca(id: number) {
-    return this.http.delete<void>(`${this.BASE_URL}/${id}`);
+  private executarBuscaComFiltro() {
+    let httpParams = new HttpParams()
+      .set("page", this.paginaAtual().toString())
+      .set("size", this.itensPorPagina().toString());
+
+    if (this.filtroAtivo) {
+      Object.entries(this.filtroAtivo).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          httpParams = httpParams.set(key, value as any);
+        }
+      });
+    }
+
+    this.http
+      .get<PageResponse<CobrancaResponse>>(`${this.BASE_URL}/buscaPorFiltro`, {
+        params: httpParams,
+      })
+      .subscribe({
+        next: (response) => {
+          this.cobrancas.set(response.content);
+          this.totalPaginas.set(response.page.totalPages ?? 0);
+        },
+        error: () => this.resetarEstado(),
+      });
+  }
+
+  private resetarEstado() {
+    this.cobrancas.set([]);
+    this.totalPaginas.set(0);
   }
 }

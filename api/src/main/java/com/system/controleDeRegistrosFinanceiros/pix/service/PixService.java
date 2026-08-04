@@ -17,6 +17,8 @@ import com.system.controleDeRegistrosFinanceiros.pix.model.dto.PixQueryFilters;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -48,27 +50,26 @@ public class PixService{
         this.cobrancasService = cobrancasService;
     }
 
-    public List<PixDTO> buscaTodos() {
-        return pixRepository.findAll()
-                .stream()
-                .map(pixMapper::toDTO)
-                .toList();
+    public Page<PixDTO> buscaTodos(Pageable pageable) {
+        return pixRepository.findAll(pageable)
+                .map(pixMapper::toDTO);
+    }
+
+     public Page<PixDTO> buscaTodosPorFiltro(Pageable pageable, PixQueryFilters filters) {
+        Page<Pix> pixFiltrados = pixRepository.findAll(filters.toSpecification(), pageable);
+
+        if (pixFiltrados.isEmpty()) {
+            throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");
+        }
+
+        return pixFiltrados.map(pixMapper :: toDTO);
+
     }
 
     public PixDTO buscarPorId(Long id) {
         Pix pix = pixRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pix não encontrado!"));
         return pixMapper.toDTO(pix);
-    }
-
-    public List<PixDTO> buscarPorCobranca(Long cobrancaId) {
-        Cobranca cobranca = cobrancasService.getById(cobrancaId);
-
-        return pixRepository
-                .findByCobranca(cobranca)
-                .stream()
-                .map(pixMapper::toDTO)
-                .toList();
     }
 
 
@@ -148,16 +149,6 @@ public class PixService{
         return pixMapper.toDTO(salvo);
     }
 
-    public List<PixDTO> buscaTodosPorFiltro(PixQueryFilters filters) {
-        List<Pix> pixFiltrados = pixRepository.findAll(filters.toSpecification());
-
-        if (pixFiltrados.isEmpty()) {
-            throw new ResourceNotFoundException("Não foi possível encontrar nenhum pix com os filtros especificados!");
-        }
-
-        return pixFiltrados.stream().map(pixMapper :: toDTO).toList();
-
-    }
 
     public void excluir(Long id) {
         if (!pixRepository.existsById(id)) {

@@ -7,6 +7,9 @@ import com.system.controleDeRegistrosFinanceiros.veiculo.mapper.VeiculoMapper;
 import com.system.controleDeRegistrosFinanceiros.veiculo.model.dto.VeiculoDTO;
 import com.system.controleDeRegistrosFinanceiros.veiculo.model.entity.Veiculo;
 import com.system.controleDeRegistrosFinanceiros.veiculo.repository.VeiculoRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +34,19 @@ public class VeiculoService {
         return veiculoMapper.toDTO(veiculosalva);
     }
 
-    public List<VeiculoDTO> buscaTodos (){
-        return veiculoRepository.findAll().stream().map(veiculoMapper::toDTO).toList();
+    public Page<VeiculoDTO> buscaTodos(Boolean ativo, Pageable pageable) {
+        if (ativo != null) {
+            return veiculoRepository.findByAtivo(ativo, pageable)
+                    .map(veiculoMapper::toDTO);
+        }
+        return veiculoRepository.findAll(pageable)
+                .map(veiculoMapper::toDTO);
+    }
+
+    public List<VeiculoDTO> buscaAtivos() {
+        return veiculoRepository.findByAtivoTrueOrderByModeloAsc().stream()
+            .map(veiculoMapper::toDTO)
+            .toList();
     }
 
     public Veiculo getById(Long id){

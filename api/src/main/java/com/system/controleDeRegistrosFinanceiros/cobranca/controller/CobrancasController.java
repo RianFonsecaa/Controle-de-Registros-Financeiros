@@ -3,6 +3,12 @@ package com.system.controleDeRegistrosFinanceiros.cobranca.controller;
 import java.util.List;
 
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaQueryFilters;
+
+import org.hibernate.query.SortDirection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
@@ -20,13 +26,18 @@ public class CobrancasController{
     }
 
     @GetMapping
-    public ResponseEntity<List<CobrancaDTO>> buscaTodos() {
-        return ResponseEntity.ok(cobrancasService.buscaTodos());
+   public ResponseEntity<Page<CobrancaDTO>> buscaTodos(
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(cobrancasService.buscaTodos(pageable));
     }
 
     @GetMapping("/buscaPorFiltro")
-    public ResponseEntity<List<CobrancaDTO>> buscaTodosPorFiltro(CobrancaQueryFilters filters) {
-        return ResponseEntity.ok(cobrancasService.buscaTodosPorFiltro(filters));
+    public ResponseEntity<Page<CobrancaDTO>> buscaTodosPorFiltro( 
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable, 
+        CobrancaQueryFilters filters
+    ) {
+        return ResponseEntity.ok(cobrancasService.buscaTodosPorFiltro(pageable, filters));
     }
 
     @PostMapping

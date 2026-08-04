@@ -172,6 +172,15 @@
       </div>
     }
   </div>
+
+  <app-paginacao
+    [paginaAtual]="cidadesService.paginaAtual()"
+    [totalPaginas]="cidadesService.totalPaginas()"
+    [itensPorPagina]="cidadesService.itensPorPagina()"
+    (aoMudarPagina)="aoMudarDePagina($event)"
+    (aoMudarTamanho)="aoMudarItensPorPagina($event)"
+  >
+  </app-paginacao>
 </section>
 
 <dialog #toggleStatusModal class="modal">
@@ -185,7 +194,7 @@
 
 <dialog #saveCidadeModal class="modal">
   <app-save-cidade-modal
-    [cidade]="cidadeSelecionada ? cidadeSelecionada : null"
+    [cidade]="itemSelecionado ? itemSelecionado : null"
     (salvar)="fecharModal(saveCidadeModal)"
     (cancelar)="fecharModal(saveCidadeModal)"
   ></app-save-cidade-modal>

@@ -1,24 +1,28 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FuncionarioService } from '../../../services/http/funcionario.service';
-import { FuncionarioResponse } from '../../../model/responses/FuncionarioResponse';
+import { Component, inject, Input } from "@angular/core";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { FuncionarioService } from "../../../services/http/funcionario.service";
+import { FuncionarioResponse } from "../../../model/responses/FuncionarioResponse";
 
 @Component({
-  selector: 'app-cobrador-select',
+  selector: "app-cobrador-select",
   imports: [ReactiveFormsModule],
-  templateUrl: './cobrador-select.html',
-  styleUrl: './cobrador-select.css',
+  templateUrl: "./cobrador-select.html",
+  styleUrl: "./cobrador-select.css",
 })
 export class CobradorSelect {
   funcionarioService = inject(FuncionarioService);
-  funcionarios = this.funcionarioService.funcionariosAtivos;
+  funcionarios = this.funcionarioService.funcionariosOpcoesSelect;
   @Input() control!: FormControl;
 
+  ngOnInit() {
+    this.funcionarioService.buscaFuncionariosAtivosListaPura();
+  }
+
   getMensagemErro(formControl: FormControl): string {
-    if (formControl.hasError('required')) {
-      return 'Este campo é obrigatório.';
+    if (formControl.hasError("required")) {
+      return "Este campo é obrigatório.";
     }
-    return '';
+    return "";
   }
 
   compareById(a: FuncionarioResponse, b: FuncionarioResponse) {

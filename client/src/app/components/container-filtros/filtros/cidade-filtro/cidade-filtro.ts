@@ -1,23 +1,24 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { CidadeSelect } from '../../../selects/cidade-select/cidade-select';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CidadeResponse } from '../../../../model/responses/CidadeResponse';
-import { CidadesService } from '../../../../services/http/cidades.service';
+import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
+import { CidadeSelect } from "../../../selects/cidade-select/cidade-select";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { CidadeResponse } from "../../../../model/responses/CidadeResponse";
+import { CidadesService } from "../../../../services/http/cidades.service";
 
 @Component({
-  selector: 'app-cidade-filtro',
+  selector: "app-cidade-filtro",
   imports: [ReactiveFormsModule],
-  templateUrl: './cidade-filtro.html',
-  styleUrl: './cidade-filtro.css',
+  templateUrl: "./cidade-filtro.html",
+  styleUrl: "./cidade-filtro.css",
 })
 export class CidadeFiltro {
   @Input() form!: FormGroup;
   @Input() onRemover!: () => void;
   @Input() onPreencherValor!: () => void;
   cidadesService = inject(CidadesService);
+  cidades = this.cidadesService.cidadesOpcoesSelect;
 
   ngOnInit() {
-    this.cidadesService.buscaCidades();
+    this.cidadesService.buscaCidadesAtivasListaPura();
   }
 
   compareById(a: CidadeResponse, b: CidadeResponse) {

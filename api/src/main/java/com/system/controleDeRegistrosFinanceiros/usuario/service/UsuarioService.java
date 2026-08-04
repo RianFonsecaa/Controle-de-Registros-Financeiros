@@ -9,6 +9,8 @@ import com.system.controleDeRegistrosFinanceiros.usuario.mapper.UsuarioMapper;
 import com.system.controleDeRegistrosFinanceiros.usuario.model.RegistroDTO;
 import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,11 +44,19 @@ public class UsuarioService {
         return usuarioMapper.toDTO(newUser);
     }
 
-    public List<UsuarioDTO> buscaTodos() {
-        return userRepository.findAll()
-                .stream()
-                .map(usuarioMapper::toDTO)
-                .toList();
+    public Page<UsuarioDTO> buscaTodos(Boolean ativo, Pageable pageable) {
+        if (ativo != null) {
+            return userRepository.findByAtivo(ativo, pageable)
+                    .map(usuarioMapper::toDTO);
+        }
+        return userRepository.findAll(pageable)
+                .map(usuarioMapper::toDTO);
+    }
+
+    public List<UsuarioDTO> buscaAtivos() {
+        return userRepository.findByAtivoTrueOrderByNameAsc().stream()
+            .map(usuarioMapper::toDTO)
+            .toList();
     }
 
     public UsuarioDTO editar(String login, UsuarioDTO data) {

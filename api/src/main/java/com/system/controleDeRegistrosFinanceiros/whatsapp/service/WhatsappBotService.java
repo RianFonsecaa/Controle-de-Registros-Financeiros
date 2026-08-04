@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -50,7 +51,7 @@ public class WhatsappBotService {
         this.usuarioService = usuarioService;
     }
 
-      public boolean validarEProcessar(Map<String, Object> payload) {
+    public boolean validarEProcessar(Map<String, Object> payload) {
         String from = (String) payload.get("from");
 
         if (from == null) return false;
@@ -63,9 +64,9 @@ public class WhatsappBotService {
         if (numeroParaValidar == null) return false;
 
         String numeroLimpo = limparNumero(numeroParaValidar);
-       boolean autorizado = usuarioService.buscaTodos().stream()
-        .anyMatch(u -> u.ativo() && 
-                       u.telefone() != null && 
+        
+        boolean autorizado = usuarioService.buscaTodos(true, Pageable.unpaged()).getContent().stream()
+            .anyMatch(u -> u.telefone() != null && 
                        compararNumeros(numeroLimpo, limparNumero(u.telefone())));
 
         if (autorizado) {
@@ -147,12 +148,17 @@ public class WhatsappBotService {
     }
 
 
-    @Async
+   @Async
     public void enviarRelatorioParaLista(RelatorioWppRequestDTO request) {
         try {
             byte[] pdf = relatorioService.gerarRelatorioParaWhatsapp(request.filtros(), "Comercial Fonseca");
             String nomeArquivo = "rel_" + System.currentTimeMillis() + ".pdf";
             String link = relatorioService.fazerUploadParaSupabase(pdf, nomeArquivo);
+
+            if (link == null || link.isBlank()) {
+                System.err.println("❌ Falha crítica: O link retornado pelo Supabase é nulo ou vazio. O envio para a lista foi cancelado.");
+                return;
+            }
 
             for (String numero : request.numerosTelefone()) {
                 try {
@@ -187,7 +193,10 @@ public class WhatsappBotService {
                     System.err.println("Erro ao enviar para " + numero + ": " + e.getMessage());
                 }
             }
+            
+
             relatorioService.agendarExclusaoDocumentoSupabase(nomeArquivo, arquivoExpiraEm);
+            
         } catch (Exception e) {
             System.err.println("Erro geral no envio: " + e.getMessage());
         }

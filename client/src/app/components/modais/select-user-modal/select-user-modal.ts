@@ -8,7 +8,7 @@ import { SaveButton } from "../../buttons/save-button/save-button";
 
 @Component({
   selector: "app-select-user-modal",
-  imports: [ReactiveFormsModule, CancelButton, SaveButton],
+  imports: [ReactiveFormsModule, CancelButton],
   templateUrl: "./select-user-modal.html",
   styleUrl: "./select-user-modal.css",
 })
@@ -19,13 +19,14 @@ export class SelectUserModal {
   @Output() enviar = new EventEmitter<string[]>();
 
   usuarioService = inject(UsuariosService);
+  usuarios = this.usuarioService.usuariosOpcoesSelect;
 
   whatsappListForm = new FormGroup({
     usuarioSelecionado: new FormControl<UserResponse | null>(null),
   });
 
   ngOnInit() {
-    this.usuarioService.buscaUsuarios();
+    this.usuarioService.buscaUsuariosAtivosListaPura();
 
     this.whatsappListForm
       .get("usuarioSelecionado")

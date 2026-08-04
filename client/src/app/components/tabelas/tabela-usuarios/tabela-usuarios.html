@@ -43,6 +43,7 @@
             <tr>
               <th class="sticky top-0 w-[12%] px-6 py-3 text-left">AÇÕES</th>
               <th class="sticky top-0 px-2 py-3 text-left">NOME</th>
+              <th class="sticky top-0 px-2 py-3 text-left">TELEFONE</th>
               <th class="sticky top-0 px-2 py-3 text-left">E-MAIL (LOGIN)</th>
               <th class="sticky top-0 px-2 py-3 text-left">ROLE</th>
             </tr>
@@ -150,6 +151,9 @@
                   </div>
                 </td>
                 <td class="p-2 font-semibold text-gray-700">{{ user.name }}</td>
+                <td class="p-2">
+                  {{ formatarTelefone(user.telefone) }}
+                </td>
                 <td class="p-2 italic">{{ user.login }}</td>
                 <td class="p-2 font-bold">{{ user.role }}</td>
               </tr>
@@ -159,20 +163,46 @@
       </div>
     } @else {
       <div
-        class="flex flex-col gap-2 h-full overflow-auto items-center justify-center p-12 text-center"
+        class="flex flex-col gap-2 h-full overflow-auto items-center justify-center p-12"
       >
-        <div class="bg-blue-50 p-4 rounded-full text-blue-400">
-          <i class="fa-solid fa-users-slash text-4xl"></i>
+        <div class="bg-[#e9e9fa] p-4 rounded-full">
+          <svg
+            class="text-[#5a5add] w-16 h-16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M14.5 11.5L12 14M12 14L9.5 16.5M12 14L9.50002 11.5M12 14L14.5 16.5M13 3H5V21H19V9M13 3H14L19 8V9M13 3V7C13 8 14 9 15 9H19"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </div>
-        <h3 class="text-xl font-bold text-[#475569]">Nenhum usuário</h3>
+        <h3 class="text-xl font-bold text-[#475569]">
+          Nenhum usuários encontrado
+        </h3>
+        <p class="text-gray-500 text-center max-w-xs">
+          A lista buscada não trouxe nenhum registro
+        </p>
       </div>
     }
   </div>
+
+  <app-paginacao
+    [paginaAtual]="usuarioService.paginaAtual()"
+    [totalPaginas]="usuarioService.totalPaginas()"
+    [itensPorPagina]="usuarioService.itensPorPagina()"
+    (aoMudarPagina)="aoMudarDePagina($event)"
+    (aoMudarTamanho)="aoMudarItensPorPagina($event)"
+  >
+  </app-paginacao>
 </section>
 
 <dialog #saveUserModal class="modal">
   <app-save-user-modal
-    [usuario]="usuarioSelecionado"
+    [usuario]="itemSelecionado"
     (salvar)="fecharModal(saveUserModal)"
     (cancelar)="fecharModal(saveUserModal)"
   ></app-save-user-modal>
@@ -189,7 +219,7 @@
 
 <dialog #changePasswordModal class="modal">
   <app-change-password-modal
-    [usuario]="usuarioSelecionado"
+    [usuario]="itemSelecionado"
     (confirmar)="fecharModal(changePasswordModal)"
     (cancelar)="fecharModal(changePasswordModal)"
   ></app-change-password-modal>

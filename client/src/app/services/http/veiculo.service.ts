@@ -1,11 +1,12 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { VeiculoResponse } from '../../model/responses/VeiculoResponse';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../enviroments/enviroments';
-import { VeiculoRequest } from '../../model/requests/VeiculoRequest';
+import { computed, inject, Injectable, signal } from "@angular/core";
+import { VeiculoResponse } from "../../model/responses/VeiculoResponse";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../enviroments/enviroments";
+import { VeiculoRequest } from "../../model/requests/VeiculoRequest";
+import { PageResponse } from "../../model/responses/PageResponse";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class VeiculoService {
   private readonly BASE_URL = `${environment.apiUrl}/veiculos`;
@@ -13,15 +14,43 @@ export class VeiculoService {
 
   readonly veiculos = signal<VeiculoResponse[]>([]);
 
-  readonly veiculosAtivos = computed(() =>
-    this.veiculos().filter((veiculo) => veiculo.ativo === true),
-  );
+  readonly paginaAtual = signal<number>(0);
+  readonly itensPorPagina = signal<number>(10);
+  readonly totalPaginas = signal<number>(0);
+
+  readonly exibirApenasAtivos = signal<boolean>(true);
+
+  readonly veiculosOpcoesSelect = signal<VeiculoResponse[]>([]);
 
   buscaVeiculos() {
-    this.http.get<VeiculoResponse[]>(this.BASE_URL).subscribe({
-      next: (data) => this.veiculos.set(data),
-      error: () => this.veiculos.set([]),
+    this.http
+      .get<PageResponse<VeiculoResponse>>(this.BASE_URL, {
+        params: {
+          page: this.paginaAtual().toString(),
+          size: this.itensPorPagina().toString(),
+          sort: "id,desc",
+          ativo: this.exibirApenasAtivos().toString(),
+        },
+      })
+      .subscribe({
+        next: (response) => {
+          this.veiculos.set(response.content || []);
+          this.totalPaginas.set(response.page.totalPages ?? 0);
+        },
+        error: () => this.resetarEstado(),
+      });
+  }
+
+  buscaVeiculosAtivosListaPura() {
+    this.http.get<VeiculoResponse[]>(`${this.BASE_URL}/ativos`).subscribe({
+      next: (dados) => this.veiculosOpcoesSelect.set(dados || []),
+      error: () => this.veiculosOpcoesSelect.set([]),
     });
+  }
+
+  private resetarEstado() {
+    this.veiculos.set([]);
+    this.totalPaginas.set(0);
   }
 
   salvaVeiculo(veiculo: VeiculoRequest) {

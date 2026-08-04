@@ -1,11 +1,17 @@
 package com.system.controleDeRegistrosFinanceiros.funcionario.controller;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.model.dto.CidadeDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.dto.FuncionarioDTO;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
+import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
 
 import java.util.List;
 
@@ -26,8 +32,16 @@ public class FuncionariosController {
     };
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> buscaTodos(){
-        return ResponseEntity.ok(funcionarioService.buscaTodos());
+    public ResponseEntity<Page<FuncionarioDTO>> buscaTodos(
+        @RequestParam(required = false) Boolean ativo,
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.DESC) Pageable pageable
+    ){
+        return ResponseEntity.ok(funcionarioService.buscaTodos(ativo, pageable));
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<FuncionarioDTO>> buscaAtivos(){
+        return ResponseEntity.ok(funcionarioService.buscaAtivos());
     }
 
     @PutMapping

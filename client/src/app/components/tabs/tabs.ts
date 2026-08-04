@@ -1,4 +1,4 @@
-import { NgClass, NgComponentOutlet } from '@angular/common';
+import { NgClass, NgComponentOutlet } from "@angular/common";
 import {
   Component,
   EventEmitter,
@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
   Type,
-} from '@angular/core';
+} from "@angular/core";
 
 export interface TabConfig {
   label: string;
@@ -14,17 +14,17 @@ export interface TabConfig {
 }
 
 @Component({
-  selector: 'app-tabs',
+  selector: "app-tabs",
   imports: [NgClass],
-  templateUrl: './tabs.html',
-  styleUrl: './tabs.css',
+  templateUrl: "./tabs.html",
+  styleUrl: "./tabs.css",
 })
 export class Tabs implements OnInit {
   @Input() listaAbas: TabConfig[] = [];
 
   @Output() componenteAtivo = new EventEmitter<Type<any> | null>();
 
-  abaAtiva: string = '';
+  abaAtiva: string = "";
 
   ngOnInit() {
     if (this.listaAbas.length > 0) {
@@ -37,6 +37,7 @@ export class Tabs implements OnInit {
     const comp =
       this.listaAbas.find((aba) => aba.label === this.abaAtiva)?.componente ??
       null;
+
     this.componenteAtivo.emit(comp);
   }
 }

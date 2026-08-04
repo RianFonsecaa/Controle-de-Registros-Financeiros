@@ -15,6 +15,8 @@ public class PixQueryFilters {
 
     private Long cidadeId;
 
+    private Long cobrancaId;
+
     private LocalDate dataInicio;
 
     private LocalDate dataFim;
@@ -25,6 +27,7 @@ public class PixQueryFilters {
 
     public Specification<Pix> toSpecification(){
         return porCidade(cidadeId)
+                .and(porCobranca(cobrancaId))
                 .and(clienteContains(cliente))
                 .and(periodoEntre(dataInicio,dataFim))
                 .and(valorEntre(valorInicio, valorFim));

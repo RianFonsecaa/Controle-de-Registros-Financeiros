@@ -79,10 +79,10 @@ public class TokenService {
     }
 
     private Instant genAccessTokenExpirationDate(){
-        return LocalDateTime.now().plusMinutes(accessExpirationMinutes).toInstant(ZoneOffset.of("-03:00"));
+        return Instant.now().plus(accessExpirationMinutes, java.time.temporal.ChronoUnit.MINUTES);
     }
 
     private Instant genRefreshTokenExpirationDate() {
-        return LocalDateTime.now().plusHours(refreshExpirationHours).toInstant(ZoneOffset.of("-03:00"));
+        return Instant.now().plus(refreshExpirationHours, java.time.temporal.ChronoUnit.HOURS);
     }
 }

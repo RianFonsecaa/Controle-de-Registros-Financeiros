@@ -17,7 +17,7 @@
       >
         <option [ngValue]="null" disabled>Selecione um usuário</option>
 
-        @for (usuario of usuarioService.usuariosAtivos(); track $index) {
+        @for (usuario of usuarios(); track $index) {
           <option [ngValue]="usuario">
             {{ usuario.name }}
           </option>

@@ -69,5 +69,4 @@ public class AuthorizationService implements UserDetailsService {
         return new LoginResponseDTO(newAccessToken, newRefreshToken);
     }
 
-
 }

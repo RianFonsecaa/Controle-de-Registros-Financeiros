@@ -25,6 +25,15 @@ public class PixSpec {
         };
     }
 
+        public static Specification<Pix> porCobranca(Long cobrancaId) {
+        return (root, query, builder) -> {
+            if (ObjectUtils.isEmpty(cobrancaId)){
+                return null;
+            }
+            return builder.equal(root.get("cobranca").get("id"), cobrancaId);
+        };
+    }
+
 
     public static Specification<Pix> periodoEntre(LocalDate dataInicio, LocalDate dataFim) {
         return (root, query, builder) -> {

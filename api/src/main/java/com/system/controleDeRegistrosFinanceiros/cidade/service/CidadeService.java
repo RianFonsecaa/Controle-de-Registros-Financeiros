@@ -3,6 +3,10 @@ package com.system.controleDeRegistrosFinanceiros.cidade.service;
 import com.system.controleDeRegistrosFinanceiros.cobranca.model.dto.CobrancaDTO;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.cidade.mapper.CidadeMapper;
@@ -36,8 +40,19 @@ public class CidadeService {
         return cidadeMapper.toDTO(cidadeRepository.save(cidade));
     }
 
-    public List<CidadeDTO> buscaTodos (){
-        return cidadeRepository.findAll().stream().map(cidadeMapper::toDTO).toList();
+    public Page<CidadeDTO> buscaTodos(Boolean ativo, Pageable pageable) {
+        if (ativo != null) {
+            return cidadeRepository.findByAtivo(ativo, pageable)
+                    .map(cidadeMapper::toDTO);
+        }
+        return cidadeRepository.findAll(pageable)
+                .map(cidadeMapper::toDTO);
+    }
+
+    public List<CidadeDTO> buscaAtivas() {
+        return cidadeRepository.findByAtivoTrueOrderByNomeAsc().stream()
+                .map(cidadeMapper::toDTO)
+                .toList();
     }
 
     public Cidade getById(Long id){

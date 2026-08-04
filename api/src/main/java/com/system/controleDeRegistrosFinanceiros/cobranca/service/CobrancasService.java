@@ -10,6 +10,11 @@ import com.system.controleDeRegistrosFinanceiros.cobranca.specifications.Cobranc
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
 import com.system.controleDeRegistrosFinanceiros.funcionario.service.FuncionarioService;
 import com.system.controleDeRegistrosFinanceiros.veiculo.service.VeiculoService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,22 +56,19 @@ public class CobrancasService {
         this.veiculoService = veiculoService;
     }
 
-    public List<CobrancaDTO> buscaTodos() {
-        return cobrancaRepository.findAll()
-                .stream()
-                .map(cobrancasMapper::toDTO)
-                .toList();
+    public Page<CobrancaDTO> buscaTodos(Pageable pageable) {
+        return cobrancaRepository.findAll(pageable)
+                .map(cobrancasMapper::toDTO);
     }
+    
+    public Page<CobrancaDTO> buscaTodosPorFiltro(Pageable pageable, CobrancaQueryFilters filters) {
+        Page<Cobranca> paginaCobrancas = cobrancaRepository.findAll(filters.toEspecification(), pageable);
 
-    public List<CobrancaDTO> buscaTodosPorFiltro(CobrancaQueryFilters filters) {
-        List<Cobranca> cobrancasFiltradas = cobrancaRepository.findAll(filters.toEspecification());
-
-        if (cobrancasFiltradas.isEmpty()) {
+        if (paginaCobrancas.isEmpty()) {
             throw new ResourceNotFoundException("Não foi possível encontrar nenhuma cobrança com os filtros especificados!");
         }
-
-        return cobrancasFiltradas.stream().map(cobrancasMapper :: toDTO).toList();
-
+        
+        return paginaCobrancas.map(cobrancasMapper::toDTO);
     }
 
     public Cobranca getById(Long id) {

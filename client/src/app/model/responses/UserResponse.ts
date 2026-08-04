@@ -5,5 +5,5 @@ export interface UserResponse {
   login: string;
   telefone: string;
   role: UserRole;
-  ativo: Boolean;
+  ativo: boolean;
 }

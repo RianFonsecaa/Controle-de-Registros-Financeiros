@@ -1,15 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs';
-import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
-import { LoginResponse } from '../../model/responses/LoginResponse';
+import { Injectable } from "@angular/core";
+import { TokenPayloadResponse } from "../../model/responses/TokenPayloadResponse";
+import { LoginResponse } from "../../model/responses/LoginResponse";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TokenStorageService {
-  private readonly accessTokenKey: string = 'access-token';
-  private readonly refreshTokenKey: string = 'refresh-token';
+  private readonly accessTokenKey: string = "access-token";
+  private readonly refreshTokenKey: string = "refresh-token";
   private cachedPayload: TokenPayloadResponse | null = null;
 
   setTokens(tokens: LoginResponse) {
@@ -34,7 +32,7 @@ export class TokenStorageService {
   }
 
   decodeToken(token: string): any {
-    const payload = token.split('.')[1];
+    const payload = token.split(".")[1];
     return JSON.parse(atob(payload));
   }
 
@@ -61,11 +59,6 @@ export class TokenStorageService {
 
     if (!token) return false;
 
-    if (this.isTokenExpired(token)) {
-      this.deleteTokens();
-      return false;
-    }
-
-    return true;
+    return !this.isTokenExpired(token);
   }
 }

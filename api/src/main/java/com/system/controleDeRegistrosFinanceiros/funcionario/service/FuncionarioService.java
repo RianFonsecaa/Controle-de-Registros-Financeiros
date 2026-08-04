@@ -1,14 +1,19 @@
 package com.system.controleDeRegistrosFinanceiros.funcionario.service;
 
 
+import com.system.controleDeRegistrosFinanceiros.cidade.model.dto.CidadeDTO;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceAlreadyExistsException;
 import com.system.controleDeRegistrosFinanceiros.exceptions.ResourceNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.system.controleDeRegistrosFinanceiros.funcionario.mapper.FuncionarioMapper;
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.dto.FuncionarioDTO;
 import com.system.controleDeRegistrosFinanceiros.funcionario.model.entity.Funcionario;
 import com.system.controleDeRegistrosFinanceiros.funcionario.repository.FuncionarioRepository;
+import com.system.controleDeRegistrosFinanceiros.usuario.model.UsuarioDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -34,10 +39,20 @@ public class FuncionarioService {
         return funcionarioMapper.toDTO(funcionarioSalvo);
     }
 
-    public List<FuncionarioDTO> buscaTodos(){
-        return funcionarioRepository.findAll().stream().map(funcionarioMapper::toDTO).toList();
+    public Page<FuncionarioDTO> buscaTodos(Boolean ativo, Pageable pageable) {
+        if (ativo != null) {
+            return funcionarioRepository.findByAtivo(ativo, pageable)
+                    .map(funcionarioMapper::toDTO);
+        }
+        return funcionarioRepository.findAll(pageable)
+                .map(funcionarioMapper::toDTO);
     }
 
+    public List<FuncionarioDTO> buscaAtivos() {
+        return funcionarioRepository.findByAtivoTrueOrderByNomeAsc().stream()
+            .map(funcionarioMapper::toDTO)
+            .toList();
+    }
 
     public Funcionario getById(Long id){
         return funcionarioRepository.findById(id)
