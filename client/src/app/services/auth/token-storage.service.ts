@@ -33,7 +33,16 @@ export class TokenStorageService {
 
   decodeToken(token: string): any {
     const payload = token.split(".")[1];
-    return JSON.parse(atob(payload));
+
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+
+    const binary = atob(base64);
+
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+
+    const decodedPayload = new TextDecoder("utf-8").decode(bytes);
+
+    return JSON.parse(decodedPayload);
   }
 
   getPayload(): TokenPayloadResponse | null {

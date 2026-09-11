@@ -10,7 +10,9 @@ export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      const isLoginRoute = req.url.includes("auth/login");
+
+      if (error.status === 401 && !isLoginRoute) {
         return throwError(() => error);
       }
 
@@ -25,8 +27,14 @@ export const globalHttpErrorInterceptor: HttpInterceptorFn = (req, next) => {
           mensagem = "Arquivo não encontrado no servidor.";
         }
       } else {
-        mensagem = error.error?.message || error.statusText || mensagem;
+        mensagem =
+          error.error?.message ||
+          (isLoginRoute && error.status === 401
+            ? "Login ou senha incorretos."
+            : error.statusText) ||
+          mensagem;
       }
+
       toastService.abrir("error", mensagem);
 
       return throwError(() => error);

@@ -70,6 +70,7 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.funcionario) {
+      console.log(this.funcionario);
       this.preencherFormulario();
     } else {
       this.funcionarioForm.reset();
@@ -126,7 +127,9 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
       nome: this.funcionario.nome,
       telefone: this.funcionario.telefone,
       email: this.funcionario.email,
-      dataNascimento: this.funcionario.dataNascimento,
+      dataNascimento: this.formatarDataParaInput(
+        this.funcionario.dataNascimento,
+      ),
     });
   }
 
@@ -155,5 +158,12 @@ export class SaveFuncionarioModal implements OnInit, OnChanges {
   private formatarData(data: string): string {
     const [ano, mes, dia] = data.split("-");
     return `${dia}-${mes}-${ano}`;
+  }
+
+  private formatarDataParaInput(data: string | undefined): string {
+    if (!data) return "";
+
+    const [dia, mes, ano] = data.split("-");
+    return `${ano}-${mes}-${dia}`;
   }
 }

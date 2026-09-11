@@ -92,7 +92,7 @@ export class SaveValeModal implements OnInit, OnChanges {
       funcionario: funcionario,
       justificativa: this.vale?.justificativa,
       valor: this.vale?.valor,
-      data: this.vale?.data,
+      data: this.formatarDataParaInput(this.vale?.data),
     });
   }
 
@@ -149,6 +149,13 @@ export class SaveValeModal implements OnInit, OnChanges {
   private formatarData(data: string): string {
     const [ano, mes, dia] = data.split("-");
     return `${dia}-${mes}-${ano}`;
+  }
+
+  private formatarDataParaInput(data: string | undefined): string {
+    if (!data) return "";
+
+    const [dia, mes, ano] = data.split("-");
+    return `${ano}-${mes}-${dia}`;
   }
 
   private resetarParaCriacao() {

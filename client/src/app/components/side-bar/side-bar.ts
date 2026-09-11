@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { TokenPayloadResponse } from '../../model/responses/TokenPayloadResponse';
-import { TokenStorageService } from '../../services/auth/token-storage.service';
-import { AuthService } from '../../services/auth/auth.service';
+import { Component, inject } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { TokenPayloadResponse } from "../../model/responses/TokenPayloadResponse";
+import { TokenStorageService } from "../../services/auth/token-storage.service";
+import { AuthService } from "../../services/auth/auth.service";
 
 @Component({
-  selector: 'app-side-bar',
+  selector: "app-side-bar",
   imports: [RouterLink],
-  templateUrl: './side-bar.html',
-  styleUrl: './side-bar.css',
+  templateUrl: "./side-bar.html",
+  styleUrl: "./side-bar.css",
 })
 export class SideBar {
   private tokenStorage = inject(TokenStorageService);
@@ -22,9 +22,10 @@ export class SideBar {
 
   carregarDadosUsuario() {
     this.usuario = this.tokenStorage.getPayload();
+    console.log(this.usuario);
   }
 
   get isAdmin(): boolean {
-    return this.usuario?.role === 'ADMIN';
+    return this.usuario?.role === "ADMIN";
   }
 }

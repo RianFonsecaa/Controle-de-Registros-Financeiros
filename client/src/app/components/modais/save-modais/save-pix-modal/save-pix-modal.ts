@@ -71,6 +71,7 @@ export class SavePixModal {
     if (!this.pixForm) return;
 
     if (this.pix) {
+      console.log(this.pix);
       this.preencherFormulario();
     } else {
       this.resetarParaCriacao();

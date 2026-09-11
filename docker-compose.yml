@@ -6,6 +6,11 @@ services:
     environment:
       MYSQL_DATABASE: crf_bd
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
     ports:
       - "3307:3306"
     volumes:
@@ -41,7 +46,7 @@ services:
     volumes:
       - ./api/uploads:/app/uploads
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crf_bd?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       DB_PASSWORD: ${DB_PASSWORD}
