@@ -14,12 +14,10 @@
   - [3.3 Persistência & Cloud Storage (MySQL & Supabase)](#33-persistência--cloud-storage-mysql--supabase)
   - [3.4 Mensageria & Relatórios (JasperReports & WhatsApp API)](#34-mensageria--relatórios-jasperreports--whatsapp-api)
 - [4. Perfis de Acesso e Segurança (RBAC)](#4-perfis-de-acesso-e-segurança-rbac)
-- [5. Estrutura de Diretórios](#5-estrutura-de-diretórios)
-- [6. Documentação da API REST](#6-documentação-da-api-rest)
-- [7. Demonstração Visual e Telas](#7-demonstração-visual-e-telas)
-- [8. Como Executar com Docker](#8-como-executar-com-docker)
-- [9. Execução Local para Desenvolvimento](#9-execução-local-para-desenvolvimento)
-- [10. Autoria e Contexto Acadêmico](#10-autoria-e-contexto-acadêmico)
+- [5. Documentação da API REST](#6-documentação-da-api-rest)
+- [6. Demonstração Visual e Telas](#7-demonstração-visual-e-telas)
+- [7. Como Executar com Docker](#8-como-executar-com-docker)
+- [8. Autoria e Contexto Acadêmico](#10-autoria-e-contexto-acadêmico)
 
 ---
 
@@ -156,7 +154,7 @@ O sistema conta com controle de permissões baseado em papéis (`Role-Based Acce
 
 ---
 
-## 6. Documentação da API REST
+## 5. Documentação da API REST
 
 Todas as requisições para rotas protegidas devem incluir o header de autorização:
 `Authorization: Bearer <SEU_TOKEN_JWT>`
@@ -280,11 +278,11 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-## 7. Demonstração Visual e Telas
+## 6. Demonstração Visual e Telas
 
 ---
 
-### 7.1. Autenticação e Segurança
+### 6.1. Autenticação e Segurança
 
 #### Tela de Login
 
@@ -306,7 +304,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.2. Painel Executivo (Dashboard)
+### 6.2. Painel Executivo (Dashboard)
 
 #### Dashboard de Controle Financeiro
 
@@ -316,7 +314,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.3. Módulo de Cobranças (Fechamento Diário)
+### 6.3. Módulo de Cobranças (Fechamento Diário)
 
 #### Listagem e Tabela de Cobranças
 
@@ -350,7 +348,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.4. Módulo de Pagamentos Eletrônicos (Pix)
+### 6.4. Módulo de Pagamentos Eletrônicos (Pix)
 
 #### Listagem e Tabela de Pix
 
@@ -372,7 +370,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.5. Módulo de Vales e Despesas Operacionais
+### 6.5. Módulo de Vales e Despesas Operacionais
 
 #### Listagem e Tabela de Vales
 
@@ -394,7 +392,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.6. Cadastros Gerais e Gestão de Status
+### 6.6. Cadastros Gerais e Gestão de Status
 
 #### Cidades
 
@@ -478,7 +476,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-### 7.7. Relatórios & Integração WhatsApp
+### 6.7. Relatórios & Integração WhatsApp
 
 #### Visualização do Relatório Financeiro (PDF)
 
@@ -512,7 +510,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 
 ---
 
-## 8. Como Executar com Docker
+## 7. Como Executar com Docker
 
 A execução via Docker Compose inicializa automaticamente o banco de dados MySQL, compila o backend Spring Boot e disponibiliza o frontend Angular empacotado em Nginx.
 
@@ -577,11 +575,11 @@ A execução via Docker Compose inicializa automaticamente o banco de dados MySQ
 
 ---
 
-## 10. Autoria e Contexto Acadêmico
+## 8. Autoria e Contexto Acadêmico
 
 Este projeto foi concebido e implementado como Trabalho de Conclusão de Curso (TCC) no curso de **Tecnologia em Análise e Desenvolvimento de Sistemas (ADS)** do **Instituto Federal de Educação, Ciência e Tecnologia da Bahia (IFBA) – Campus Santo Antônio de Jesus**.
 
 - **Desenvolvedor:** Rian Fonseca
-- **Orientação & Banca Examinadora:** Corpo Docente do IFBA Campus Santo Antônio de Jesus
+- **Orientação:** Prof. Felipe Gustavo de Souza Gomes
 - **Nota Obtida:** **9,5 / 10,0**
-- **Ambiente de Aplicação Real:** Comercial Fonseca (Santo Antônio de Jesus - BA)
+- **Ambiente de Aplicação Real:** Comercial Fonseca (Cruz das Almas - BA)
