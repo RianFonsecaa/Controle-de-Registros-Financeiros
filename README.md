@@ -483,7 +483,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Visualização do Relatório Financeiro (PDF)
 
 <p align="center">
-  <img src="/telas/Visualizacao de Relatorio.jpg" alt="Visualização do Relatório PDF" width="85%">
+  <img src="/telas/Visualizacao de Relatorio.png" alt="Visualização do Relatório PDF" width="85%">
 </p>
 
 #### Modal de Compartilhamento do Relatório via WhatsApp
@@ -495,7 +495,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Interação com o Bot e Envio de Link Seguro via WhatsApp
 
 <p align="center">
-  <img src="/telas/Relatorio Whatsapp Ontem.jpg" alt="Interação com o Bot do WhatsApp" width="45%">
+  <img src="/telas/Relatorio Whatsapp Ontem.png" alt="Interação com o Bot do WhatsApp" width="45%">
 </p>
 
 #### Relatório PDF Gerado e Visualizado no Dispositivo Móvel
