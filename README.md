@@ -295,13 +295,13 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Validação de Campos no Login
 
 <p align="center">
-  <img src="/telas/Validação de Campos Login.png" alt="Validação de Campos no Login" width="85%">
+  <img src="/telas/Validacao de Campos Login.png" alt="Validação de Campos no Login" width="85%">
 </p>
 
 #### Alteração de Senha de Usuário
 
 <p align="center">
-  <img src="/telas/Alteração de Senha de Usuário.png" alt="Alteração de Senha de Usuário" width="85%">
+  <img src="/telas/Alteracao de Senha de Usuario.png" alt="Alteração de Senha de Usuário" width="85%">
 </p>
 
 ---
@@ -321,7 +321,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Listagem e Tabela de Cobranças
 
 <p align="center">
-  <img src="/telas/Tabela de Cobranças.png" alt="Tabela de Cobranças" width="85%">
+  <img src="/telas/Tabela de Cobrancas.png" alt="Tabela de Cobranças" width="85%">
 </p>
 
 #### Filtragem Dinâmica de Cobranças
@@ -333,19 +333,19 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Lançamento de Nova Cobrança
 
 <p align="center">
-  <img src="/telas/Registro de Cobrança.png" alt="Registro de Cobrança" width="85%">
+  <img src="/telas/Registro de Cobranca.png" alt="Registro de Cobrança" width="85%">
 </p>
 
 #### Edição de Registro de Cobrança
 
 <p align="center">
-  <img src="/telas/Edição de Cobrança.png" alt="Edição de Cobrança" width="85%">
+  <img src="/telas/Edicao de Cobranca.png" alt="Edição de Cobrança" width="85%">
 </p>
 
 #### Modal de Exclusão de Cobrança
 
 <p align="center">
-  <img src="/telas/Exclusão de Cobrança.png" alt="Exclusão de Cobrança" width="85%">
+  <img src="/telas/Exclusao de Cobranca.png" alt="Exclusão de Cobrança" width="85%">
 </p>
 
 ---
@@ -367,7 +367,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Modal de Exclusão de Pix
 
 <p align="center">
-  <img src="/telas/Exclusão de Pix.png" alt="Exclusão de Pix" width="85%">
+  <img src="/telas/Exclusao de Pix.png" alt="Exclusão de Pix" width="85%">
 </p>
 
 ---
@@ -389,7 +389,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Modal de Exclusão de Vale
 
 <p align="center">
-  <img src="/telas/Exclusão de Vale.png" alt="Exclusão de Vale" width="85%">
+  <img src="/telas/Exclusao de Vale.png" alt="Exclusão de Vale" width="85%">
 </p>
 
 ---
@@ -413,7 +413,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 ##### Confirmação de Inativação (Soft Delete) de Cidade
 
 <p align="center">
-  <img src="/telas/Inativação de Cidade.png" alt="Inativação de Cidade" width="85%">
+  <img src="/telas/Inativacao de Cidade.png" alt="Inativação de Cidade" width="85%">
 </p>
 
 #### Veículos
@@ -433,7 +433,7 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 ##### Confirmação de Inativação de Veículo
 
 <p align="center">
-  <img src="/telas/Inativação de Veiculo.png" alt="Inativação de Veículo" width="85%">
+  <img src="/telas/Inativacao de Veiculo.png" alt="Inativação de Veículo" width="85%">
 </p>
 
 #### Funcionários
@@ -441,19 +441,19 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 ##### Listagem de Funcionários e Cobradores
 
 <p align="center">
-  <img src="/telas/Tabela de Funcionários.png" alt="Tabela de Funcionários" width="85%">
+  <img src="/telas/Tabela de Funcionarios.png" alt="Tabela de Funcionários" width="85%">
 </p>
 
 ##### Novo Cadastro de Funcionário
 
 <p align="center">
-  <img src="/telas/Cadastro de Funcionário.png" alt="Cadastro de Funcionário" width="85%">
+  <img src="/telas/Cadastro de Funcionario.png" alt="Cadastro de Funcionário" width="85%">
 </p>
 
 ##### Confirmação de Inativação de Funcionário
 
 <p align="center">
-  <img src="/telas/Inativação de Funcionário.png" alt="Inativação de Funcionário" width="85%">
+  <img src="/telas/Inativacao de Funcionario.png" alt="Inativação de Funcionário" width="85%">
 </p>
 
 #### Usuários do Sistema
@@ -461,19 +461,19 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 ##### Listagem de Usuários e Perfis de Acesso
 
 <p align="center">
-  <img src="/telas/Tabela de Usuários.png" alt="Tabela de Usuários" width="85%">
+  <img src="/telas/Tabela de Usuarios.png" alt="Tabela de Usuários" width="85%">
 </p>
 
 ##### Novo Cadastro de Usuário
 
 <p align="center">
-  <img src="/telas/Cadastro de Usuário.png" alt="Cadastro de Usuário" width="85%">
+  <img src="/telas/Cadastro de Usuario.png" alt="Cadastro de Usuário" width="85%">
 </p>
 
 ##### Confirmação de Inativação de Usuário
 
 <p align="center">
-  <img src="/telas/Inativação de Usuário.png" alt="Inativação de Usuário" width="85%">
+  <img src="/telas/Inativacao de Usuario.png" alt="Inativação de Usuário" width="85%">
 </p>
 
 ---
@@ -483,31 +483,31 @@ _Nota: Os endpoints de criação e edição utilizam `multipart/form-data` para 
 #### Visualização do Relatório Financeiro (PDF)
 
 <p align="center">
-  <img src="/telas/Visualização de Relatório.jpg" alt="Visualização do Relatório PDF" width="85%">
+  <img src="/telas/Visualizacao de Relatorio.jpg" alt="Visualização do Relatório PDF" width="85%">
 </p>
 
 #### Modal de Compartilhamento do Relatório via WhatsApp
 
 <p align="center">
-  <img src="/telas/Envio de Relatório no Whatsapp.png" alt="Envio de Relatório no WhatsApp" width="85%">
+  <img src="/telas/Envio de Relatorio no Whatsapp.png" alt="Envio de Relatório no WhatsApp" width="85%">
 </p>
 
 #### Interação com o Bot e Envio de Link Seguro via WhatsApp
 
 <p align="center">
-  <img src="/telas/Relatório Whatsapp Ontem.jpg" alt="Interação com o Bot do WhatsApp" width="45%">
+  <img src="/telas/Relatorio Whatsapp Ontem.jpg" alt="Interação com o Bot do WhatsApp" width="45%">
 </p>
 
 #### Relatório PDF Gerado e Visualizado no Dispositivo Móvel
 
 <p align="center">
-  <img src="/telas/Relatório PDF Whatsapp.jpeg" alt="Relatório PDF Aberto no Mobile" width="45%">
+  <img src="/telas/Relatorio PDF Whatsapp.jpeg" alt="Relatório PDF Aberto no Mobile" width="45%">
 </p>
 
 #### Tratamento de Erros e Mensagens de Feedback no WhatsApp
 
 <p align="center">
-  <img src="/telas/Erro ao gerar relatório Whatsapp.jpg" alt="Tratamento de Exceções no WhatsApp" width="45%">
+  <img src="/telas/Erro ao gerar relatorio Whatsapp.jpg" alt="Tratamento de Exceções no WhatsApp" width="45%">
 </p>
 
 ---
