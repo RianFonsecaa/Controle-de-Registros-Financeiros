@@ -25,7 +25,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 encryptedPassword,
                 "admin", 
                 UserRole.ADMIN,
-                "75988364489",
+                "75900000000",
                 true
             );
 
